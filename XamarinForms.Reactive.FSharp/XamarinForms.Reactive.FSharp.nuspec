@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+	<projectUrl>https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp</projectUrl>
+    <description>$description$</description>
+    <releaseNotes>Initial Build.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Xamarin F# ReactiveUI</tags>
+  </metadata>
+</package>
