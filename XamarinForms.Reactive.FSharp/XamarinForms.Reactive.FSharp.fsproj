@@ -59,6 +59,14 @@
       <AssemblyName>FSharp.Core.dll</AssemblyName>
       <HintPath>$(MSBuildExtensionsPath32)\..\Reference Assemblies\Microsoft\FSharp\.NETCore\$(TargetFSharpCoreVersion)\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="GeographicLib">
+      <HintPath>..\packages\GeographicLib.FSharp.1.0.0\lib\portable45-net45+win8+wp8+wpa81\GeographicLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.7.0.0\lib\portable-net45+netcore45+wpa81+win8+wp8+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.dll</HintPath>
       <Private>True</Private>
@@ -89,6 +97,10 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.2.3.3.180\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Maps">
+      <HintPath>..\packages\Xamarin.Forms.Maps.2.3.3.180\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">

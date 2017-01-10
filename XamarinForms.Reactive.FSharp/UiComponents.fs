@@ -5,7 +5,10 @@ open System
 
 open Microsoft.FSharp.Quotations
 
+open Xamarin.Forms.Maps
 open Xamarin.Forms
+
+open GeographicLib
 
 open ReactiveUI
 
@@ -134,6 +137,7 @@ module Themes =
             ImageStyle: Style
             SwitchStyle: Style
             ListViewStyle: Style
+            MapStyle: Style
         }
 
     type Theme =
@@ -147,6 +151,8 @@ module Themes =
         member this.GenerateEntry() = new Entry(Style = this.Styles.EntryStyle)
         member this.GenerateHyperlink() = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle)
         member this.GenerateListView() = new ListView(Style = this.Styles.ListViewStyle)
+        member this.GenerateMap(location: GeodesicLocation, distance: float<km>) = 
+            new Map(MapSpan.FromCenterAndRadius(new Position(location.Latitude/1.0<deg>, location.Longitude/1.0<deg>), new Distance(1000.0 * distance/1.0<km>)), Style = this.Styles.MapStyle)
         member __.VerticalLayout() = new StackLayout (Orientation = StackOrientation.Vertical)
         member __.HorizontalLayout() = new StackLayout (Orientation = StackOrientation.Horizontal)
         member __.GenerateGrid(rowDefinitions, columnDefinitions) = setUpGrid (new Grid()) (rowDefinitions, columnDefinitions)
@@ -157,15 +163,15 @@ module Themes =
             if (setterType <> controlType) then
                 raise <| ArgumentException(sprintf "A setter for a property of the type %s cannot be used to modify an instance of %s" setterType.Name controlType.Name)
             style.Setters.Add setter
-    let withButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
-    let withLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme
-    let withHyperlinkSetters hyperlinkSetters (theme: Theme) = addSetters<HyperlinkLabel> hyperlinkSetters theme.Styles.HyperlinkStyle; theme
-    let withSwitchSetters switchSetters (theme: Theme) = addSetters<Switch> switchSetters theme.Styles.SwitchStyle; theme
-    let withEntrySetters entrySetters (theme: Theme) = addSetters<Entry> entrySetters theme.Styles.EntryStyle; theme
-    let withImageSetters imageSetters (theme: Theme) = addSetters<Image> imageSetters theme.Styles.ImageStyle; theme
-    let withListViewSetters listViewSetters (theme: Theme) = addSetters<ListView> listViewSetters theme.Styles.ListViewStyle; theme
-    let withBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }
-    let withSeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
+    let applyButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
+    let applyLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme
+    let applyHyperlinkSetters hyperlinkSetters (theme: Theme) = addSetters<HyperlinkLabel> hyperlinkSetters theme.Styles.HyperlinkStyle; theme
+    let applySwitchSetters switchSetters (theme: Theme) = addSetters<Switch> switchSetters theme.Styles.SwitchStyle; theme
+    let applyEntrySetters entrySetters (theme: Theme) = addSetters<Entry> entrySetters theme.Styles.EntryStyle; theme
+    let applyImageSetters imageSetters (theme: Theme) = addSetters<Image> imageSetters theme.Styles.ImageStyle; theme
+    let applyListViewSetters listViewSetters (theme: Theme) = addSetters<ListView> listViewSetters theme.Styles.ListViewStyle; theme
+    let applyBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }
+    let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
 
     let DefaultTheme =
         {
@@ -180,6 +186,7 @@ module Themes =
                     ImageStyle = new Style(typeof<Image>)
                     SwitchStyle = new Style(typeof<Switch>)
                     ListViewStyle = new Style(typeof<ListView>)
+                    MapStyle = new Style(typeof<Map>)
                 }
         }
 
