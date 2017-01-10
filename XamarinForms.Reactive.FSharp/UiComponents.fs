@@ -151,19 +151,19 @@ module Themes =
         member __.HorizontalLayout() = new StackLayout (Orientation = StackOrientation.Horizontal)
         member __.GenerateGrid(rowDefinitions, columnDefinitions) = setUpGrid (new Grid()) (rowDefinitions, columnDefinitions)
     let private addSetters<'TView when 'TView :> View> (setters: Setter seq) (style: Style) =
-        let controlType = typeof<'TView>.DeclaringType 
+        let controlType = typeof<'TView>
         for setter in setters do 
             let setterType = setter.Property.DeclaringType
             if (setterType <> controlType) then
                 raise <| ArgumentException(sprintf "A setter for a property of the type %s cannot be used to modify an instance of %s" setterType.Name controlType.Name)
             style.Setters.Add setter
-    let withButtonSetters buttonSetters (theme: Theme) = addSetters buttonSetters theme.Styles.ButtonStyle; theme
-    let withLabelSetters labelSetters (theme: Theme) = addSetters labelSetters theme.Styles.LabelStyle; theme
-    let withHyperlinkSetters hyperlinkSetters (theme: Theme) = addSetters hyperlinkSetters theme.Styles.HyperlinkStyle; theme
-    let withSwitchSetters switchSetters (theme: Theme) = addSetters switchSetters theme.Styles.SwitchStyle; theme
-    let withEntrySetters entrySetters (theme: Theme) = addSetters entrySetters theme.Styles.EntryStyle; theme
-    let withImageSetters imageSetters (theme: Theme) = addSetters imageSetters theme.Styles.ImageStyle; theme
-    let withListViewSetters listViewSetters (theme: Theme) = addSetters listViewSetters theme.Styles.ListViewStyle; theme
+    let withButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
+    let withLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme
+    let withHyperlinkSetters hyperlinkSetters (theme: Theme) = addSetters<HyperlinkLabel> hyperlinkSetters theme.Styles.HyperlinkStyle; theme
+    let withSwitchSetters switchSetters (theme: Theme) = addSetters<Switch> switchSetters theme.Styles.SwitchStyle; theme
+    let withEntrySetters entrySetters (theme: Theme) = addSetters<Entry> entrySetters theme.Styles.EntryStyle; theme
+    let withImageSetters imageSetters (theme: Theme) = addSetters<Image> imageSetters theme.Styles.ImageStyle; theme
+    let withListViewSetters listViewSetters (theme: Theme) = addSetters<ListView> listViewSetters theme.Styles.ListViewStyle; theme
     let withBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }
     let withSeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
 
