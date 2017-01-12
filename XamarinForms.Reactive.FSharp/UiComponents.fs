@@ -56,8 +56,6 @@ module ViewHelpers =
     let withSpacing spacing (layout: StackLayout) = layout.Spacing <- spacing; layout
     let withFontAttributes fontAttributes (element: #Label) = element.FontAttributes <- fontAttributes; element
     let withBackgroundColor color (element: #View) = element.BackgroundColor <- color; element
-    let withSetUpActions<'TElement> (actions: ('TElement -> unit)[]) (element: 'TElement) = (for action in actions do action(element)); element
-    let withSetUpAction<'TElement> (action: 'TElement -> unit) = withSetUpActions([|action|])
 
 module Themes =
     let withBlocks views (stackLayout: StackLayout) = (for view in views do stackLayout.Children.Add(view)); stackLayout
@@ -140,22 +138,26 @@ module Themes =
             MapStyle: Style
         }
 
+    let private apply setUp view =
+        setUp |> Seq.iter (fun s -> s view)
+        view
     type Theme =
         {
             Styles: Styles
         }
-        member this.GenerateImage() = new Image(Style = this.Styles.ImageStyle)
-        member this.GenerateButton() = new Button(Style = this.Styles.ButtonStyle)
-        member this.GenerateLabel() = new Label(Style = this.Styles.LabelStyle)
-        member this.GenerateSwitch() = new Switch(Style = this.Styles.SwitchStyle)
-        member this.GenerateEntry() = new Entry(Style = this.Styles.EntryStyle)
-        member this.GenerateHyperlink() = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle)
-        member this.GenerateListView() = new ListView(Style = this.Styles.ListViewStyle)
-        member this.GenerateMap(location: GeodesicLocation, distance: float<km>) = 
+        member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
+        member this.GenerateButton([<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> apply setUp
+        member this.GenerateLabel([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.LabelStyle) |> apply setUp
+        member this.GenerateSwitch([<ParamArray>] setUp: (Switch -> unit)[]) = new Switch(Style = this.Styles.SwitchStyle) |> apply setUp
+        member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
+        member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
+        member this.GenerateListView([<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> apply setUp
+        member this.GenerateMap(location: GeodesicLocation, distance: float<km>, [<ParamArray>] setUp: (Map -> unit)[]) = 
             new Map(MapSpan.FromCenterAndRadius(new Position(location.Latitude/1.0<deg>, location.Longitude/1.0<deg>), new Distance(1000.0 * distance/1.0<km>)), Style = this.Styles.MapStyle)
-        member __.VerticalLayout() = new StackLayout (Orientation = StackOrientation.Vertical)
-        member __.HorizontalLayout() = new StackLayout (Orientation = StackOrientation.Horizontal)
-        member __.GenerateGrid(rowDefinitions, columnDefinitions) = setUpGrid (new Grid()) (rowDefinitions, columnDefinitions)
+            |> apply setUp
+        member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
+        member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
+        member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
     let private addSetters<'TView when 'TView :> View> (setters: Setter seq) (style: Style) =
         let controlType = typeof<'TView>
         for setter in setters do 

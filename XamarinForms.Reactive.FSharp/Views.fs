@@ -10,15 +10,6 @@ open Xamarin.Forms
 open Modal
 open Themes
 
-module Placeholders =
-    let Label = new Label()
-    let Switch = new Switch()
-    let Entry = new Entry()
-    let Image = new Image()
-    let Button = new Button()
-    let StackLayout = new StackLayout()
-    let Hyperlink = new HyperlinkLabel()
-
 type ContentView<'TViewModel when 'TViewModel :> ReactiveViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ContentView()
     let mutable viewModel = Unchecked.defaultof<'TViewModel>
