@@ -25,11 +25,12 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
         Locator.CurrentMutable.RegisterConstant(context, typeof<IUiContext>)
         Locator.CurrentMutable.RegisterConstant(platform, typeof<'TPlatform>)
         Locator.CurrentMutable.RegisterConstant(this, typeof<IScreen>)
+        platform.RegisterDependencies(Locator.CurrentMutable)
         for interfaceType in ViewReflection.viewForInterfaceTypes config do
             match ViewReflection.findViewType interfaceType config with
             | Some viewType -> Locator.CurrentMutable.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
             | None -> interfaceType |> ignore
-        router.NavigationStack.Add(viewModel)
+        router.NavigationStack.Add(viewModel())
     interface IScreen with member __.Router = router
 
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform, context, config, viewModel) as this =

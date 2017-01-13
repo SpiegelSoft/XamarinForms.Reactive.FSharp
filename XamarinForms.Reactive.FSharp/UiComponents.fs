@@ -52,13 +52,15 @@ module ViewHelpers =
     let withContent text (element: #Label) = element.Text <- text; element
     let withStyle style (element: #View) = element.Style <- style; element
     let withKeyboard keyboard (element: #InputView) = element.Keyboard <- keyboard; element
-    let withPlaceholder placeholder (element: #Entry) = element.Placeholder <- placeholder; element
+    let withSearchCommand command (element: SearchBar) = element.SearchCommand <- command; element
+    let withEntryPlaceholder placeholder (element: #Entry) = element.Placeholder <- placeholder; element
+    let withSearchBarPlaceholder placeholder (element: #SearchBar) = element.Placeholder <- placeholder; element
     let withSpacing spacing (layout: StackLayout) = layout.Spacing <- spacing; layout
     let withFontAttributes fontAttributes (element: #Label) = element.FontAttributes <- fontAttributes; element
     let withBackgroundColor color (element: #View) = element.BackgroundColor <- color; element
 
 module Themes =
-    let withBlocks views (stackLayout: StackLayout) = (for view in views do stackLayout.Children.Add(view)); stackLayout
+    let withBlocks (views:View seq) (stackLayout: StackLayout) = (for view in views do stackLayout.Children.Add(view)); stackLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
     let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
     type RowCreation =
@@ -132,19 +134,19 @@ module Themes =
             HyperlinkStyle: Style
             ButtonStyle: Style
             EntryStyle: Style
+            SearchBarStyle: Style
             ImageStyle: Style
             SwitchStyle: Style
             ListViewStyle: Style
             MapStyle: Style
         }
 
-    let private apply setUp view =
-        setUp |> Seq.iter (fun s -> s view)
-        view
+    let private apply setUp view = setUp |> Seq.iter (fun s -> s view); view
     type Theme =
         {
             Styles: Styles
         }
+        member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
         member this.GenerateButton([<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> apply setUp
         member this.GenerateLabel([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.LabelStyle) |> apply setUp
@@ -185,6 +187,7 @@ module Themes =
                     HyperlinkStyle = new Style(typeof<HyperlinkLabel>)
                     ButtonStyle = new Style(typeof<Button>)
                     EntryStyle = new Style(typeof<Entry>)
+                    SearchBarStyle = new Style(typeof<SearchBar>)
                     ImageStyle = new Style(typeof<Image>)
                     SwitchStyle = new Style(typeof<Switch>)
                     ListViewStyle = new Style(typeof<ListView>)
