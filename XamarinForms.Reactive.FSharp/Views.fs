@@ -28,10 +28,8 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> ReactiveViewModel and '
     abstract member CreateContent: unit -> View
     interface IViewFor<'TViewModel> with member __.ViewModel with get() = this.ViewModel and set(value) = this.ViewModel <- value
     interface IViewFor with member __.ViewModel with get() = (this :> IViewFor<'TViewModel>).ViewModel :> obj and set(value: obj) = (this :> IViewFor<'TViewModel>).ViewModel <- (value :?> 'TViewModel)
-    interface IDisposable with member __.Dispose() = listener.Dispose()
-    override __.OnAppearing() =
-        base.OnAppearing()
-        match box this.Content with
-        | null -> this.Content <- this.CreateContent()
-        | _ -> this |> ignore
-
+    override __.OnAppearing() = 
+        base.OnAppearing();
+        this.ViewModel.SubscribeToNotifications()
+        match box this.Content with | null -> this.Content <- this.CreateContent() | _ -> this |> ignore
+    override __.OnDisappearing() = listener.Dispose(); base.OnDisappearing()

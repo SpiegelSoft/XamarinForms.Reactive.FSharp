@@ -8,8 +8,6 @@ open Microsoft.FSharp.Quotations
 open Xamarin.Forms.Maps
 open Xamarin.Forms
 
-open GeographicLib
-
 open ReactiveUI
 
 open Splat
@@ -154,9 +152,7 @@ module Themes =
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
         member this.GenerateListView([<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> apply setUp
-        member this.GenerateMap(location: GeodesicLocation, distance: float<km>, [<ParamArray>] setUp: (Map -> unit)[]) = 
-            new Map(MapSpan.FromCenterAndRadius(new Position(location.Latitude/1.0<deg>, location.Longitude/1.0<deg>), new Distance(1000.0 * distance/1.0<km>)), Style = this.Styles.MapStyle)
-            |> apply setUp
+        member this.GenerateMap([<ParamArray>] setUp: (GeographicMap -> unit)[]) = new GeographicMap(Style = this.Styles.MapStyle) |> apply setUp
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)

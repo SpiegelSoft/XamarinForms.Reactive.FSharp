@@ -1,8 +1,11 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open System.Reactive.Disposables
 open System.Reactive.Linq
 open System.Threading
 open System
+
+open Microsoft.FSharp.Quotations
 
 open ReactiveUI
 
@@ -19,15 +22,21 @@ module Modal =
 open ExpressionConversion
 open Modal
 
+[<AbstractClass>]
 type ReactiveViewModel() as this =
     inherit ReactiveObject()
+    let subscriptions = new CompositeDisposable()
     let mutable message = noMessage
     let uiContext = SynchronizationContext.Current
+    let raiseAndSetIfChanged values propertyNames =
+        propertyNames |> ignore
     member __.SyncContext with get() = uiContext
-    member this.Message 
+    member __.Message 
         with get() = message 
-        and set(value) = 
+        and set(value) =
             this.RaiseAndSetIfChanged(&message, value, "Message") |> ignore
             if message <> noMessage then this.RaiseAndSetIfChanged(&message, noMessage, "Message") |> ignore
-    member val MessageSent = 
-        this.WhenAnyValue(toLinq <@ fun vm -> vm.Message @>).ObserveOn(RxApp.MainThreadScheduler).Where(fun m -> m <> noMessage) with get
+    member val MessageSent = this.WhenAnyValue(toLinq <@ fun vm -> vm.Message @>).ObserveOn(RxApp.MainThreadScheduler).Where(fun m -> m <> noMessage) with get
+    abstract member SubscribeToNotifications: unit -> unit
+    member __.Watch(source, expression, propertyNames) =
+        source.WhenAnyValue(toLinq expression).ObserveOn(RxApp.MainThreadScheduler).Subscribe(fun v -> raiseAndSetIfChanged v propertyNames) |> subscriptions.Add
