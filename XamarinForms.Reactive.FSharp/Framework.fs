@@ -43,4 +43,4 @@ type GeographicMap() =
     override this.OnPropertyChanged(propertyName) =
         if propertyName = "VisibleRegion" then
             this.SetValue(centerProperty, this.VisibleRegion.Center |> XamarinGeographic.geodesicLocation)
-            this.SetValue(radiusProperty, this.VisibleRegion.Radius |> XamarinGeographic.geographicDistance)
+            this.SetValue(radiusProperty, (this.VisibleRegion.Radius |> XamarinGeographic.geographicDistance) / 1.0<km>)

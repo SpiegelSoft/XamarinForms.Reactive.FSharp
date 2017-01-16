@@ -21,6 +21,7 @@ module Modal =
 
 open ExpressionConversion
 open Modal
+open System.Collections.ObjectModel
 
 [<AbstractClass>]
 type ReactiveViewModel() as this =
@@ -28,8 +29,6 @@ type ReactiveViewModel() as this =
     let subscriptions = new CompositeDisposable()
     let mutable message = noMessage
     let uiContext = SynchronizationContext.Current
-    let raiseAndSetIfChanged values propertyNames =
-        propertyNames |> ignore
     member __.SyncContext with get() = uiContext
     member __.Message 
         with get() = message 
@@ -37,6 +36,5 @@ type ReactiveViewModel() as this =
             this.RaiseAndSetIfChanged(&message, value, "Message") |> ignore
             if message <> noMessage then this.RaiseAndSetIfChanged(&message, noMessage, "Message") |> ignore
     member val MessageSent = this.WhenAnyValue(toLinq <@ fun vm -> vm.Message @>).ObserveOn(RxApp.MainThreadScheduler).Where(fun m -> m <> noMessage) with get
-    abstract member SubscribeToNotifications: unit -> unit
-    member __.Watch(source, expression, propertyNames) =
-        source.WhenAnyValue(toLinq expression).ObserveOn(RxApp.MainThreadScheduler).Subscribe(fun v -> raiseAndSetIfChanged v propertyNames) |> subscriptions.Add
+    abstract member SubscribeToCommands: unit -> unit
+    abstract member UnsubscribeFromCommands: unit -> unit
