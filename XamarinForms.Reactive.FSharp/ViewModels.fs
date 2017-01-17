@@ -1,11 +1,8 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
-open System.Reactive.Disposables
 open System.Reactive.Linq
 open System.Threading
 open System
-
-open Microsoft.FSharp.Quotations
 
 open ReactiveUI
 
@@ -21,12 +18,10 @@ module Modal =
 
 open ExpressionConversion
 open Modal
-open System.Collections.ObjectModel
 
 [<AbstractClass>]
 type ReactiveViewModel() as this =
     inherit ReactiveObject()
-    let subscriptions = new CompositeDisposable()
     let mutable message = noMessage
     let uiContext = SynchronizationContext.Current
     member __.SyncContext with get() = uiContext
