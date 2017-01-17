@@ -25,8 +25,8 @@ type HyperlinkLabel() =
     member this.AddCommand command = this.GestureRecognizers.Add(new TapGestureRecognizer(Command = command))
 
 module ViewHelpers =
-    let withTwoWayBinding<'TElement, 'TProperty, 'TViewModel, 'TView when 'TView :> IViewFor<'TViewModel>>(viewModel: 'TViewModel, view: 'TView, viewModelProperty: Expr<'TViewModel -> 'TProperty>, viewProperty: Expr<'TView -> 'TProperty>) (element: 'TElement) = 
-        view.Bind<'TViewModel, 'TView, 'TProperty, 'TProperty>(viewModel, toLinq viewModelProperty, toLinq viewProperty) |> ignore
+    let withTwoWayBinding(viewModel, view, viewModelProperty, viewProperty, vmToViewConverter, viewToVmConverter) (element: 'TElement) = 
+        view.Bind(viewModel, toLinq viewModelProperty, toLinq viewProperty, null, vmToViewConverter, viewToVmConverter) |> ignore
         element
     let withOneWayBinding<'TElement, 'TProperty, 'TViewModel, 'TView when 'TView :> IViewFor<'TViewModel>>(viewModel: 'TViewModel, view: 'TView, viewModelProperty: Expr<'TViewModel -> 'TProperty>, viewProperty: Expr<'TView -> 'TProperty>) (element: 'TElement) = 
         view.OneWayBind<'TViewModel, 'TView, 'TProperty, 'TProperty>(viewModel, toLinq viewModelProperty, toLinq viewProperty) |> ignore

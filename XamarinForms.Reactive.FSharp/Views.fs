@@ -8,6 +8,7 @@ open ReactiveUI
 open Xamarin.Forms
 
 open Modal
+
 open Themes
 
 type ContentView<'TViewModel when 'TViewModel :> ReactiveViewModel and 'TViewModel : not struct>(theme: Theme) as this =
