@@ -1,9 +1,6 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
-open System.Windows.Input
 open System
-
-open Microsoft.FSharp.Quotations
 
 open Xamarin.Forms.Maps
 open Xamarin.Forms
@@ -25,14 +22,16 @@ type HyperlinkLabel() =
     member this.AddCommand command = this.GestureRecognizers.Add(new TapGestureRecognizer(Command = command))
 
 module ViewHelpers =
-    let withTwoWayBinding(viewModel, view, viewModelProperty, viewProperty, vmToViewConverter, viewToVmConverter) (element: 'TElement) = 
-        view.Bind(viewModel, toLinq viewModelProperty, toLinq viewProperty, null, vmToViewConverter, viewToVmConverter) |> ignore
+    open Microsoft.FSharp.Quotations
+
+    let withTwoWayBinding(viewModel: 'vm, view, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) (element: 'TElement) = 
+        view.Bind(viewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
         element
-    let withOneWayBinding<'TElement, 'TProperty, 'TViewModel, 'TView when 'TView :> IViewFor<'TViewModel>>(viewModel: 'TViewModel, view: 'TView, viewModelProperty: Expr<'TViewModel -> 'TProperty>, viewProperty: Expr<'TView -> 'TProperty>) (element: 'TElement) = 
-        view.OneWayBind<'TViewModel, 'TView, 'TProperty, 'TProperty>(viewModel, toLinq viewModelProperty, toLinq viewProperty) |> ignore
+    let withOneWayBinding(viewModel, view, viewModelProperty, viewProperty, selector) (element: 'TElement) = 
+        view.OneWayBind(viewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
-    let withCommandBinding<'TElement, 'TCommand, 'TViewModel, 'TView when 'TView :> IViewFor<'TViewModel> and 'TCommand :> ICommand and 'TView: not struct>(viewModel: 'TViewModel, view: 'TView, viewModelCommand: Expr<'TViewModel -> 'TCommand>, controlProperty: Expr<'TView -> 'TElement>) (element: 'TElement) = 
-        view.BindCommand<'TView, 'TViewModel, 'TCommand, 'TElement>(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
+    let withCommandBinding(viewModel, view, viewModelCommand, controlProperty) (element: 'TElement) = 
+        view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
     let withHorizontalOptions options (element: #View) = element.HorizontalOptions <- options; element

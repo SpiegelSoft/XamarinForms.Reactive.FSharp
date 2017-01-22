@@ -29,16 +29,16 @@ type GeographicMap() =
     inherit Map()
     static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap>, new GeodesicLocation(), BindingMode.TwoWay)
     static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap>, 1.0, BindingMode.TwoWay)
-    static let searchResultsProperty = BindableProperty.Create("SearchResults", typeof<IEnumerable<Pin>>, typeof<GeographicMap>, null, BindingMode.TwoWay)
+    static let pinnedLocationsProperty = BindableProperty.Create("PinnedLocations", typeof<IEnumerable<Pin>>, typeof<GeographicMap>, null, BindingMode.TwoWay)
     member this.Radius
         with get() = 1.0<km> * (this.GetValue(radiusProperty) :?> float)
         and set(value: float<km>) = if not <| value.Equals(this.Radius) then this.SetValue(radiusProperty, value / 1.0<km>)
     member this.Center 
         with get() = this.GetValue(centerProperty) :?> GeodesicLocation
         and set(value: GeodesicLocation) = if not <| value.Equals(this.Center) then this.SetValue(centerProperty, value)
-    member this.SearchResults
-        with get() = this.GetValue(searchResultsProperty) :?> IEnumerable<Pin>
-        and set(value: IEnumerable<Pin>) = if not <| value.Equals(this.SearchResults) then this.SetValue(searchResultsProperty, value)
+    member this.PinnedLocations
+        with get() = this.GetValue(pinnedLocationsProperty) :?> IEnumerable<Pin>
+        and set(value: IEnumerable<Pin>) = if not <| value.Equals(this.PinnedLocations) then this.SetValue(pinnedLocationsProperty, value)
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
         match propertyName with
