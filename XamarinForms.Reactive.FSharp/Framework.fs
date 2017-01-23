@@ -8,9 +8,12 @@ open GeographicLib
 open Xamarin.Forms.Maps
 open Xamarin.Forms
 
+open System.Reactive.Disposables
 open System.Collections.Generic
 open System.Linq.Expressions
 open System
+
+open ReactiveUI
 
 module ExpressionConversion =
     let toLinq (expr : Expr<'a -> 'b>) =
@@ -25,8 +28,10 @@ module XamarinGeographic =
     let distance (geographicDistance: float<km>) = new Distance(1000.0 * geographicDistance / 1.0<km>)
     let geographicDistance (distance: Distance) = 1.0<km> * distance.Kilometers
 
+open ExpressionConversion
 type GeographicMap() =
     inherit Map()
+    let pinsObservable = new CompositeDisposable()
     static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap>, new GeodesicLocation(), BindingMode.TwoWay)
     static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap>, 1.0, BindingMode.TwoWay)
     static let pinnedLocationsProperty = BindableProperty.Create("PinnedLocations", typeof<IEnumerable<Pin>>, typeof<GeographicMap>, null, BindingMode.TwoWay)
@@ -38,7 +43,17 @@ type GeographicMap() =
         and set(value: GeodesicLocation) = if not <| value.Equals(this.Center) then this.SetValue(centerProperty, value)
     member this.PinnedLocations
         with get() = this.GetValue(pinnedLocationsProperty) :?> IEnumerable<Pin>
-        and set(value: IEnumerable<Pin>) = if not <| value.Equals(this.PinnedLocations) then this.SetValue(pinnedLocationsProperty, value)
+        and set(value: IEnumerable<Pin>) = 
+            if not <| value.Equals(this.PinnedLocations) then 
+                this.Pins.Clear()
+                value |> Seq.iter this.Pins.Add
+                this.SetValue(pinnedLocationsProperty, value)
+    member internal this.BindPinsToCollection (collection: ReactiveList<'a>, viewModel, view, viewModelProperty, viewProperty, markerToPin) = 
+        view.OneWayBind(viewModel, toLinq viewModelProperty, toLinq viewProperty, fun markers -> markers |> Seq.map markerToPin) |> ignore
+        pinsObservable.Clear()
+        collection.ItemsAdded.Subscribe() |> pinsObservable.Add
+        collection.ItemsRemoved.Subscribe() |> pinsObservable.Add
+        0 |> ignore
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
         match propertyName with
@@ -55,7 +70,3 @@ type GeographicMap() =
                 if Math.Abs(deltaRadius / 1.0<km>) > threshold / 1.0<km> || Math.Abs((deltaCenter |> UnitConversion.kilometres) / 1.0<km>) > threshold / 1.0<km> then
                     this.MoveToRegion(MapSpan.FromCenterAndRadius(this.Center |> XamarinGeographic.position, this.Radius |> XamarinGeographic.distance))
         | _ -> propertyName |> ignore
-    interface IItemsView<Pin> with
-        member __.CreateDefault _ = new Pin()
-        member __.SetupContent(pin, _) = pin |> ignore
-        member __.UnhookContent pin = pin |> ignore

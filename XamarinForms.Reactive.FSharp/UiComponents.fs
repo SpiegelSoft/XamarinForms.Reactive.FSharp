@@ -23,15 +23,17 @@ type HyperlinkLabel() =
 
 module ViewHelpers =
     open Microsoft.FSharp.Quotations
-
-    let withTwoWayBinding(viewModel: 'vm, view, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) (element: 'TElement) = 
+    let withTwoWayBinding(viewModel: 'vm, view, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
         view.Bind(viewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
         element
-    let withOneWayBinding(viewModel, view, viewModelProperty, viewProperty, selector) (element: 'TElement) = 
+    let withOneWayBinding(viewModel, view, viewModelProperty, viewProperty, selector) element = 
         view.OneWayBind(viewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
-    let withCommandBinding(viewModel, view, viewModelCommand, controlProperty) (element: 'TElement) = 
+    let withCommandBinding(viewModel, view, viewModelCommand, controlProperty) element = 
         view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
+        element
+    let withPinBinding(markers, viewModel, view, viewModelProperty, viewProperty, markerToPin) (element: GeographicMap) =
+        element.BindPinsToCollection(markers, viewModel, view, viewModelProperty, viewProperty, markerToPin)
         element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
     let withHorizontalOptions options (element: #View) = element.HorizontalOptions <- options; element
@@ -112,15 +114,13 @@ module Themes =
     let createFromRows (rowCreation: RowCreation) = 
         let grid = rowCreation.Grid
         let specifiedRowCount, actualRowCount = grid.RowDefinitions.Count, rowCreation.RowCount
-        if specifiedRowCount <> actualRowCount then 
-            raise <| ArgumentException(sprintf "You have tried to add %i %s to a grid for which %i %s %s specified." actualRowCount (rowNoun actualRowCount) specifiedRowCount (rowNoun specifiedRowCount) (verb specifiedRowCount))
+        if specifiedRowCount <> actualRowCount then raise <| ArgumentException(sprintf "You have tried to add %i %s to a grid for which %i %s %s specified." actualRowCount (rowNoun actualRowCount) specifiedRowCount (rowNoun specifiedRowCount) (verb specifiedRowCount))
         grid
 
     let createFromColumns (columnCreation: ColumnCreation) = 
         let grid = columnCreation.Grid
         let specifiedColumnCount, actualColumnCount = grid.ColumnDefinitions.Count, columnCreation.ColumnCount
-        if specifiedColumnCount <> actualColumnCount then 
-            raise <| ArgumentException(sprintf "You have tried to add %i %s to a grid for which %i %s %s specified." actualColumnCount (columnNoun actualColumnCount) specifiedColumnCount (columnNoun specifiedColumnCount) (verb specifiedColumnCount))
+        if specifiedColumnCount <> actualColumnCount then raise <| ArgumentException(sprintf "You have tried to add %i %s to a grid for which %i %s %s specified." actualColumnCount (columnNoun actualColumnCount) specifiedColumnCount (columnNoun specifiedColumnCount) (verb specifiedColumnCount))
         grid
     
     type Styles =
@@ -159,8 +159,7 @@ module Themes =
         let controlType = typeof<'TView>
         for setter in setters do 
             let setterType = setter.Property.DeclaringType
-            if (setterType <> controlType) then
-                raise <| ArgumentException(sprintf "A setter for a property of the type %s cannot be used to modify an instance of %s" setterType.Name controlType.Name)
+            if (setterType <> controlType) then raise <| ArgumentException(sprintf "A setter for a property of the type %s cannot be used to modify an instance of %s" setterType.Name controlType.Name)
             style.Setters.Add setter
     let applyButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
     let applyLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme
