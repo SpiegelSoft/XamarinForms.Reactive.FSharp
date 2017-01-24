@@ -32,9 +32,7 @@ module ViewHelpers =
     let withCommandBinding(viewModel, view, viewModelCommand, controlProperty) element = 
         view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
-    let withPinBinding(markers, viewModel, view, viewModelProperty, viewProperty, markerToPin) (element: GeographicMap) =
-        element.BindPinsToCollection(markers, viewModel, view, viewModelProperty, viewProperty, markerToPin)
-        element
+    let withPinBinding(markers, markerToPin) (element: GeographicMap) = element.BindPinsToCollection(markers, markerToPin); element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
     let withHorizontalOptions options (element: #View) = element.HorizontalOptions <- options; element
     let withVerticalOptions options (element: #View) = element.VerticalOptions <- options; element

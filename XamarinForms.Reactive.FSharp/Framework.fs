@@ -11,6 +11,7 @@ open Xamarin.Forms
 open System.Reactive.Disposables
 open System.Collections.Generic
 open System.Linq.Expressions
+open System.Reactive.Linq
 open System
 
 open ReactiveUI
@@ -28,32 +29,28 @@ module XamarinGeographic =
     let distance (geographicDistance: float<km>) = new Distance(1000.0 * geographicDistance / 1.0<km>)
     let geographicDistance (distance: Distance) = 1.0<km> * distance.Kilometers
 
-open ExpressionConversion
 type GeographicMap() =
     inherit Map()
-    let pinsObservable = new CompositeDisposable()
+    let pinsSubscriptions = new CompositeDisposable()
     static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap>, new GeodesicLocation(), BindingMode.TwoWay)
     static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap>, 1.0, BindingMode.TwoWay)
-    static let pinnedLocationsProperty = BindableProperty.Create("PinnedLocations", typeof<IEnumerable<Pin>>, typeof<GeographicMap>, null, BindingMode.TwoWay)
     member this.Radius
         with get() = 1.0<km> * (this.GetValue(radiusProperty) :?> float)
         and set(value: float<km>) = if not <| value.Equals(this.Radius) then this.SetValue(radiusProperty, value / 1.0<km>)
     member this.Center 
         with get() = this.GetValue(centerProperty) :?> GeodesicLocation
         and set(value: GeodesicLocation) = if not <| value.Equals(this.Center) then this.SetValue(centerProperty, value)
-    member this.PinnedLocations
-        with get() = this.GetValue(pinnedLocationsProperty) :?> IEnumerable<Pin>
-        and set(value: IEnumerable<Pin>) = 
-            if not <| value.Equals(this.PinnedLocations) then 
-                this.Pins.Clear()
-                value |> Seq.iter this.Pins.Add
-                this.SetValue(pinnedLocationsProperty, value)
-    member internal this.BindPinsToCollection (collection: ReactiveList<'a>, viewModel, view, viewModelProperty, viewProperty, markerToPin) = 
-        view.OneWayBind(viewModel, toLinq viewModelProperty, toLinq viewProperty, fun markers -> markers |> Seq.map markerToPin) |> ignore
-        pinsObservable.Clear()
-        collection.ItemsAdded.Subscribe() |> pinsObservable.Add
-        collection.ItemsRemoved.Subscribe() |> pinsObservable.Add
-        0 |> ignore
+    member internal this.BindPinsToCollection (collection: ReactiveList<'a>, markerToPin) =
+        let addPin pin = this.Pins.Add pin; pin
+        let removePin pin = this.Pins.Remove pin
+        pinsSubscriptions.Clear(); this.Pins.Clear()
+        let markerAndPin marker = (marker, marker |> markerToPin |> addPin)
+        let pinDictionary = collection |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, Pin>(c)
+        let addMarkerAndPin marker = marker |> markerAndPin |> fun (m, p) -> pinDictionary.Add(m, addPin p)
+        let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
+        collection.ItemsAdded.ObserveOn(RxApp.MainThreadScheduler).Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
+        collection.ItemsRemoved.ObserveOn(RxApp.MainThreadScheduler).Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
+    member internal __.Close() = pinsSubscriptions.Clear()
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
         match propertyName with
