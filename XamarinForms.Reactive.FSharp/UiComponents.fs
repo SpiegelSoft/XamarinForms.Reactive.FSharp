@@ -55,6 +55,8 @@ module ViewHelpers =
     let withSpacing spacing (layout: StackLayout) = layout.Spacing <- spacing; layout
     let withFontAttributes fontAttributes (element: #Label) = element.FontAttributes <- fontAttributes; element
     let withBackgroundColor color (element: #View) = element.BackgroundColor <- color; element
+    let withEffect effectId (element: #Element) = element.Effects.Add(Effect.Resolve(effectId)); element     
+    let withRoutingEffect (effect: #RoutingEffect) (element: #Element) = element.Effects.Add(effect); element     
 
 module Themes =
     let withBlocks (views:View seq) (stackLayout: StackLayout) = (for view in views do stackLayout.Children.Add(view)); stackLayout

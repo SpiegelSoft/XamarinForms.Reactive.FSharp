@@ -41,12 +41,15 @@ type GeographicMap() =
         with get() = this.GetValue(centerProperty) :?> GeodesicLocation
         and set(value: GeodesicLocation) = if not <| value.Equals(this.Center) then this.SetValue(centerProperty, value)
     member internal this.BindPinsToCollection (collection: ReactiveList<'a>, markerToPin) =
-        let addPin pin = this.Pins.Add pin; pin
-        let removePin pin = this.Pins.Remove pin
         pinsSubscriptions.Clear(); this.Pins.Clear()
+        let addPin pin = this.Pins.Add pin; pin
+        let removePin pin =
+            let result = this.Pins.Remove pin
+            this.Pins.Clear()
+            result
         let markerAndPin marker = (marker, marker |> markerToPin |> addPin)
         let pinDictionary = collection |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, Pin>(c)
-        let addMarkerAndPin marker = marker |> markerAndPin |> fun (m, p) -> pinDictionary.Add(m, addPin p)
+        let addMarkerAndPin marker = marker |> markerAndPin |> pinDictionary.Add
         let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
         collection.ItemsAdded.ObserveOn(RxApp.MainThreadScheduler).Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
         collection.ItemsRemoved.ObserveOn(RxApp.MainThreadScheduler).Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
