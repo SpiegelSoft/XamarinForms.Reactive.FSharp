@@ -1,5 +1,7 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open System.Reactive.Disposables
+open System.Collections.Generic
 open System
 
 open Xamarin.Forms.Maps
@@ -7,15 +9,52 @@ open Xamarin.Forms
 
 open ReactiveUI
 
-open Splat
+open GeographicLib
 
 open ExpressionConversion
 
-module LocatorDefaults =
-    let LocateIfNone(arg : 'a option) =
-        match arg with
-        | None -> Locator.Current.GetService<'a>()
-        | Some a -> a
+type GeographicPin(location: GeodesicLocation, label: string, pinType: PinType) =
+    member val Location = location
+    member val Label = label
+    member val PinType = pinType
+
+type GeographicMap() =
+    inherit Map()
+    let pinsSubscriptions = new CompositeDisposable()
+    static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap>, new GeodesicLocation(), BindingMode.TwoWay)
+    static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap>, 1.0, BindingMode.TwoWay)
+    let pinnedLocations = new ReactiveList<GeographicPin>()
+    let mutable updatingVisibleRegion = false
+    member this.Radius
+        with get() = 1.0<km> * (this.GetValue(radiusProperty) :?> float)
+        and set(value: float<km>) = if not <| value.Equals(this.Radius) then this.SetValue(radiusProperty, value / 1.0<km>)
+    member this.Center 
+        with get() = this.GetValue(centerProperty) :?> GeodesicLocation
+        and set(value: GeodesicLocation) = if not <| value.Equals(this.Center) then this.SetValue(centerProperty, value)
+    member val PinnedLocations = pinnedLocations
+    member internal this.BindPinsToCollection (collection: ReactiveList<'a>, markerToPin) =
+        pinsSubscriptions.Clear(); this.PinnedLocations.Clear()
+        let addPin pin = this.PinnedLocations.Add pin; pin
+        let removePin pin = this.PinnedLocations.Remove pin
+        let markerAndPin marker = (marker, marker |> markerToPin |> addPin)
+        let pinDictionary = collection |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, GeographicPin>(c)
+        let addMarkerAndPin marker = marker |> markerAndPin |> pinDictionary.Add
+        let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
+        collection.ItemsAdded.Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
+        collection.ItemsRemoved.Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
+    member internal __.Close() = pinsSubscriptions.Clear()
+    override this.OnPropertyChanged(propertyName) =
+        base.OnPropertyChanged(propertyName)
+        match propertyName with
+        | "VisibleRegion" ->
+            updatingVisibleRegion <- true
+            this.Center <- this.VisibleRegion.Center |> XamarinGeographic.geodesicLocation
+            this.Radius <- this.VisibleRegion.Radius |> XamarinGeographic.geographicDistance
+            updatingVisibleRegion <- false
+        | "Radius" | "Center" -> 
+            if not updatingVisibleRegion then
+                this.MoveToRegion(MapSpan.FromCenterAndRadius(this.Center |> XamarinGeographic.position, this.Radius |> XamarinGeographic.distance))
+        | _ -> propertyName |> ignore
 
 type HyperlinkLabel() =
     inherit Label()
