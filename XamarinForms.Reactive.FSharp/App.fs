@@ -10,12 +10,11 @@ open Splat
 open ReactiveUI
 
 module ViewReflection =
-    let private routableViewModelTypeInfo = typeof<IRoutableViewModel>.GetTypeInfo()
     let private reactiveObjectTypeInfo = typeof<ReactiveObject>.GetTypeInfo()
-    let private isViewModelType typeInfo = routableViewModelTypeInfo.IsAssignableFrom(typeInfo) && reactiveObjectTypeInfo.IsAssignableFrom(typeInfo)
+    let private isReactiveObjectType typeInfo = reactiveObjectTypeInfo.IsAssignableFrom(typeInfo)
     let private viewForInterfaceType viewModelType = typedefof<IViewFor<_>>.MakeGenericType([|viewModelType|]).GetTypeInfo()
     let private typesInAssembly config = config.GetType().GetTypeInfo().Assembly.DefinedTypes
-    let viewForInterfaceTypes config = typesInAssembly config |> Seq.filter isViewModelType |> Seq.map (fun typeInfo -> viewForInterfaceType (typeInfo.AsType()))
+    let viewForInterfaceTypes config = typesInAssembly config |> Seq.filter isReactiveObjectType |> Seq.map (fun typeInfo -> viewForInterfaceType (typeInfo.AsType()))
     let findViewType (interfaceType: TypeInfo) config = typesInAssembly config |> Seq.tryFind (fun typeInfo -> interfaceType.IsAssignableFrom(typeInfo))
 
 type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, config: IConfiguration, viewModel) as this =

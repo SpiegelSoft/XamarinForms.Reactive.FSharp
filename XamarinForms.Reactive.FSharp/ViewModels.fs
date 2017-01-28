@@ -20,7 +20,7 @@ open ExpressionConversion
 open Modal
 
 [<AbstractClass>]
-type ReactiveViewModel() as this =
+type PageViewModel() as this =
     inherit ReactiveObject()
     let mutable message = noMessage
     let uiContext = SynchronizationContext.Current

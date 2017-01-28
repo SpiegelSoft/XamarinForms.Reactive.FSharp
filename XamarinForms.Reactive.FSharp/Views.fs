@@ -1,30 +1,30 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
-open System.Reactive.Linq
+open System.Reactive.Disposables
+open System.Collections.Generic
 open System
 
-open ReactiveUI
-
 open Xamarin.Forms
+
+open ReactiveUI.XamForms
+open ReactiveUI
 
 open Modal
 
 open Themes
-open System.Collections.Generic
 
-type ContentView<'TViewModel when 'TViewModel :> ReactiveViewModel and 'TViewModel : not struct>(theme: Theme) as this =
-    inherit ContentView()
-    let mutable viewModel = Unchecked.defaultof<'TViewModel>
-    do base.BackgroundColor <- theme.Styles.BackgroundColor
-    member __.ViewModel  with get() = viewModel and set(value: 'TViewModel) = viewModel <- value
-    interface IViewFor<'TViewModel> with member __.ViewModel with get() = this.ViewModel and set(value) = this.ViewModel <- value
-    interface IViewFor with member __.ViewModel with get() = (this :> IViewFor<'TViewModel>).ViewModel :> obj and set(value: obj) = (this :> IViewFor<'TViewModel>).ViewModel <- (value :?> 'TViewModel)
+open ExpressionConversion
 
 [<AbstractClass>]
-type ContentPage<'TViewModel, 'TView when 'TViewModel :> ReactiveViewModel and 'TViewModel : not struct>(theme: Theme) as this =
-    inherit ContentPage()
+type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel : not struct>(theme: Theme) =
+    inherit ReactiveContentView<'TViewModel>()
+    do base.BackgroundColor <- theme.Styles.BackgroundColor
+
+[<AbstractClass>]
+type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
+    inherit ReactiveContentPage<'TViewModel>()
     let messageReceived (message: AlertMessage) = this.DisplayAlert(message.Title, message.Message, message.Accept) |> ignore
-    let mutable viewModel, listener = Unchecked.defaultof<'TViewModel>, Observable.Never<AlertMessage>().Subscribe(messageReceived)
+    let messageSubscriptions = new CompositeDisposable()
     let maps = new Dictionary<Guid, GeographicMap>()
     do base.BackgroundColor <- theme.Styles.BackgroundColor
     let descendantAdded = 
@@ -39,10 +39,13 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> ReactiveViewModel and '
             | :? GeographicMap as map -> map.Close(); maps.Remove map.Id |> ignore
             | _ -> eventArgs |> ignore
         new EventHandler<ElementEventArgs> (processElement)
-    member __.ViewModel with get() = viewModel and set(value: 'TViewModel) = listener.Dispose(); viewModel <- value; listener <- value.MessageSent.Subscribe(messageReceived)
+    let subscribeToMessages (viewModel: 'TViewModel) =
+        messageSubscriptions.Clear(); 
+        match box viewModel with
+        | null -> viewModel |> ignore
+        | _ -> viewModel.MessageSent.Subscribe(messageReceived) |> messageSubscriptions.Add
+    let viewModelSubscription = this.WhenAnyValue(toLinq <@ fun v -> v.ViewModel @>).Subscribe(subscribeToMessages)
     abstract member CreateContent: unit -> View
-    interface IViewFor<'TViewModel> with member __.ViewModel with get() = this.ViewModel and set(value) = this.ViewModel <- value
-    interface IViewFor with member __.ViewModel with get() = (this :> IViewFor<'TViewModel>).ViewModel :> obj and set(value: obj) = (this :> IViewFor<'TViewModel>).ViewModel <- (value :?> 'TViewModel)
     override __.OnAppearing() = 
         base.OnAppearing()
         this.DescendantAdded.AddHandler descendantAdded
@@ -50,7 +53,8 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> ReactiveViewModel and '
         this.ViewModel.SubscribeToCommands()
         match box this.Content with | null -> this.Content <- this.CreateContent() | _ -> this |> ignore
     override __.OnDisappearing() = 
-        listener.Dispose()
+        viewModelSubscription.Dispose()
+        messageSubscriptions.Clear()
         this.ViewModel.UnsubscribeFromCommands()
         this.DescendantRemoved.RemoveHandler descendantRemoved
         this.DescendantAdded.RemoveHandler descendantAdded

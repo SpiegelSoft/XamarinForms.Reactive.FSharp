@@ -13,17 +13,20 @@ open GeographicLib
 
 open ExpressionConversion
 
-type GeographicPin(location: GeodesicLocation, label: string, pinType: PinType) =
+type GeographicPin(location: GeodesicLocation) =
     member val Location = location
-    member val Label = label
-    member val PinType = pinType
 
-type GeographicMap() =
+[<AbstractClass>]
+type GeographicMap() = 
     inherit Map()
+    abstract member Close: unit -> unit
+
+type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
+    inherit GeographicMap()
     let pinsSubscriptions = new CompositeDisposable()
-    static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap>, new GeodesicLocation(), BindingMode.TwoWay)
-    static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap>, 1.0, BindingMode.TwoWay)
-    let pinnedLocations = new ReactiveList<GeographicPin>()
+    static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap<'TMarker>>, new GeodesicLocation(), BindingMode.TwoWay)
+    static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap<'TMarker>>, 1.0, BindingMode.TwoWay)
+    let pinnedLocations = new ReactiveList<'TMarker>()
     let mutable updatingVisibleRegion = false
     member this.Radius
         with get() = 1.0<km> * (this.GetValue(radiusProperty) :?> float)
@@ -37,12 +40,12 @@ type GeographicMap() =
         let addPin pin = this.PinnedLocations.Add pin; pin
         let removePin pin = this.PinnedLocations.Remove pin
         let markerAndPin marker = (marker, marker |> markerToPin |> addPin)
-        let pinDictionary = collection |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, GeographicPin>(c)
+        let pinDictionary = collection |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, 'TMarker>(c)
         let addMarkerAndPin marker = marker |> markerAndPin |> pinDictionary.Add
         let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
         collection.ItemsAdded.Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
         collection.ItemsRemoved.Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
-    member internal __.Close() = pinsSubscriptions.Clear()
+    override __.Close() = pinsSubscriptions.Clear()
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
         match propertyName with
@@ -71,7 +74,7 @@ module ViewHelpers =
     let withCommandBinding(viewModel, view, viewModelCommand, controlProperty) element = 
         view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
-    let withPinBinding(markers, markerToPin) (element: GeographicMap) = element.BindPinsToCollection(markers, markerToPin); element
+    let withPinBinding(markers, markerToPin) (element: GeographicMap<'TMarker>) = element.BindPinsToCollection(markers, markerToPin); element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
     let withHorizontalOptions options (element: #View) = element.HorizontalOptions <- options; element
     let withVerticalOptions options (element: #View) = element.VerticalOptions <- options; element
@@ -190,7 +193,7 @@ module Themes =
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
         member this.GenerateListView([<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> apply setUp
-        member this.GenerateMap([<ParamArray>] setUp: (GeographicMap -> unit)[]) = new GeographicMap(Style = this.Styles.MapStyle) |> apply setUp
+        member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> apply setUp
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
