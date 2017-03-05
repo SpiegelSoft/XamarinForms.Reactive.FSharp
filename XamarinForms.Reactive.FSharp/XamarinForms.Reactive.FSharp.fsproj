@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.4.0.0.1\lib\portable-net45+netcore45+wpa81+wp8\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\Astrid\packages\FSharp.Core.4.1.0\lib\portable-net45+netcore45+wpa81+wp8\FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GeographicLib">
@@ -103,7 +103,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Forms.Maps">
-      <HintPath>..\packages\Xamarin.Forms.Maps.2.3.3.193\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
+      <HintPath>..\..\Astrid\packages\Xamarin.Forms.Maps.2.3.3.193\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
