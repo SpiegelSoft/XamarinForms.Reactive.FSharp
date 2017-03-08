@@ -101,7 +101,7 @@ module ViewHelpers =
     let withRoutingEffect (effect: #RoutingEffect) (element: #Element) = element.Effects.Add(effect); element     
 
 module Themes =
-    let withBlocks (views:View seq) (stackLayout: StackLayout) = (for view in views do stackLayout.Children.Add(view)); stackLayout
+    let withBlocks (views:View[]) (stackLayout: StackLayout) = (for view in views do stackLayout.Children.Add(view)); stackLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
     let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
     type RowCreation =

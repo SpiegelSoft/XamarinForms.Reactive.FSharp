@@ -15,10 +15,18 @@ open Themes
 
 open ExpressionConversion
 
+type IContentView = 
+    abstract member CreateContent: unit -> View
+    abstract member Content: View with get, set
+
 [<AbstractClass>]
 type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveContentView<'TViewModel>()
     do base.BackgroundColor <- theme.Styles.BackgroundColor
+    abstract member CreateContent: unit -> View
+    interface IContentView with 
+        member this.CreateContent() = this.CreateContent()
+        member this.Content with get() = base.Content and set(content) = base.Content <- content
 
 [<AbstractClass>]
 type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
@@ -29,8 +37,9 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     do base.BackgroundColor <- theme.Styles.BackgroundColor
     let descendantAdded = 
         let processElement _ (eventArgs:ElementEventArgs) =
-            match eventArgs.Element with
+            match box eventArgs.Element with
             | :? GeographicMap as map -> maps.Add (map.Id, map)
+            | :? IContentView as contentView -> contentView.Content <- contentView.CreateContent()
             | _ -> eventArgs |> ignore
         new EventHandler<ElementEventArgs> (processElement)
     let descendantRemoved = 
