@@ -88,6 +88,7 @@ module ViewHelpers =
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
     let withCaption text (element: #Button) = element.Text <- text; element
     let withText text (element: #Entry) = element.Text <- text; element
+    let withColor color (element: #BoxView) = element.Color <- color; element
     let withContent text (element: #Label) = element.Text <- text; element
     let withStyle style (element: #View) = element.Style <- style; element
     let withKeyboard keyboard (element: #InputView) = element.Keyboard <- keyboard; element
@@ -170,6 +171,8 @@ module Themes =
             BackgroundColor: Color
             SeparatorColor: Color
             LabelStyle: Style
+            TitleStyle: Style
+            SubtitleStyle: Style
             HyperlinkStyle: Style
             ButtonStyle: Style
             EntryStyle: Style
@@ -177,6 +180,9 @@ module Themes =
             ImageStyle: Style
             SwitchStyle: Style
             ListViewStyle: Style
+            BoxViewStyle: Style
+            ScrollViewStyle: Style
+            DatePickerStyle: Style
             MapStyle: Style
         }
 
@@ -189,10 +195,15 @@ module Themes =
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
         member this.GenerateButton([<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> apply setUp
         member this.GenerateLabel([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.LabelStyle) |> apply setUp
+        member this.GenerateTitle([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.TitleStyle) |> apply setUp
+        member this.GenerateSubtitle([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.SubtitleStyle) |> apply setUp
         member this.GenerateSwitch([<ParamArray>] setUp: (Switch -> unit)[]) = new Switch(Style = this.Styles.SwitchStyle) |> apply setUp
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
         member this.GenerateListView([<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> apply setUp
+        member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
+        member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
+        member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> apply setUp
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
@@ -214,12 +225,21 @@ module Themes =
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
 
     let DefaultTheme =
+        let titleStyle = new Style(typeof<Label>)
+        titleStyle.Setters.Add(new Setter(Property = Label.FontSizeProperty, Value = Device.GetNamedSize (NamedSize.Large, typeof<Label>)))
+        titleStyle.Setters.Add(new Setter(Property = Label.FontAttributesProperty, Value = FontAttributes.Bold))
+        let subtitleStyle = new Style(typeof<Label>)
+        subtitleStyle.Setters.Add(new Setter(Property = Label.FontSizeProperty, Value = Device.GetNamedSize (NamedSize.Small, typeof<Label>)))
+        let boxViewStyle = new Style(typeof<BoxView>)
+        boxViewStyle.Setters.Add(new Setter(Property = BoxView.ColorProperty, Value = Color.Yellow))
         {
             Styles =
                 {
                     BackgroundColor = Color.Black
                     SeparatorColor = Color.White
                     LabelStyle = new Style(typeof<Label>)
+                    TitleStyle = titleStyle
+                    SubtitleStyle = subtitleStyle
                     HyperlinkStyle = new Style(typeof<HyperlinkLabel>)
                     ButtonStyle = new Style(typeof<Button>)
                     EntryStyle = new Style(typeof<Entry>)
@@ -227,6 +247,9 @@ module Themes =
                     ImageStyle = new Style(typeof<Image>)
                     SwitchStyle = new Style(typeof<Switch>)
                     ListViewStyle = new Style(typeof<ListView>)
+                    BoxViewStyle = boxViewStyle
+                    ScrollViewStyle = new Style(typeof<ScrollView>)
+                    DatePickerStyle = new Style(typeof<DatePicker>)
                     MapStyle = new Style(typeof<Map>)
                 }
         }
