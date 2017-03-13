@@ -87,9 +87,11 @@ module ViewHelpers =
     let withSource source (element: Image) = element.Source <- source; element
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
     let withCaption text (element: #Button) = element.Text <- text; element
-    let withText text (element: #Entry) = element.Text <- text; element
+    let withEntryText text (element: #Entry) = element.Text <- text; element
+    let withEditorText text (element: #Editor) = element.Text <- text; element
+    let withContent content (element: #ScrollView) = element.Content <- content; element
     let withColor color (element: #BoxView) = element.Color <- color; element
-    let withContent text (element: #Label) = element.Text <- text; element
+    let withLabelText text (element: #Label) = element.Text <- text; element
     let withStyle style (element: #View) = element.Style <- style; element
     let withKeyboard keyboard (element: #InputView) = element.Keyboard <- keyboard; element
     let withSearchCommand command (element: SearchBar) = element.SearchCommand <- command; element
@@ -176,6 +178,7 @@ module Themes =
             HyperlinkStyle: Style
             ButtonStyle: Style
             EntryStyle: Style
+            EditorStyle: Style
             SearchBarStyle: Style
             ImageStyle: Style
             SwitchStyle: Style
@@ -199,6 +202,7 @@ module Themes =
         member this.GenerateSubtitle([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.SubtitleStyle) |> apply setUp
         member this.GenerateSwitch([<ParamArray>] setUp: (Switch -> unit)[]) = new Switch(Style = this.Styles.SwitchStyle) |> apply setUp
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
+        member this.GenerateEditor([<ParamArray>] setUp: (Editor -> unit)[]) = new Editor(Style = this.Styles.EditorStyle) |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
         member this.GenerateListView([<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> apply setUp
         member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
@@ -243,6 +247,7 @@ module Themes =
                     HyperlinkStyle = new Style(typeof<HyperlinkLabel>)
                     ButtonStyle = new Style(typeof<Button>)
                     EntryStyle = new Style(typeof<Entry>)
+                    EditorStyle = new Style(typeof<Editor>)
                     SearchBarStyle = new Style(typeof<SearchBar>)
                     ImageStyle = new Style(typeof<Image>)
                     SwitchStyle = new Style(typeof<Switch>)

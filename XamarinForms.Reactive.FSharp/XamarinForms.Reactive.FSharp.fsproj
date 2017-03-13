@@ -55,8 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\Astrid\packages\FSharp.Core.4.1.0\lib\portable-net45+netcore45+wpa81+wp8\FSharp.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.4.1.0.2\lib\portable-net45+netcore45+wpa81+wp8\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="GeographicLib">
       <HintPath>..\packages\GeographicLib.FSharp.1.1.0\lib\portable45-net45+win8+wp8+wpa81\GeographicLib.dll</HintPath>
