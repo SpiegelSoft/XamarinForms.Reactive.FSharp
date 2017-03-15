@@ -27,11 +27,8 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
     static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap<'TMarker>>, new GeodesicLocation(), BindingMode.TwoWay)
     static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap<'TMarker>>, 1.0, BindingMode.TwoWay)
     let pinnedLocations = new ReactiveList<'TMarker>()
+    let mutable boundingMarkers: 'TMarker[] = [||]
     let mutable updatingVisibleRegion = false
-    let correctForInternationalDateLine (west: 'TMarker) (east: 'TMarker) =
-        match east.Location.Longitude - west.Location.Longitude > 180.0<deg> with
-        | true -> east, west
-        | false -> west, east
     member this.Radius
         with get() = 1.0<km> * (this.GetValue(radiusProperty) :?> float)
         and set(value: float<km>) = if not <| value.Equals(this.Radius) then this.SetValue(radiusProperty, value / 1.0<km>)
@@ -49,28 +46,6 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
         let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
         collection.ItemsAdded.Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
         collection.ItemsRemoved.Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
-    member this.ScaleToMarkers(markers: 'TMarker[]) =
-        let southMostResult = markers |> Seq.minBy (fun r -> r.Location.Latitude)
-        let northMostResult = markers |> Seq.maxBy (fun r -> r.Location.Latitude)
-        let westMostResult = markers |> Seq.minBy(fun r -> r.Location.Longitude)
-        let eastMostResult = markers |> Seq.maxBy(fun r -> r.Location.Longitude)
-        let westMostResult, eastMostResult = correctForInternationalDateLine westMostResult eastMostResult
-        let centralLatitude = [| southMostResult.Location.Latitude; northMostResult.Location.Latitude |] |> Seq.average
-        let centralLongitude = [| westMostResult.Location.Longitude; eastMostResult.Location.Longitude |] |> Seq.average
-        let northWest, northEast, southWest, southEast =
-            new GeodesicLocation(northMostResult.Location.Latitude, westMostResult.Location.Longitude),
-            new GeodesicLocation(northMostResult.Location.Latitude, eastMostResult.Location.Longitude),
-            new GeodesicLocation(southMostResult.Location.Latitude, westMostResult.Location.Longitude),
-            new GeodesicLocation(southMostResult.Location.Latitude, eastMostResult.Location.Longitude)
-        let maxDimension =
-            [| 
-                Geodesic.WGS84.Distance northWest northEast
-                Geodesic.WGS84.Distance southWest southEast
-                Geodesic.WGS84.Distance northWest southWest
-                1000.0<m>
-            |] |> Seq.max
-        this.Radius <- 0.7 * maxDimension |> UnitConversion.kilometres
-        this.Center <- new GeodesicLocation(centralLatitude, centralLongitude)
     override __.Close() = pinsSubscriptions.Clear()
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
