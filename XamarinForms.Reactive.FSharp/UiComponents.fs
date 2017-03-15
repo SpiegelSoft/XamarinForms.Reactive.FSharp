@@ -58,18 +58,18 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
         let centralLatitude = [| southMostResult.Location.Latitude; northMostResult.Location.Latitude |] |> Seq.average
         let centralLongitude = [| westMostResult.Location.Longitude; eastMostResult.Location.Longitude |] |> Seq.average
         let northWest, northEast, southWest, southEast =
-            new GeodesicLocation(northmostResult.Location.Latitude, westMostResult.Location.Longitude),
-            new GeodesicLocation(northmostResult.Location.Latitude, eastMostResult.Location.Longitude),
-            new GeodesicLocation(southmostResult.Location.Latitude, westMostResult.Location.Longitude),
-            new GeodesicLocation(southmostResult.Location.Latitude, eastMostResult.Location.Longitude)
+            new GeodesicLocation(northMostResult.Location.Latitude, westMostResult.Location.Longitude),
+            new GeodesicLocation(northMostResult.Location.Latitude, eastMostResult.Location.Longitude),
+            new GeodesicLocation(southMostResult.Location.Latitude, westMostResult.Location.Longitude),
+            new GeodesicLocation(southMostResult.Location.Latitude, eastMostResult.Location.Longitude)
         let maxDimension =
             [| 
                 Geodesic.WGS84.Distance northWest northEast
                 Geodesic.WGS84.Distance southWest southEast
                 Geodesic.WGS84.Distance northWest southWest
-                0.5<km>
+                1000.0<m>
             |] |> Seq.max
-        this.Radius <- 0.7 * maxDimension
+        this.Radius <- 0.7 * maxDimension |> UnitConversion.kilometres
         this.Center <- new GeodesicLocation(centralLatitude, centralLongitude)
     override __.Close() = pinsSubscriptions.Clear()
     override this.OnPropertyChanged(propertyName) =
