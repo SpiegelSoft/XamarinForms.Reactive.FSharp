@@ -93,11 +93,11 @@ type NavigationPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewMode
     inherit ReactiveNavigationPage<'TViewModel>()
 
 [<AbstractClass>]
-type CarouselPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
+type CarouselPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveCarouselPage<'TViewModel>()
 
 [<AbstractClass>]
-type TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
+type TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveTabbedPage<'TViewModel>()
 
 module Carousel =

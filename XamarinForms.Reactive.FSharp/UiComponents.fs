@@ -28,6 +28,10 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
     static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap<'TMarker>>, 1.0, BindingMode.TwoWay)
     let pinnedLocations = new ReactiveList<'TMarker>()
     let mutable updatingVisibleRegion = false
+    let correctForInternationalDateLine (west: 'TMarker) (east: 'TMarker) =
+        match east.Location.Longitude - west.Location.Longitude > 180.0<deg> with
+        | true -> east, west
+        | false -> west, east
     member this.Radius
         with get() = 1.0<km> * (this.GetValue(radiusProperty) :?> float)
         and set(value: float<km>) = if not <| value.Equals(this.Radius) then this.SetValue(radiusProperty, value / 1.0<km>)
@@ -45,6 +49,28 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
         let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
         collection.ItemsAdded.Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
         collection.ItemsRemoved.Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
+    member this.ScaleToMarkers(markers: 'TMarker[]) =
+        let southMostResult = markers |> Seq.minBy (fun r -> r.Location.Latitude)
+        let northMostResult = markers |> Seq.maxBy (fun r -> r.Location.Latitude)
+        let westMostResult = markers |> Seq.minBy(fun r -> r.Location.Longitude)
+        let eastMostResult = markers |> Seq.maxBy(fun r -> r.Location.Longitude)
+        let westMostResult, eastMostResult = correctForInternationalDateLine westMostResult eastMostResult
+        let centralLatitude = [| southMostResult.Location.Latitude; northMostResult.Location.Latitude |] |> Seq.average
+        let centralLongitude = [| westMostResult.Location.Longitude; eastMostResult.Location.Longitude |] |> Seq.average
+        let northWest, northEast, southWest, southEast =
+            new GeodesicLocation(northmostResult.Location.Latitude, westMostResult.Location.Longitude),
+            new GeodesicLocation(northmostResult.Location.Latitude, eastMostResult.Location.Longitude),
+            new GeodesicLocation(southmostResult.Location.Latitude, westMostResult.Location.Longitude),
+            new GeodesicLocation(southmostResult.Location.Latitude, eastMostResult.Location.Longitude)
+        let maxDimension =
+            [| 
+                Geodesic.WGS84.Distance northWest northEast
+                Geodesic.WGS84.Distance southWest southEast
+                Geodesic.WGS84.Distance northWest southWest
+                0.5<km>
+            |] |> Seq.max
+        this.Radius <- 0.7 * maxDimension
+        this.Center <- new GeodesicLocation(centralLatitude, centralLongitude)
     override __.Close() = pinsSubscriptions.Clear()
     override this.OnPropertyChanged(propertyName) =
         base.OnPropertyChanged(propertyName)
@@ -83,6 +109,8 @@ module ViewHelpers =
     let withHeightAndWidthRequest (height, width) (element: #View) = element |> withHeightRequest height |> withWidthRequest width
     let withAutomationId id (element: #View) = element.AutomationId <- id; element
     let withAlignment horizontalOptions verticalOptions element = element |> withHorizontalOptions horizontalOptions |> withVerticalOptions verticalOptions
+    let withRowSpan rowSpan (element: #View) = Grid.SetRowSpan(element, rowSpan); element
+    let withColumnSpan columnSpan (element: #View) = Grid.SetColumnSpan(element, columnSpan); element
     let withMargin margin (element: #View) = element.Margin <- margin; element
     let withSource source (element: Image) = element.Source <- source; element
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
@@ -91,6 +119,10 @@ module ViewHelpers =
     let withEditorText text (element: #Editor) = element.Text <- text; element
     let withContent content (element: #ScrollView) = element.Content <- content; element
     let withColor color (element: #BoxView) = element.Color <- color; element
+    let withEditorTextColor color (element: #Editor) = element.TextColor <- color; element
+    let withEditorFontSize fontSize (element: #Editor) = element.FontSize <- fontSize; element
+    let withEditorFontAttributes fontAttributes (element: #Editor) = element.FontAttributes <- fontAttributes; element
+    let withEditorFontFamily fontFamily (element: #Editor) = element.FontFamily <- fontFamily; element
     let withLabelText text (element: #Label) = element.Text <- text; element
     let withStyle style (element: #View) = element.Style <- style; element
     let withKeyboard keyboard (element: #InputView) = element.Keyboard <- keyboard; element
@@ -129,7 +161,7 @@ module Themes =
     let private rowNoun i = if i = 1 then "row" else "rows"
     let private verb i = if i = 1 then "was" else "were"
     let rec private addRow rowCount (grid: Grid) (row: View[]) =
-        if grid.ColumnDefinitions.Count <> row.Length then 
+        if grid.ColumnDefinitions.Count <> (row |> Array.map(fun c -> Grid.GetColumnSpan(c)) |> Array.sum) then 
             let specifiedColumnCount = grid.ColumnDefinitions.Count
             raise <| ArgumentException(sprintf "You have tried to add a row with %i %s to a grid with %i %s." row.Length (elementNoun row.Length) specifiedColumnCount (columnNoun specifiedColumnCount), "row")
         for index = 0 to row.Length - 1 do
@@ -139,7 +171,7 @@ module Themes =
         let newRowCount = rowCount + 1
         { RowCreation.RowCount = newRowCount; Grid = grid }
     let rec private addColumn columnCount (grid: Grid) (column: View[]) =
-        if grid.RowDefinitions.Count <> column.Length then 
+        if grid.RowDefinitions.Count <> (column |> Array.map(fun c -> Grid.GetRowSpan(c)) |> Array.sum) then 
             let specifiedRowCount = grid.RowDefinitions.Count
             raise <| ArgumentException(sprintf "You have tried to add a column with %i %s to a grid with %i %s." column.Length (elementNoun column.Length) specifiedRowCount (rowNoun specifiedRowCount), "column")
         for index = 0 to column.Length - 1 do
