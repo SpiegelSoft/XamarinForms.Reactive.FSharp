@@ -18,6 +18,7 @@ open ExpressionConversion
 type IContentView = 
     abstract member CreateContent: unit -> View
     abstract member Content: View with get, set
+    abstract member OnContentCreated: unit -> unit
 
 module internal MessageHandling =
     let messageReceived (page: Page) (message: AlertMessage) = page.DisplayAlert(message.Title, message.Message, message.Accept) |> ignore
@@ -43,7 +44,7 @@ module internal ViewHierarchy =
         let descendantRemoved = 
             let processElement _ (eventArgs:ElementEventArgs) =
                 match eventArgs.Element with
-                | :? GeographicMap as map -> map.Close(); maps.Remove map.Id |> ignore
+                | :? GeographicMap as map -> maps.Remove map.Id |> ignore
                 | _ -> eventArgs |> ignore
             new EventHandler<ElementEventArgs> (processElement)
         (descendantAdded, descendantRemoved)
@@ -57,14 +58,13 @@ module internal PageSetup =
             page.DescendantAdded.AddHandler descendantAdded
             page.DescendantRemoved.AddHandler descendantRemoved
             page.ViewModel.SubscribeToCommands()
-            match box page.Content with | null -> page.Content <- page.CreateContent() | _ -> page |> ignore
+            match box page.Content with | null -> page.Content <- page.CreateContent(); page.OnContentCreated() | _ -> page |> ignore
         let disappearingHandler() =
             viewModelSubscription.Dispose()
             messageSubscriptions.Clear()
             page.ViewModel.UnsubscribeFromCommands()
             page.DescendantRemoved.RemoveHandler descendantRemoved
             page.DescendantAdded.RemoveHandler descendantAdded
-            for map in maps.Values do map.Close()
         (appearingHandler, disappearingHandler)
 
 [<AbstractClass>]
@@ -72,9 +72,12 @@ type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel 
     inherit ReactiveContentView<'TViewModel>()
     do base.BackgroundColor <- theme.Styles.BackgroundColor
     abstract member CreateContent: unit -> View
+    abstract member OnContentCreated: unit -> unit
+    default this.OnContentCreated() = this |> ignore
     interface IContentView with 
         member this.CreateContent() = this.CreateContent()
         member this.Content with get() = base.Content and set(content) = base.Content <- content
+        member this.OnContentCreated() = this.OnContentCreated()
 
 [<AbstractClass>]
 type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
@@ -82,9 +85,12 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     let appearingHandler, disappearingHandler = PageSetup.lifetimeHandlers this
     do base.BackgroundColor <- theme.Styles.BackgroundColor
     abstract member CreateContent: unit -> View
+    abstract member OnContentCreated: unit -> unit
+    default __.OnContentCreated() = this |> ignore
     interface IContentView with
         member this.CreateContent() = this.CreateContent()
         member this.Content with get() = base.Content and set(content) = base.Content <- content
+        member this.OnContentCreated() = this.OnContentCreated()
     override __.OnAppearing() = base.OnAppearing(); appearingHandler()
     override __.OnDisappearing() = disappearingHandler(); base.OnDisappearing()
 
