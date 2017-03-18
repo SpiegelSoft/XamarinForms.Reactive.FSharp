@@ -14,4 +14,7 @@
     <copyright>Copyright 2017</copyright>
     <tags>Xamarin F# ReactiveUI</tags>
   </metadata>
+  <files>
+    <file src="README.md" target="" />
+  </files>
 </package>
