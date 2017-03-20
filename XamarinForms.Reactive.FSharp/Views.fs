@@ -21,16 +21,22 @@ type IContentView =
     abstract member OnContentCreated: unit -> unit
 
 module internal MessageHandling =
-    let messageReceived (page: Page) (message: AlertMessage) = page.DisplayAlert(message.Title, message.Message, message.Accept) |> ignore
+    let alertMessageReceived (page: Page) (alertMessage: AlertMessage) = page.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Accept)
+    let confirmationReceived (page: Page) (confirmation: Confirmation) = page.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline)
     let addMessageSubscription (page: 'TPage when 'TPage :> Page and 'TPage :> IContentView and 'TPage :> IViewFor<'TViewModel> and 'TViewModel :> PageViewModel) =
-        let messageSubscriptions = new CompositeDisposable()
+        let commands = new CompositeDisposable()
         let subscribeToMessages (viewModel: 'TViewModel) =
-            messageSubscriptions.Clear(); 
+            commands.Clear()
             match box viewModel with
             | null -> viewModel |> ignore
-            | _ -> viewModel.MessageSent.Subscribe(messageReceived page) |> messageSubscriptions.Add
+            | _ -> 
+                let displayAlertCommand = ReactiveCommand.CreateFromTask(alertMessageReceived page)
+                let confirmCommand = ReactiveCommand.CreateFromTask(confirmationReceived page)
+                viewModel.DisplayAlertCommand <- displayAlertCommand |> Some
+                viewModel.ConfirmCommand <- confirmCommand |> Some
+                commands.Add(displayAlertCommand); commands.Add(confirmCommand)
         let viewModelSubscription = page.WhenAnyValue(toLinq <@ fun v -> v.ViewModel @>).Subscribe(subscribeToMessages)
-        (viewModelSubscription, messageSubscriptions)
+        (viewModelSubscription, commands)
 
 module internal ViewHierarchy =
     let createDescendantEvents (maps: IDictionary<Guid, GeographicMap>) =

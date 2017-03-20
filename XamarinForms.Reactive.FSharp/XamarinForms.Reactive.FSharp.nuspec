@@ -15,6 +15,6 @@
     <tags>Xamarin F# ReactiveUI</tags>
   </metadata>
   <files>
-    <file src="README.md" target="" />
+    <file src="../README.md" target="" />
   </files>
 </package>

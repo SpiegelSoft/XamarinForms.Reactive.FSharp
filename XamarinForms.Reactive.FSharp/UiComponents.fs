@@ -88,6 +88,7 @@ module ViewHelpers =
     let withColumnSpan columnSpan (element: #View) = Grid.SetColumnSpan(element, columnSpan); element
     let withMargin margin (element: #View) = element.Margin <- margin; element
     let withSource source (element: #Image) = element.Source <- source; element
+    let withButtonImage image (element: #Button) = element.Image <- image; element
     let withAspect aspect (element: #Image) = element.Aspect <- aspect; element
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
     let withCaption text (element: #Button) = element.Text <- text; element

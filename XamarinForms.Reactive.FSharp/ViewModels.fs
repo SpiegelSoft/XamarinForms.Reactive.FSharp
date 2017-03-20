@@ -1,5 +1,6 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open System.Threading.Tasks
 open System.Reactive.Linq
 open System.Threading
 open System
@@ -42,23 +43,24 @@ module GeographicMapScaling =
         (0.7 * maxDimension |> UnitConversion.kilometres, new GeodesicLocation(centralLatitude, centralLongitude))
 
 module Modal =
+    type Confirmation = { Title: string; Message: string; Accept: string; Decline: string }
     type AlertMessage = { Title: string; Message: string; Accept: string }
+    let noConfirmation = { Title = String.Empty; Message = String.Empty; Accept = String.Empty; Decline = String.Empty }
     let noMessage = { Title = String.Empty; Message = String.Empty; Accept = String.Empty }
 
 open ExpressionConversion
 open Modal
 
 [<AbstractClass>]
-type PageViewModel() as this =
+type PageViewModel() =
     inherit ReactiveObject()
-    let mutable message = noMessage
     let uiContext = SynchronizationContext.Current
+    let mutable displayAlertCommand: ReactiveCommand<AlertMessage, Reactive.Unit> option = None
+    let mutable confirmCommand: ReactiveCommand<Confirmation, bool> option = None
     member __.SyncContext with get() = uiContext
-    member __.Message 
-        with get() = message 
-        and set(value) =
-            this.RaiseAndSetIfChanged(&message, value, "Message") |> ignore
-            if message <> noMessage then this.RaiseAndSetIfChanged(&message, noMessage, "Message") |> ignore
-    member val MessageSent = this.WhenAnyValue(toLinq <@ fun vm -> vm.Message @>).ObserveOn(RxApp.MainThreadScheduler).Where(fun m -> m <> noMessage) with get
+    member __.DisplayAlertMessage(alertMessage) = match displayAlertCommand with | Some command -> command.Execute() | None -> Observable.Never<Reactive.Unit>()
+    member __.DisplayConfirmation(confirmation) = match confirmCommand with | Some command -> command.Execute() | None -> Observable.Never<bool>()
+    member internal __.DisplayAlertCommand with get() = displayAlertCommand and set(value) = displayAlertCommand <- value
+    member internal __.ConfirmCommand with get() = confirmCommand and set(value) = confirmCommand <- value
     abstract member SubscribeToCommands: unit -> unit
     abstract member UnsubscribeFromCommands: unit -> unit
