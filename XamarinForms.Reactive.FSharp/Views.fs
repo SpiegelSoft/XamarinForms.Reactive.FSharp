@@ -1,5 +1,6 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open System.Reactive.Threading.Tasks
 open System.Reactive.Disposables
 open System.Collections.Generic
 open System
@@ -21,8 +22,8 @@ type IContentView =
     abstract member OnContentCreated: unit -> unit
 
 module internal MessageHandling =
-    let alertMessageReceived (page: Page) (alertMessage: AlertMessage) = page.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Accept)
-    let confirmationReceived (page: Page) (confirmation: Confirmation) = page.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline)
+    let alertMessageReceived (page: Page) (alertMessage: AlertMessage) = page.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Accept).ToObservable()
+    let confirmationReceived (page: Page) (confirmation: Confirmation) = page.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline).ToObservable()
     let addMessageSubscription (page: 'TPage when 'TPage :> Page and 'TPage :> IContentView and 'TPage :> IViewFor<'TViewModel> and 'TViewModel :> PageViewModel) =
         let commands = new CompositeDisposable()
         let subscribeToMessages (viewModel: 'TViewModel) =
@@ -30,8 +31,8 @@ module internal MessageHandling =
             match box viewModel with
             | null -> viewModel |> ignore
             | _ -> 
-                let displayAlertCommand = ReactiveCommand.CreateFromTask(alertMessageReceived page)
-                let confirmCommand = ReactiveCommand.CreateFromTask(confirmationReceived page)
+                let displayAlertCommand = ReactiveCommand.CreateFromObservable(alertMessageReceived page)
+                let confirmCommand = ReactiveCommand.CreateFromObservable(confirmationReceived page)
                 viewModel.DisplayAlertCommand <- displayAlertCommand |> Some
                 viewModel.ConfirmCommand <- confirmCommand |> Some
                 commands.Add(displayAlertCommand); commands.Add(confirmCommand)

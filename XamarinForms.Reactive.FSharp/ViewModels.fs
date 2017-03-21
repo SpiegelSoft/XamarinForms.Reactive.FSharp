@@ -43,10 +43,8 @@ module GeographicMapScaling =
         (0.7 * maxDimension |> UnitConversion.kilometres, new GeodesicLocation(centralLatitude, centralLongitude))
 
 module Modal =
-    type Confirmation = { Title: string; Message: string; Accept: string; Decline: string }
     type AlertMessage = { Title: string; Message: string; Accept: string }
-    let noConfirmation = { Title = String.Empty; Message = String.Empty; Accept = String.Empty; Decline = String.Empty }
-    let noMessage = { Title = String.Empty; Message = String.Empty; Accept = String.Empty }
+    type Confirmation = { Title: string; Message: string; Accept: string; Decline: string }
 
 open ExpressionConversion
 open Modal
@@ -58,8 +56,8 @@ type PageViewModel() =
     let mutable displayAlertCommand: ReactiveCommand<AlertMessage, Reactive.Unit> option = None
     let mutable confirmCommand: ReactiveCommand<Confirmation, bool> option = None
     member __.SyncContext with get() = uiContext
-    member __.DisplayAlertMessage(alertMessage) = match displayAlertCommand with | Some command -> command.Execute() | None -> Observable.Never<Reactive.Unit>()
-    member __.DisplayConfirmation(confirmation) = match confirmCommand with | Some command -> command.Execute() | None -> Observable.Never<bool>()
+    member __.DisplayAlertMessage(alertMessage) = match displayAlertCommand with | Some command -> command.Execute(alertMessage) | None -> Observable.Never<Reactive.Unit>()
+    member __.DisplayConfirmation(confirmation) = match confirmCommand with | Some command -> command.Execute(confirmation) | None -> Observable.Never<bool>()
     member internal __.DisplayAlertCommand with get() = displayAlertCommand and set(value) = displayAlertCommand <- value
     member internal __.ConfirmCommand with get() = confirmCommand and set(value) = confirmCommand <- value
     abstract member SubscribeToCommands: unit -> unit
