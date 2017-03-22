@@ -8,9 +8,13 @@ open GeographicLib
 open Xamarin.Forms.Maps
 
 open System.Linq.Expressions
+open System.Reactive.Linq
 open System
 
 open Splat
+
+module CommandExtensions =
+    let ignoreOnce (observable: IObservable<'a>) = observable.FirstAsync().Subscribe(ignore) |> ignore
 
 module LocatorDefaults =
     let LocateIfNone(arg : 'a option) =

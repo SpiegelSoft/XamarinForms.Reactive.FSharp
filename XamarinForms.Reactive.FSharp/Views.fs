@@ -95,9 +95,9 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     abstract member OnContentCreated: unit -> unit
     default __.OnContentCreated() = this |> ignore
     interface IContentView with
-        member this.CreateContent() = this.CreateContent()
-        member this.Content with get() = base.Content and set(content) = base.Content <- content
-        member this.OnContentCreated() = this.OnContentCreated()
+        member __.CreateContent() = this.CreateContent()
+        member __.Content with get() = base.Content and set(content) = base.Content <- content
+        member __.OnContentCreated() = this.OnContentCreated()
     override __.OnAppearing() = base.OnAppearing(); appearingHandler()
     override __.OnDisappearing() = disappearingHandler(); base.OnDisappearing()
 

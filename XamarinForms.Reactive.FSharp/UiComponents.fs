@@ -73,7 +73,7 @@ module ViewHelpers =
         view.OneWayBind(viewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
     let withCommandBinding(viewModel, view, viewModelCommand, controlProperty) element = 
-        view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty, toLinq <@ id @>) |> ignore
+        view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
     let withPinBinding(markers, markerToPin) (element: GeographicMap<'TMarker>) = element.BindPinsToCollection(markers, markerToPin); element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
