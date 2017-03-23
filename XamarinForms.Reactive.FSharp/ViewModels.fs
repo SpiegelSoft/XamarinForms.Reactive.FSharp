@@ -62,3 +62,5 @@ type PageViewModel() =
     member internal __.ConfirmCommand with get() = confirmCommand and set(value) = confirmCommand <- value
     abstract member SubscribeToCommands: unit -> unit
     abstract member UnsubscribeFromCommands: unit -> unit
+    default this.SubscribeToCommands() = this |> ignore
+    default this.UnsubscribeFromCommands() = this |> ignore
