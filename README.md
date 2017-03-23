@@ -185,7 +185,7 @@ Note the `[<ParamArray>]` argument to the control generators: e.g. `theme.Genera
 
 ### Command Binding
 
-Commands should be handled in the ViewModel. The correct way to set up and tear down commands in your ViewModel is using the `SubscribeToCommands` and `UnsubscribeFromCommands` overrides:
+Commands should be handled in the ViewModel. The correct way to set up and tear down commands in your ViewModel is using the `setUpCommands` and `TearDownCommands` overrides:
 
 ```fs
 open System.Threading.Tasks
@@ -226,7 +226,7 @@ type DashboardViewModel(?host: IScreen) =
         member __.UrlPathSegment = "Dashboard"
 ```
 
-Here, we are making extensive use of the `CompositeDisposable` class. `SubscribeToCommands` is triggered by the `OnAppearing` callback, and `UnsubscribeFromCommands` is triggered by the `OnDisappearing` callback. In the world of [ReactiveUI](http://reactiveui.net/), commands are observables, which sets us up very cleanly for responsive, asynchronous architecture.
+Here, we are making extensive use of the `PageDisposables` member of the base class. `SetUpCommands` is triggered by the `OnAppearing` callback, and `TearDownCommands` is triggered by the `OnDisappearing` callback. In the world of [ReactiveUI](http://reactiveui.net/), commands are observables, which sets us up very cleanly for responsive, asynchronous architecture.
 
 Once you have set the commands up in the ViewModels, you can hook them up to controls in your View using the `withCommandBinding` function:
 
