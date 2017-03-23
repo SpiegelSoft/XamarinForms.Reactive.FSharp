@@ -219,7 +219,7 @@ type DashboardViewModel(?host: IScreen) =
             |> ObservableExtensions.disposeWith(this.PageDisposables) 
             |> ignore
     override this.TearDownCommands() =
-        // We set the observables and subscriptions up, so it is our responsibility to dispose of them. The Clear() method on the PageDisposable collection achieves this because of the use of DisposeWith in the SetUp method.
+        // We set the observables and subscriptions up, so it is our responsibility to dispose of them. The Clear() method on the PageDisposable collection achieves this because of the use of disposeWith in the SetUpCommands method.
         this.PageDisposables.Clear()
     interface IRoutableViewModel with
         member __.HostScreen = host
