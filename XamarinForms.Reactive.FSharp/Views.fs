@@ -64,12 +64,12 @@ module internal PageSetup =
         let appearingHandler() =
             page.DescendantAdded.AddHandler descendantAdded
             page.DescendantRemoved.AddHandler descendantRemoved
-            page.ViewModel.SubscribeToCommands()
+            page.ViewModel.PageAppearing()
             match box page.Content with | null -> page.Content <- page.CreateContent(); page.OnContentCreated() | _ -> page |> ignore
         let disappearingHandler() =
             viewModelSubscription.Dispose()
             messageSubscriptions.Clear()
-            page.ViewModel.UnsubscribeFromCommands()
+            page.ViewModel.PageDisappearing()
             page.DescendantRemoved.RemoveHandler descendantRemoved
             page.DescendantAdded.RemoveHandler descendantAdded
         (appearingHandler, disappearingHandler)

@@ -9,7 +9,7 @@ open ViewHelpers
 
 type DashboardView(theme: Theme) = 
     inherit ContentPage<DashboardViewModel, DashboardView>(theme)
-    new() = new DashboardView(Themes.DefaultTheme)
+    new() = new DashboardView(DefaultTheme)
     override this.CreateContent() =
         theme.GenerateGrid([|"Auto"; "Auto"; "Auto"; "Auto"|], [|"Auto"; "*"|]) |> withRow(
             [|
@@ -32,6 +32,7 @@ type DashboardView(theme: Theme) =
                 theme.GenerateButton(fun b -> this.SubmitButton <- b)
                     |> withColumnSpan 2
                     |> withCaption("Submit")
+                    |> withHorizontalOptions LayoutOptions.End
                     |> withCommandBinding (this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.SubmitDetails @>, <@ fun (v: DashboardView) -> v.SubmitButton @>)
             |])
             |> createFromRows :> View

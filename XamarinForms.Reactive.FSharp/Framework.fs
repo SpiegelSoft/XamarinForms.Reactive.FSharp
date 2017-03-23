@@ -13,8 +13,10 @@ open System
 
 open Splat
 
-module CommandExtensions =
+module ObservableExtensions =
+    open System.Reactive.Disposables
     let ignoreOnce (observable: IObservable<'a>) = observable.FirstAsync().Subscribe(ignore) |> ignore
+    let disposeWith (compositeDisposable: CompositeDisposable) (disposable: #IDisposable) = disposable.DisposeWith compositeDisposable
 
 module LocatorDefaults =
     let LocateIfNone(arg : 'a option) =
