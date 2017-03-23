@@ -173,6 +173,7 @@ type DashboardView(theme: Theme) =
                 theme.GenerateButton(fun b -> this.SubmitButton <- b)
                     |> withColumnSpan 2
                     |> withCaption("Submit")
+                    |> withHorizontalOptions LayoutOptions.End
             |])
             |> createFromRows :> View
     member val SubmitButton = Unchecked.defaultof<Button> with get, set
@@ -241,6 +242,7 @@ type DashboardView(theme: Theme) =
                 theme.GenerateButton(fun b -> this.SubmitButton <- b)
                     |> withColumnSpan 2
                     |> withCaption("Submit")
+                    |> withHorizontalOptions LayoutOptions.End
                     |> withCommandBinding (this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.SubmitDetails @>, <@ fun (v: DashboardView) -> v.SubmitButton @>)
             |])
             |> createFromRows :> View
