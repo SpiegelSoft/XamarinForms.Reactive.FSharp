@@ -18,7 +18,7 @@ module SharedConfiguration =
             member __.AppName = AppName
 ```
 
-Then you will have to implement IPlatform in your platform-specific projects.
+Then you will have to implement `IPlatform` in your platform-specific projects.
 
 #### Android
 
