@@ -109,8 +109,8 @@ type DashboardViewModel(?host: IScreen) =
     inherit PageViewModel()
     let host = LocateIfNone host
     member val Name = String.Empty with get, set
-    member val DateOfBirth = DateTime.MinValue with get, set
-    member val PageTitle = "Hello World Page"
+    member val DateOfBirth = DateTime.Parse("1990-01-01") with get, set
+    member val PageTitle = "XamarinForms.Reactive.FSharp |> I <3"
     interface IRoutableViewModel with
         member __.HostScreen = host
         member __.UrlPathSegment = "Dashboard"
@@ -136,7 +136,7 @@ type DashboardView(theme: Theme) =
 
 Once you have set up the views and viewmodels, you don't have to worry about registering them with the dependency provider: this is done automatically in the default implementation of the platform's `RegisterDependencies()` method.
 
-### Binding views to ViewModels
+### Binding Views to ViewModels
 
 To build more elaborate views, you will need to bind the view data to the corresponding viewmodel properties. This is achieved using the `withOneWayBinding` and `withTwoWayBinding` functions:
 
@@ -188,7 +188,6 @@ Note the `[<ParamArray>]` argument to the control generators: e.g. `theme.Genera
 Commands should be handled in the ViewModel. The correct way to set up and tear down commands in your ViewModel is using the `SubscribeToCommands` and `UnsubscribeFromCommands` overrides:
 
 ```fs
-open System.Reactive.Disposables
 open System.Threading.Tasks
 open System.Reactive.Linq
 open System
@@ -202,26 +201,26 @@ open LocatorDefaults
 type DashboardViewModel(?host: IScreen) = 
     inherit PageViewModel()
     let host = LocateIfNone host
-    let commandSubscriptions = new CompositeDisposable()
     let submitDetails (vm: DashboardViewModel) (_: Reactive.Unit) =
         async {
             // Save details to database; perform asynchronous online or offline actions
             return true
-        } |> Async.StartAsTask :> Task
+        } |> Async.StartAsTask
     member val Name = String.Empty with get, set
-    member val DateOfBirth = DateTime.MinValue with get, set
+    member val DateOfBirth = DateTime.Parse("1990-01-01") with get, set
     member val PageTitle = "XamarinForms.Reactive.FSharp |> I <3"
-    member val SubmitDetails = Unchecked.defaultof<ReactiveCommand<Reactive.Unit, Reactive.Unit>> with get, set
-    override this.SubscribeToCommands() =
-        this.SubmitDetails <- submitDetails this |> ReactiveCommand.CreateFromTask
-        // The command itself is disposable, and so needs to be cleaned up at the end of its lifecycle. The easiest way to do this is to add it to the commandSubsriptions collection.
-        this.SubmitDetails |> commandSubscriptions.Add
+    member val SubmitDetails = Unchecked.defaultof<ReactiveCommand<Reactive.Unit, bool>> with get, set
+    override this.SetUpCommands() =
+        // The command itself is disposable, and so needs to be cleaned up at the end of its lifecycle. The easiest way to do this is to add it to the current PageDisposables collection.
+        this.SubmitDetails <- submitDetails this |> ReactiveCommand.CreateFromTask |> ObservableExtensions.disposeWith this.PageDisposables
         // A ReactiveCommand is an IObservable, so based on the result of the submission we can perform further actions, such as navigation.
         this.SubmitDetails.ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(fun _ -> this.DisplayAlertMessage({ Title = "Details Submitted"; Message = sprintf "Your name is %s and your date of birth is %s" this.Name ((this.DateOfBirth: DateTime).ToString("dd/MM/yyyy")); Accept = "OK" }) |> ignore)
-            |> commandSubscriptions.Add
-    override this.UnsubscribeFromCommands() =
-        commandSubscriptions.Clear()
+            |> ObservableExtensions.disposeWith(this.PageDisposables) 
+            |> ignore
+    override this.TearDownCommands() =
+        // We set the observables and subscriptions up, so it is our responsibility to dispose of them. The Clear() method on the PageDisposable collection achieves this because of the use of DisposeWith in the SetUp method.
+        this.PageDisposables.Clear()
     interface IRoutableViewModel with
         member __.HostScreen = host
         member __.UrlPathSegment = "Dashboard"
@@ -251,7 +250,7 @@ type DashboardView(theme: Theme) =
     member val UserDateOfBirth = Unchecked.defaultof<DatePicker> with get, set
 ```
 
-### Why F# is suited to MVVM
+### Why F# is Suited to MVVM
 
 One of the advantages of F# over C# is conciseness. In XamarinForms.Reactive.FSharp, we have a simple class and interface for holding platform-specific context information. In C#, their representation is
 
