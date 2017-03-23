@@ -236,7 +236,7 @@ type DashboardView(theme: Theme) =
     inherit ContentPage<DashboardViewModel, DashboardView>(theme)
     new() = new DashboardView(Themes.DefaultTheme)
     override this.CreateContent() =
-        theme.GenerateGrid([|"*"; "*"; "*"; "*"|], [|"Auto"; "*"|]) |> withRow(
+        theme.GenerateGrid([|"Auto"; "Auto"; "Auto"; "Auto"|], [|"Auto"; "*"|]) |> withRow(
             ...
             [|
                 theme.GenerateButton(fun b -> this.SubmitButton <- b)
@@ -287,7 +287,7 @@ One concrete example of this principle lies in the implicit enforcement of the M
 
 As can be seen from the diagram above, the ViewModel should be unaware of the View. Each ViewModel exists in its own world, exposing `Command` properties to the outside world, which can be triggered from within Views, but ViewModels cannot directly read or update the associated views. There are various benefits to this loosely coupled approach. It promotes reuse, and makes the ViewModels testable: their logic can be tested and verified independently from the way the views are set up.
 
-Thw implementation of MVVM can often break down in production systems. Faced by a tight deadline, a programmer may well try to modify the View directly from the ViewModel. I've seen it done. It may solve the immediate problem, and allow the release to happen on time, but it breaks testability and introduces a cyclic dependency that may have grave unforeseen ramifications, resulting in infinite event loops and system crashes.
+The implementation of MVVM can often break down in production systems. Faced by a tight deadline, a programmer may well try to modify the View directly from the ViewModel. I've seen it done. It may solve the immediate problem, and allow the release to happen on time, but it breaks testability and introduces a cyclic dependency that may have grave unforeseen ramifications, resulting in infinite event loops and system crashes.
 
 In the sample projects, this can't be done. All ViewModels are defined in the file `ViewModels.fs`, and all views are defined in `Views.fs`. The former comes before the latter in the sample projects. Because F# does not allow circular dependencies, the compiler will break if any of the `ViewModel`s try to reference their `View`, or any other `View` for that matter. *If you break the MVVM architecture, the code will not compile.*
 
