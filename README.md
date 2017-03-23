@@ -141,19 +141,27 @@ Once you have set up the views and viewmodels, you don't have to worry about reg
 To build more elaborate views, you will need to bind the view data to the corresponding viewmodel properties. This is achieved using the `withOneWayBinding` and `withTwoWayBinding` functions:
 
 ```fs
+open XamarinForms.Reactive.FSharp.Themes
+open XamarinForms.Reactive.FSharp
+
+open Xamarin.Forms
+
+open ViewHelpers
+
 type DashboardView(theme: Theme) = 
     inherit ContentPage<DashboardViewModel, DashboardView>(theme)
-    new() = new DashboardView(Themes.DefaultTheme)
+    new() = new DashboardView(DefaultTheme)
     override this.CreateContent() =
-        theme.GenerateGrid([|"*"; "*"; "*"; "*"|], [|"Auto"; "*"|]) |> withRow(
+        theme.GenerateGrid([|"Auto"; "Auto"; "Auto"; "Auto"|], [|"Auto"; "*"|]) |> withRow(
             [|
-                theme.GenerateLabel(fun l -> this.PageTitle <- l) 
+                theme.GenerateTitle(fun l -> this.PageTitle <- l) 
                     |> withColumnSpan 2 
                     |> withOneWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.PageTitle @>, <@ fun (v: DashboardView) -> (v.PageTitle: Label).Text @>, id)
             |]) |> thenRow(
             [|
                 theme.GenerateLabel() |> withLabelText("Your name")
                 theme.GenerateEntry(fun e -> this.UserName <- e) 
+                    |> withEntryPlaceholder "Enter your name here"
                     |> withTwoWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.Name @>, <@ fun (v: DashboardView) -> (v.UserName: Entry).Text @>, id, id)
             |]) |> thenRow(
             [|
@@ -229,21 +237,7 @@ type DashboardView(theme: Theme) =
     new() = new DashboardView(Themes.DefaultTheme)
     override this.CreateContent() =
         theme.GenerateGrid([|"*"; "*"; "*"; "*"|], [|"Auto"; "*"|]) |> withRow(
-            [|
-                theme.GenerateLabel(fun l -> this.PageTitle <- l) 
-                    |> withColumnSpan 2 
-                    |> withOneWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.PageTitle @>, <@ fun (v: DashboardView) -> (v.PageTitle: Label).Text @>, id)
-            |]) |> thenRow(
-            [|
-                theme.GenerateLabel() |> withLabelText("Your name")
-                theme.GenerateEntry(fun e -> this.UserName <- e) 
-                    |> withTwoWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.Name @>, <@ fun (v: DashboardView) -> (v.UserName: Entry).Text @>, id, id)
-            |]) |> thenRow(
-            [|
-                theme.GenerateLabel() |> withLabelText("Date of birth")
-                theme.GenerateDatePicker(fun e -> this.UserDateOfBirth <- e) 
-                    |> withTwoWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.DateOfBirth @>, <@ fun (v: DashboardView) -> (v.UserDateOfBirth: DatePicker).Date @>, id, id)
-            |]) |> thenRow(
+            ...
             [|
                 theme.GenerateButton(fun b -> this.SubmitButton <- b)
                     |> withColumnSpan 2
@@ -259,7 +253,7 @@ type DashboardView(theme: Theme) =
 
 ### Why F# is suited to MVVM
 
-One of the advantages of F# over C# is conciseness. In the XamarinForms.Reactive.FSharp, we have a simple class and interface for holding platform-specific context information. In C#, their representation is
+One of the advantages of F# over C# is conciseness. In XamarinForms.Reactive.FSharp, we have a simple class and interface for holding platform-specific context information. In C#, their representation is
 
 ```cs
 public class UiContext : IUiContext
