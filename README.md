@@ -280,9 +280,9 @@ type IUiContext = abstract Context: obj
 type UiContext(context) = interface IUiContext with member __.Context = context
 ```
 
-There are certain features contained in F# that look unlikely to be replicated in C#, such as type providers and units of measure; however, its main advantage lies in something it does not do: the F# compiler does not allow circular dependencies. This is discussed at length by Mark Seeman in http://blog.ploeh.dk/2015/04/15/c-will-eventually-get-all-f-features-right/. Suffice to say that The lack of circular dependencies serves to reduce cyclotomic complexity, thereby increasing code quality.
+There are certain features contained in F# that look unlikely to be replicated in C#, such as type providers and units of measure; however, its main advantage lies in something it does not do: the F# compiler does not allow circular dependencies. This is discussed at length by Mark Seeman in http://blog.ploeh.dk/2015/04/15/c-will-eventually-get-all-f-features-right/. Suffice to say that the lack of circular dependencies serves to reduce cyclotomic complexity, thereby increasing code quality.
 
-One concrete example of this principle lies in the implicit enforcement of the Model-View-ViewModel architecture.
+In the case of MVVM, however, the advantages go deeper. Out of the restriction on circular dependencies comes an implicit enforcement of the Model-View-ViewModel architecture.
 
 ![MVVM Architecture](https://i.stack.imgur.com/yDjEr.png "MVVM Architecture")
 
