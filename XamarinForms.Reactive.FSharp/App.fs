@@ -13,28 +13,29 @@ module ViewReflection =
     let private reactiveObjectTypeInfo = typeof<ReactiveObject>.GetTypeInfo()
     let private isReactiveObjectType typeInfo = reactiveObjectTypeInfo.IsAssignableFrom(typeInfo)
     let private viewForInterfaceType viewModelType = typedefof<IViewFor<_>>.MakeGenericType([|viewModelType|]).GetTypeInfo()
-    let private typesInAssembly config = config.GetType().GetTypeInfo().Assembly.DefinedTypes
-    let viewForInterfaceTypes config = typesInAssembly config |> Seq.filter isReactiveObjectType |> Seq.map (fun typeInfo -> viewForInterfaceType (typeInfo.AsType()))
-    let findViewType (interfaceType: TypeInfo) config = typesInAssembly config |> Seq.tryFind (fun typeInfo -> interfaceType.IsAssignableFrom(typeInfo))
+    let private typesInAssembly instance = instance.GetType().GetTypeInfo().Assembly.DefinedTypes
+    let viewForInterfaceTypes instance = typesInAssembly instance |> Seq.filter isReactiveObjectType |> Seq.map (fun typeInfo -> viewForInterfaceType (typeInfo.AsType()))
+    let findViewType (interfaceType: TypeInfo) instance = typesInAssembly instance |> Seq.tryFind (fun typeInfo -> interfaceType.IsAssignableFrom(typeInfo))
 
-type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, config: IConfiguration, viewModel) as this =
+type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) as this =
     inherit ReactiveObject()
     let router = new RoutingState()
     do
+        let viewModelInstance = viewModel()
         Locator.CurrentMutable.RegisterConstant(context, typeof<IUiContext>)
         Locator.CurrentMutable.RegisterConstant(platform, typeof<'TPlatform>)
         Locator.CurrentMutable.RegisterConstant(this, typeof<IScreen>)
         platform.RegisterDependencies(Locator.CurrentMutable)
-        for interfaceType in ViewReflection.viewForInterfaceTypes config do
-            match ViewReflection.findViewType interfaceType config with
+        for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
+            match ViewReflection.findViewType interfaceType viewModelInstance with
             | Some viewType -> Locator.CurrentMutable.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
             | None -> interfaceType |> ignore
-        router.NavigationStack.Add(viewModel())
+        router.NavigationStack.Add(viewModelInstance)
     interface IScreen with member __.Router = router
 
-type App<'TPlatform when 'TPlatform :> IPlatform>(platform, context, config, viewModel) as this =
+type App<'TPlatform when 'TPlatform :> IPlatform>(platform, context, viewModel) as this =
     inherit Application()
-    let screen = new AppBootstrapper<'TPlatform>(platform, context, config, viewModel)
+    let screen = new AppBootstrapper<'TPlatform>(platform, context, viewModel)
     do this.MainPage <- platform.GetMainPage()
     member val UiContext = context with get
     member val Screen = screen :> IScreen with get

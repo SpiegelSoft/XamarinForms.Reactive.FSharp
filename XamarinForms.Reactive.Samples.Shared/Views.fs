@@ -15,6 +15,8 @@ type DashboardView(theme: Theme) =
             [|
                 theme.GenerateTitle(fun l -> this.PageTitle <- l) 
                     |> withColumnSpan 2 
+                    |> withAlignment LayoutOptions.Center LayoutOptions.Center
+                    |> withMargin (new Thickness(0.0, 12.0))
                     |> withOneWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.PageTitle @>, <@ fun (v: DashboardView) -> (v.PageTitle: Label).Text @>, id)
             |]) |> thenRow(
             [|
@@ -35,7 +37,7 @@ type DashboardView(theme: Theme) =
                     |> withHorizontalOptions LayoutOptions.End
                     |> withCommandBinding (this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.SubmitDetails @>, <@ fun (v: DashboardView) -> v.SubmitButton @>)
             |])
-            |> createFromRows :> View
+            |> createFromRows |> withMargin (new Thickness(6.0, 0.0)) :> View
     member val SubmitButton = Unchecked.defaultof<Button> with get, set
     member val PageTitle = Unchecked.defaultof<Label> with get, set
     member val UserName = Unchecked.defaultof<Entry> with get, set
