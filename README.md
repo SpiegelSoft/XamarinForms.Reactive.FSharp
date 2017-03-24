@@ -7,18 +7,7 @@ The package is built on the excellent MVVM framework [ReactiveUI](http://reactiv
 
 ### Getting Started
 
-You will need to start by creating a shared configuration type, implementing `IConfiguration`:
-
-```fs
-module SharedConfiguration =
-    let [<Literal>] AppName = "My App Name";
-    type Configuration() =
-        interface IConfiguration with
-            member __.MobileServiceUri = None
-            member __.AppName = AppName
-```
-
-Then you will have to implement `IPlatform` in your platform-specific projects.
+You will need to start by implementing `IPlatform` in your platform-specific projects.
 
 #### Android
 
@@ -54,7 +43,7 @@ type ICustomPlatform =
 
 and then implement `ICustomPlatform`, rather than `IPlatform`, in your `DroidPlatform` and/or `IosPlatform` classes.
 
-You can register additional dependencies in the override of ```__.RegisterDependencies()``` (but don't forget to call down to the base implementation -- i.e. call `base.RegisterDependencies()` to implement the boilerplate registrations). The dependency resolver is provided by [Splat](https://github.com/paulcbetts/splat), which is used internally by [ReactiveUI](http://reactiveui.net/). You may be tempted to use your own favourite IoC provider. Don't. That will create unnecessary pain and confusion, for benefits that can best be described as questionable.
+You can register additional dependencies in the override of ```__.RegisterDependencies()``` (but don't forget to call down to the base implementation -- i.e. call `base.RegisterDependencies()` -- to implement the boilerplate registrations). The dependency resolver is provided by [Splat](https://github.com/paulcbetts/splat), which is used internally by [ReactiveUI](http://reactiveui.net/). You may be tempted to use your own favourite IoC provider. Don't. That will create unnecessary pain and confusion, for benefits that can best be described as questionable.
 
 You can now set up your application in the normal way:
 
@@ -63,7 +52,7 @@ You can now set up your application in the normal way:
 ```fs
 type XamarinForms = Xamarin.Forms.Forms
 
-[<Activity (Label = SharedConfiguration.AppName, MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
+[<Activity (Label = "My App Name", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsApplicationActivity()
     let createDashboardViewModel() = new DashboardViewModel() :> IRoutableViewModel
@@ -207,13 +196,16 @@ type DashboardViewModel(?host: IScreen) =
             // Save details to database; perform asynchronous online or offline actions
             return true
         } |> Async.StartAsTask
-    member val Name = String.Empty with get, set
-    member val DateOfBirth = DateTime.Parse("1990-01-01") with get, set
-    member val PageTitle = "XamarinForms.Reactive.FSharp |> I <3"
+    let mutable name = String.Empty
+    let mutable dateOfBirth = DateTime.Parse("1990-01-01")
+    member this.Name with get() = name and set(value) = this.RaiseAndSetIfChanged(&name, value, "Name") |> ignore
+    member this.DateOfBirth with get() = dateOfBirth and set(value) = this.RaiseAndSetIfChanged(&dateOfBirth, value, "DateOfBirth") |> ignore
+    member val PageTitle = "XRF |> I <3"
     member val SubmitDetails = Unchecked.defaultof<ReactiveCommand<Reactive.Unit, bool>> with get, set
     override this.SetUpCommands() =
+        let canSubmitDetails = this.WhenAnyValue(toLinq <@ fun vm -> vm.Name @>).Select(not << String.IsNullOrWhiteSpace)
         // The command itself is disposable, and so needs to be cleaned up at the end of its lifecycle. The easiest way to do this is to add it to the current PageDisposables collection.
-        this.SubmitDetails <- submitDetails this |> ReactiveCommand.CreateFromTask |> ObservableExtensions.disposeWith this.PageDisposables
+        this.SubmitDetails <- ReactiveCommand.CreateFromTask(submitDetails this, canSubmitDetails) |> ObservableExtensions.disposeWith this.PageDisposables
         // A ReactiveCommand is an IObservable, so based on the result of the submission we can perform further actions, such as navigation.
         this.SubmitDetails.ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(fun _ -> this.DisplayAlertMessage({ Title = "Details Submitted"; Message = sprintf "Your name is %s and your date of birth is %s" this.Name ((this.DateOfBirth: DateTime).ToString("dd/MM/yyyy")); Accept = "OK" }) |> ignore)
