@@ -119,8 +119,28 @@ open ViewHelpers
 
 type DashboardView(theme: Theme) = 
     inherit ContentPage<DashboardViewModel, DashboardView>(theme)
-    new() = new DashboardView(Themes.DefaultTheme)
+    new() = new DashboardView(DefaultTheme)
     override this.CreateContent() = theme.GenerateLabel() |> withLabelText "Hello World" :> View
+```
+
+To use a custom theme, you can add your own default setters to the `DefaultTheme` defined in the library:
+
+```fs
+module Themes =
+    open XamarinForms.Reactive.FSharp.Themes
+    open Xamarin.Forms
+
+    let CustomTheme = 
+        DefaultTheme 
+            |> applyLabelSetters 
+                [
+                    new Setter(Property = Label.TextColorProperty, Value = Color.Yellow)
+                    new Setter(Property = Label.FontAttributesProperty, Value = FontAttributes.Bold)
+                ]
+            |> applyTitleSetters
+                [
+                    new Setter(Property = Label.TextColorProperty, Value = Color.Silver)
+                ]
 ```
 
 Once you have set up the views and viewmodels, you don't have to worry about registering them with the dependency provider: this is done automatically in the default implementation of the platform's `RegisterDependencies()` method.
