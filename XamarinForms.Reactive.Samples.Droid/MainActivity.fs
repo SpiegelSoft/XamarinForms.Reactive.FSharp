@@ -25,14 +25,12 @@ open Xamarin.Forms
 
 open Splat
 
-type XamarinForms = Xamarin.Forms.Forms
-
 type DroidPlatform() =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
     interface ICustomPlatform with
         member __.GetMainPage() = new RoutedViewHost() :> Page
-        member __.RegisterDependencies(_) = 0 |> ignore
+        member __.RegisterDependencies _ _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 
 [<Activity (Label = "Sample App", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
@@ -41,7 +39,7 @@ type MainActivity() =
     let createDashboardViewModel() = new DashboardViewModel() :> IRoutableViewModel
     override this.OnCreate (bundle) =
         base.OnCreate(bundle)
-        XamarinForms.Init(this, bundle)
+        Forms.Init(this, bundle)
         Xamarin.FormsMaps.Init(this, bundle)
         let application = new App<ICustomPlatform>(new DroidPlatform() :> ICustomPlatform, new UiContext(this), createDashboardViewModel)
         this.LoadApplication application

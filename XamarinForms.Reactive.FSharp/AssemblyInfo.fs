@@ -26,7 +26,7 @@ open System.Reflection
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [<assembly: AssemblyVersion("1.0.*")>]
-[<assembly: AssemblyInformationalVersion("0.5.2-beta")>]
+[<assembly: AssemblyInformationalVersion("0.5.3-beta")>]
 
 do
     ()

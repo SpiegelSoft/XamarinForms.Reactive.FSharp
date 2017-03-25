@@ -20,15 +20,16 @@ module ViewReflection =
 type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) as this =
     inherit ReactiveObject()
     let router = new RoutingState()
+    let dependencyResolver = Locator.CurrentMutable
     do
-        Locator.CurrentMutable.RegisterConstant(context, typeof<IUiContext>)
-        Locator.CurrentMutable.RegisterConstant(platform, typeof<'TPlatform>)
-        Locator.CurrentMutable.RegisterConstant(this, typeof<IScreen>)
-        platform.RegisterDependencies(Locator.CurrentMutable)
+        dependencyResolver.RegisterConstant(context, typeof<IUiContext>)
+        dependencyResolver.RegisterConstant(platform, typeof<'TPlatform>)
+        dependencyResolver.RegisterConstant(this, typeof<IScreen>)
+        platform.RegisterDependencies dependencyResolver context
         let viewModelInstance = viewModel()
         for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
             match ViewReflection.findViewType interfaceType viewModelInstance with
-            | Some viewType -> Locator.CurrentMutable.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
+            | Some viewType -> dependencyResolver.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
             | None -> interfaceType |> ignore
         router.NavigationStack.Add(viewModelInstance)
     interface IScreen with member __.Router = router

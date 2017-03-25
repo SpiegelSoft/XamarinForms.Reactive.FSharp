@@ -17,7 +17,7 @@ type DroidPlatform() =
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
     interface IPlatform with
         member __.GetMainPage() = new RoutedViewHost() :> Page
-        member __.RegisterDependencies(_) = 0 |> ignore
+        member __.RegisterDependencies _ _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 ```
 #### iOS
@@ -28,7 +28,7 @@ type IosPlatform() =
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
     interface IPlatform with
         member __.GetMainPage() = new ReactiveUI.XamForms.RoutedViewHost() :> Xamarin.Forms.Page
-        member __.RegisterDependencies(_) = 0 |> ignore
+        member __.RegisterDependencies _ _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 ```
 
