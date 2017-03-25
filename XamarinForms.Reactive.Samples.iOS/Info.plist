@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>XamarinForms.Reactive.Samples.iOS</string>
+	<string>XamarinForms.Reactive.Samples</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.XamarinForms.Reactive.Samples.iOS</string>
+	<string>com.spiegelsoft.xrf.samples</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

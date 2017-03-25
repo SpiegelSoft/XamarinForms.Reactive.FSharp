@@ -1,15 +1,15 @@
 ﻿namespace XamarinForms.Reactive.Samples.Common
 
-open XamarinForms.Reactive.FSharp.Themes
 open XamarinForms.Reactive.FSharp
 
 open Xamarin.Forms
 
 open ViewHelpers
+open Themes
 
 type DashboardView(theme: Theme) = 
     inherit ContentPage<DashboardViewModel, DashboardView>(theme)
-    new() = new DashboardView(DefaultTheme)
+    new() = new DashboardView(CustomTheme)
     override this.CreateContent() =
         theme.GenerateGrid([|"Auto"; "Auto"; "Auto"; "Auto"|], [|"Auto"; "*"|]) |> withRow(
             [|
