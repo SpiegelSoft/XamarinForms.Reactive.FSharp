@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <TargetProfile>netcore</TargetProfile>
+    <ProjectGuid>6c345e54-bb1f-4f64-bc9d-57857621c34c</ProjectGuid>
     <TargetFSharpCoreVersion>3.259.41.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Name>XamarinForms.Reactive.Samples.Shared</Name>
