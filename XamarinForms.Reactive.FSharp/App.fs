@@ -21,11 +21,11 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
     inherit ReactiveObject()
     let router = new RoutingState()
     do
-        let viewModelInstance = viewModel()
         Locator.CurrentMutable.RegisterConstant(context, typeof<IUiContext>)
         Locator.CurrentMutable.RegisterConstant(platform, typeof<'TPlatform>)
         Locator.CurrentMutable.RegisterConstant(this, typeof<IScreen>)
         platform.RegisterDependencies(Locator.CurrentMutable)
+        let viewModelInstance = viewModel()
         for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
             match ViewReflection.findViewType interfaceType viewModelInstance with
             | Some viewType -> Locator.CurrentMutable.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
