@@ -16,7 +16,7 @@
     <AndroidApplication>True</AndroidApplication>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <AssemblyName>XamarinForms.Reactive.Samples.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
     <TargetFrameworkProfile />
@@ -26,6 +26,7 @@
     </NuGetPackageImportStamp>
     <SelectedDevice>5" KitKat (4.4) XXHDPI Phone</SelectedDevice>
     <DefaultDevice>5" KitKat (4.4) XXHDPI Phone</DefaultDevice>
+    <AndroidTlsProvider></AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -187,10 +188,9 @@
       <Project>{df0b27fa-6e7d-4e1e-8a6b-02719ba4412c}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\XamarinForms.Reactive.Samples.Shared\XamarinForms.Reactive.Samples.Shared.fsproj">
-      <Name>XamarinForms.Reactive.Samples.Shared</Name>
-      <Project>{6c345e54-bb1f-4f64-bc9d-57857621c34c}</Project>
-      <Private>True</Private>
+    <ProjectReference Include="..\XamarinForms.Reactive.Samples.Common\XamarinForms.Reactive.Samples.Common.fsproj">
+      <Project>{C4567B69-79A9-4FC1-BBA8-04F751C2A0FD}</Project>
+      <Name>XamarinForms.Reactive.Samples.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

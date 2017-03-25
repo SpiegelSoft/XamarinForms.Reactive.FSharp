@@ -11,7 +11,7 @@ open UIKit
 
 open Foundation
 
-open XamarinForms.Reactive.Samples.Shared
+open XamarinForms.Reactive.Samples.Common
 open XamarinForms.Reactive.FSharp
 
 type XamarinForms = Xamarin.Forms.Forms
@@ -21,7 +21,7 @@ type IosPlatform() =
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
     interface IPlatform with
         member __.GetMainPage() = new ReactiveUI.XamForms.RoutedViewHost() :> Xamarin.Forms.Page
-        member __.RegisterDependencies(_) = 0 |> ignore
+        member __.RegisterDependencies _ _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 
 [<Register ("AppDelegate")>]
@@ -30,5 +30,5 @@ type AppDelegate () =
     let createDashboardViewModel() = new DashboardViewModel() :> IRoutableViewModel
     override this.FinishedLaunching (app, options) =
         XamarinForms.Init()
-        this.LoadApplication(new App<IPlatform>(new IosPlatform() :> IPlatform, new UiContext(this), new SharedConfiguration.Configuration(), createDashboardViewModel))
+        this.LoadApplication(new App<IPlatform>(new IosPlatform() :> IPlatform, new UiContext(this), createDashboardViewModel))
         base.FinishedLaunching(app, options)

@@ -16,7 +16,7 @@ open Android.Views
 open Android.App
 open Android.OS
 
-open XamarinForms.Reactive.Samples.Shared
+open XamarinForms.Reactive.Samples.Common
 open XamarinForms.Reactive.FSharp
 
 open ReactiveUI.XamForms
