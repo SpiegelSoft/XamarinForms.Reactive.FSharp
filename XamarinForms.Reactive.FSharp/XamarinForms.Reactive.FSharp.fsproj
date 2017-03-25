@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Framework.fs" />
-    <Compile Include="Configuration.fs" />
     <Compile Include="UiComponents.fs" />
     <Compile Include="Platform.fs" />
     <Compile Include="ViewModels.fs" />
