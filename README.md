@@ -123,7 +123,7 @@ type DashboardView(theme: Theme) =
     override this.CreateContent() = theme.GenerateLabel() |> withLabelText "Hello World" :> View
 ```
 
-To use a custom theme, you can add your own default setters to the `DefaultTheme` defined in the library:
+To use a custom theme, you can add your own setters to the `DefaultTheme` defined in the library:
 
 ```fs
 module Themes =
