@@ -5,7 +5,6 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>6c345e54-bb1f-4f64-bc9d-57857621c34c</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>XamarinForms.Reactive.Samples.Shared</RootNamespace>
     <AssemblyName>XamarinForms.Reactive.Samples.Shared</AssemblyName>
@@ -17,6 +16,7 @@
     <Name>XamarinForms.Reactive.Samples.Shared</Name>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ProjectGuid>{6c345e54-bb1f-4f64-bc9d-57857621c34c}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
