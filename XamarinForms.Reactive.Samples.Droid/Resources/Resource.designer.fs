@@ -23,10 +23,10 @@ namespace XamarinForms.Reactive.Samples.Droid
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException7c5b508e247f42ecab3c302a4bf1b018 of obj
-    exception ReturnNoneException7c5b508e247f42ecab3c302a4bf1b018
+    exception ReturnException386bc2ed06c94d4da9c23dd9b6353cbc of obj
+    exception ReturnNoneException386bc2ed06c94d4da9c23dd9b6353cbc
     [<AutoOpen>]
-    module FuncConvertFinalOverload7c5b508e247f42ecab3c302a4bf1b018 =
+    module FuncConvertFinalOverload386bc2ed06c94d4da9c23dd9b6353cbc =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
