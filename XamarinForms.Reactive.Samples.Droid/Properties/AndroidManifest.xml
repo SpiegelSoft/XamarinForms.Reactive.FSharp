@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="XamarinForms.Reactive.Samples.Droid.XamarinForms.Reactive.Samples.Droid" android:versionCode="1" android:versionName="1.0">
-  <uses-sdk android:minSdkVersion="16" />
-  <application android:label="XamarinForms.Reactive.Samples.Droid"></application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="SpiegelSoft.Xrf.Sample" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="16" />
+	<application android:label="XamarinForms.Reactive.Samples.Droid"></application>
 </manifest>

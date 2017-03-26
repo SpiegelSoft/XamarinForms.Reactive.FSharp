@@ -53,12 +53,10 @@ open Modal
 [<AbstractClass>]
 type PageViewModel() =
     inherit ReactiveObject()
-    let uiContext = SynchronizationContext.Current
     let mutable displayAlertCommand: ReactiveCommand<AlertMessage, Reactive.Unit> option = None
     let mutable confirmCommand: ReactiveCommand<Confirmation, bool> option = None
     let pageDisposables = new CompositeDisposable()
     member __.PageDisposables with get() = pageDisposables
-    member __.SyncContext with get() = uiContext
     member __.DisplayAlertMessage(alertMessage) = match displayAlertCommand with | Some command -> command.Execute(alertMessage) | None -> Observable.Never<Reactive.Unit>()
     member __.DisplayConfirmation(confirmation) = match confirmCommand with | Some command -> command.Execute(confirmation) | None -> Observable.Never<bool>()
     member internal __.DisplayAlertCommand with get() = displayAlertCommand and set(value) = displayAlertCommand <- value
