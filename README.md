@@ -60,7 +60,7 @@ type MainActivity() =
         base.OnCreate(bundle)
         XamarinForms.Init(this, bundle)
         Xamarin.FormsMaps.Init(this, bundle)
-        let application = new App<ICustomPlatform>(new DroidPlatform() :> ICustomPlatform, new UiContext(this), new SharedConfiguration.Configuration(), createDashboardViewModel)
+        let application = new App<ICustomPlatform>(new DroidPlatform() :> ICustomPlatform, new UiContext(this), createDashboardViewModel)
         this.LoadApplication application
 ```
 
@@ -75,7 +75,7 @@ type AppDelegate () =
     let createDashboardViewModel() = new DashboardViewModel() :> IRoutableViewModel
     override this.FinishedLaunching (app, options) =
         XamarinForms.Init()
-        this.LoadApplication(new App<IPlatform>(new IosPlatform() :> IPlatform, new UiContext(this), new SharedConfiguration.Configuration(), createDashboardViewModel))
+        this.LoadApplication(new App<IPlatform>(new IosPlatform() :> IPlatform, new UiContext(this), createDashboardViewModel))
         base.FinishedLaunching(app, options)
 ```
 
