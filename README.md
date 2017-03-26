@@ -75,7 +75,7 @@ type AppDelegate () =
     let createDashboardViewModel() = new DashboardViewModel() :> IRoutableViewModel
     override this.FinishedLaunching (app, options) =
         XamarinForms.Init()
-        this.LoadApplication(new App<IPlatform>(new IosPlatform() :> IPlatform, new UiContext(this), createDashboardViewModel))
+        this.LoadApplication(new App<IPlatform>(new IosPlatform() :> ICustomPlatform, new UiContext(this), createDashboardViewModel))
         base.FinishedLaunching(app, options)
 ```
 
