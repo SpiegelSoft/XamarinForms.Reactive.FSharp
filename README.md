@@ -85,7 +85,7 @@ Now you can define your ViewModels and Views.
 
 ### ViewModels
 
-Each page should be coupled to its corresponding page ViewModel. To create a ViewModel, you need to derive from `PageViewModel` and implement `IRoutableViewModel`:
+Each page should be coupled to its corresponding page ViewModel. To create a page ViewModel, you need to derive from `PageViewModel` and implement `IRoutableViewModel`:
 
 ```fs
 open System
