@@ -25,7 +25,7 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
         dependencyResolver.RegisterConstant(context, typeof<IUiContext>)
         dependencyResolver.RegisterConstant(platform, typeof<'TPlatform>)
         dependencyResolver.RegisterConstant(this, typeof<IScreen>)
-        platform.RegisterDependencies dependencyResolver context
+        platform.RegisterDependencies dependencyResolver
         let viewModelInstance = viewModel()
         for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
             match ViewReflection.findViewType interfaceType viewModelInstance with
