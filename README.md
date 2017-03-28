@@ -43,7 +43,9 @@ type ICustomPlatform =
 
 and then implement `ICustomPlatform`, rather than `IPlatform`, in your `DroidPlatform` and/or `IosPlatform` types.
 
-You can register additional dependencies in the override of ```__.RegisterDependencies()``` (but don't forget to call down to the base implementation -- i.e. call `base.RegisterDependencies()` -- to implement the boilerplate registrations). The dependency resolver is provided by [Splat](https://github.com/paulcbetts/splat), which is used internally by [ReactiveUI](http://reactiveui.net/). You may be tempted to use your own favourite IoC provider. Don't. That will create unnecessary pain and confusion, for benefits that can best be described as questionable.
+You can register additional dependencies in the implementation of ```__.RegisterDependencies```. Its argument is `depedencyResolver` (of type `Splat.IMutableDependencyResolver`). By the time the implementation is invoked, the registrations of `IUiContext`, `ICustomPlatform` and `IScreen` have already taken place, and you can resolve them should you wish to use them to register additional dependencies.
+
+The dependency resolver itself is provided by [Splat](https://github.com/paulcbetts/splat), which is used internally by [ReactiveUI](http://reactiveui.net/). You may be tempted to use your own favourite IoC provider. Don't. That will create unnecessary pain and confusion, for benefits that can best be described as questionable.
 
 You can now set up your application in the normal way:
 
