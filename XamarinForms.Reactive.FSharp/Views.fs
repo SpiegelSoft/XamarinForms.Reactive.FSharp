@@ -104,21 +104,34 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
 [<AbstractClass>]
 type NavigationPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveNavigationPage<'TViewModel>()
+    member val Theme = theme
 
-[<AbstractClass>]
-type CarouselPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
+type CarouselContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
+    inherit ContentPage<'TViewModel, CarouselContent<'TViewModel>>(theme)
+    do base.Title <- title
+    override this.CreateContent() = createContent(page)
+
+and [<AbstractClass>] CarouselPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveCarouselPage<'TViewModel>()
+    override this.OnParentSet() =
+        base.OnParentSet()
+        this.CreateContent() |> Seq.iter (fun kvp -> new CarouselContent<'TViewModel>(this, theme, kvp.Key, kvp.Value) |> this.Children.Add)
+    abstract member CreateContent: unit -> IDictionary<string, CarouselPage<'TViewModel> -> View>
 
-[<AbstractClass>]
-type TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
+type TabContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
+    inherit ContentPage<'TViewModel, TabContent<'TViewModel>>(theme)
+    do base.Title <- title
+    override this.CreateContent() = createContent(page)
+
+and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveTabbedPage<'TViewModel>()
+    override this.OnParentSet() =
+        base.OnParentSet()
+        this.CreateContent() |> Seq.iter (fun kvp -> new TabContent<'TViewModel>(this, theme, kvp.Key, kvp.Value) |> this.Children.Add)
+    abstract member CreateContent: unit -> IDictionary<string, TabbedPage<'TViewModel> -> View>
 
-module Carousel =
-    let withContentPage contentPage (carouselPage: CarouselPage<'TViewModel>) =
-        carouselPage.Children.Add contentPage
-        carouselPage
-
-module Tabs =
-    let withContentPage contentPage (tabbedPage: TabbedPage<'TViewModel>) =
-        tabbedPage.Children.Add contentPage
-        tabbedPage
+and TabContentInPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct> =
+    {
+        TabContent: TabContent<'TViewModel>
+        TabContainer: TabbedPage<'TViewModel>
+    }
