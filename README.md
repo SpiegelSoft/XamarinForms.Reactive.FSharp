@@ -63,6 +63,7 @@ type MainActivity() =
         XamarinForms.Init(this, bundle)
         Xamarin.FormsMaps.Init(this, bundle)
         let application = new App<ICustomPlatform>(new DroidPlatform() :> ICustomPlatform, new UiContext(this), createDashboardViewModel)
+        application.Init()
         this.LoadApplication application
 ```
 
