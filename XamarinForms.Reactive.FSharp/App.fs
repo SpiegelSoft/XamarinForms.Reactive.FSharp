@@ -1,5 +1,6 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open System.Reactive.Linq
 open System.Reflection
 open System
 
@@ -17,26 +18,32 @@ module ViewReflection =
     let viewForInterfaceTypes instance = typesInAssembly instance |> Seq.filter isReactiveObjectType |> Seq.map (fun typeInfo -> viewForInterfaceType (typeInfo.AsType()))
     let findViewType (interfaceType: TypeInfo) instance = typesInAssembly instance |> Seq.tryFind (fun typeInfo -> interfaceType.IsAssignableFrom(typeInfo))
 
-type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) as this =
+type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel: unit -> IRoutableViewModel) as this =
     inherit ReactiveObject()
     let router = new RoutingState()
     let dependencyResolver = Locator.CurrentMutable
+    let viewModelInstance = viewModel()
     do
         dependencyResolver.RegisterConstant(context, typeof<IUiContext>)
         dependencyResolver.RegisterConstant(platform, typeof<'TPlatform>)
         dependencyResolver.RegisterConstant(this, typeof<IScreen>)
         platform.RegisterDependencies dependencyResolver
-        let viewModelInstance = viewModel()
         for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
             match ViewReflection.findViewType interfaceType viewModelInstance with
             | Some viewType -> dependencyResolver.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
             | None -> interfaceType |> ignore
-        router.NavigationStack.Add(viewModelInstance)
+    member internal __.Init(page:NavigationPage) =
+        let view = ViewLocator.Current.ResolveView(viewModelInstance)
+        view.ViewModel <- viewModelInstance
+        page.PushAsync(view :?> Page).Wait()
     interface IScreen with member __.Router = router
 
-type App<'TPlatform when 'TPlatform :> IPlatform>(platform, context, viewModel) as this =
+type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
     let screen = new AppBootstrapper<'TPlatform>(platform, context, viewModel)
-    do this.MainPage <- platform.GetMainPage()
     member val UiContext = context with get
     member val Screen = screen :> IScreen with get
+    member this.Init() =
+        let mainPage = platform.GetMainPage()
+        this.MainPage <- mainPage
+        screen.Init(mainPage)

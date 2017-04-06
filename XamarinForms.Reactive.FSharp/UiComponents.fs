@@ -66,14 +66,14 @@ type HyperlinkLabel() =
 
 module ViewHelpers =
     open Microsoft.FSharp.Quotations
-    let withTwoWayBinding(viewModel: 'vm, view, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
-        view.Bind(viewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
+    let withTwoWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
+        view.Bind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
         element
-    let withOneWayBinding(viewModel, view, viewModelProperty, viewProperty, selector) element = 
-        view.OneWayBind(viewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
+    let withOneWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty, viewProperty, selector) element = 
+        view.OneWayBind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
-    let withCommandBinding(viewModel, view, viewModelCommand, controlProperty) element = 
-        view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
+    let withCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty) element = 
+        view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
     let withPinBinding(markers, markerToPin) (element: GeographicMap<'TMarker>) = element.BindPinsToCollection(markers, markerToPin); element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
@@ -113,7 +113,7 @@ module ViewHelpers =
     let withRoutingEffect (effect: #RoutingEffect) (element: #Element) = element.Effects.Add(effect); element     
 
 module Themes =
-    let withBlocks (views:View[]) (stackLayout: StackLayout) = (for view in views do stackLayout.Children.Add(view)); stackLayout
+    let withBlocks (views:View[]) (stackLayout: StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
     let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
     type RowCreation =

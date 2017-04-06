@@ -19,31 +19,41 @@ type DashboardView(theme: Theme) =
                                 |> withColumnSpan 2 
                                 |> withAlignment LayoutOptions.Center LayoutOptions.Center
                                 |> withMargin (new Thickness(0.0, 12.0))
-                                |> withOneWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.PageTitle @>, <@ fun (v: DashboardView) -> (v.PageTitle: Label).Text @>, id)
+                                |> withOneWayBinding(this, <@ fun (vm: DashboardViewModel) -> vm.PageTitle @>, <@ fun (v: DashboardView) -> (v.PageTitle: Label).Text @>, id)
                         |]) |> thenRow(
                         [|
                             theme.GenerateLabel() |> withLabelText("Your name")
                             theme.GenerateEntry(fun e -> this.UserName <- e) 
                                 |> withEntryPlaceholder "Enter your name here"
-                                |> withTwoWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.Name @>, <@ fun (v: DashboardView) -> (v.UserName: Entry).Text @>, id, id)
+                                |> withTwoWayBinding(this, <@ fun (vm: DashboardViewModel) -> vm.Name @>, <@ fun (v: DashboardView) -> (v.UserName: Entry).Text @>, id, id)
                         |]) |> thenRow(
                         [|
                             theme.GenerateLabel() |> withLabelText("Date of birth")
                             theme.GenerateDatePicker(fun e -> this.UserDateOfBirth <- e) 
-                                |> withTwoWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.DateOfBirth @>, <@ fun (v: DashboardView) -> (v.UserDateOfBirth: DatePicker).Date @>, id, id)
+                                |> withTwoWayBinding(this, <@ fun (vm: DashboardViewModel) -> vm.DateOfBirth @>, <@ fun (v: DashboardView) -> (v.UserDateOfBirth: DatePicker).Date @>, id, id)
                         |]) |> thenRow(
                         [|
                             theme.GenerateButton(fun b -> this.SubmitButton <- b)
                                 |> withColumnSpan 2
                                 |> withCaption("Submit")
                                 |> withHorizontalOptions LayoutOptions.End
-                                |> withCommandBinding (this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.SubmitDetails @>, <@ fun (v: DashboardView) -> v.SubmitButton @>)
+                                |> withCommandBinding (this, <@ fun (vm: DashboardViewModel) -> vm.SubmitDetails @>, <@ fun (v: DashboardView) -> v.SubmitButton @>)
                         |])
-                        |> createFromRows |> withMargin (new Thickness(6.0, 0.0)) :> View)
+                        |> createFromRows |> withMargin (new Thickness(6.0, 0.0)) 
+                        :> View)
+                ("About XRF", fun p ->
+                    theme.VerticalLayout() |> withBlocks(
+                        [|
+                            theme.GenerateTitle() |> withLabelText("XamarinForms.Reactive.FSharp") |> withHorizontalOptions LayoutOptions.Center
+                            theme.GenerateLabel() |> withLabelText("By SpiegelSoft Ltd") |> withHorizontalOptions LayoutOptions.Center
+                            theme.GenerateHyperlink() 
+                                |> withLabelText("GitHub Page") |> withHorizontalOptions LayoutOptions.Center |> withVerticalOptions LayoutOptions.End
+                                |> withHyperlinkCommand(this.ViewModel.GoToGitHubUrl)
+                        |]) :> View)
 
         ]
     member val SubmitButton = Unchecked.defaultof<Button> with get, set
     member val PageTitle = Unchecked.defaultof<Label> with get, set
     member val UserName = Unchecked.defaultof<Entry> with get, set
     member val UserDateOfBirth = Unchecked.defaultof<DatePicker> with get, set
-
+    member val GitHubLink = Unchecked.defaultof<HyperlinkLabel> with get, set

@@ -101,11 +101,6 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     override __.OnAppearing() = base.OnAppearing(); appearingHandler()
     override __.OnDisappearing() = disappearingHandler(); base.OnDisappearing()
 
-[<AbstractClass>]
-type NavigationPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
-    inherit ReactiveNavigationPage<'TViewModel>()
-    member val Theme = theme
-
 type CarouselContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
     inherit ContentPage<'TViewModel, CarouselContent<'TViewModel>>(theme)
     do base.Title <- title
