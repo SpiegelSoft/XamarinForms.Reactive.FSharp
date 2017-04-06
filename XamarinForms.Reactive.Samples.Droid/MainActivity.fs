@@ -36,8 +36,7 @@ type DroidPlatform() =
 [<Activity (Label = "Sample App", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsApplicationActivity()
-    let createDashboardViewModel() = 
-        new DashboardViewModel() :> IRoutableViewModel
+    let createDashboardViewModel() = new DashboardViewModel() :> IRoutableViewModel
     override this.OnCreate (bundle) =
         base.OnCreate(bundle)
         Forms.Init(this, bundle)

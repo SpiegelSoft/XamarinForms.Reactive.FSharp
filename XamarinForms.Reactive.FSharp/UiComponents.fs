@@ -93,6 +93,7 @@ module ViewHelpers =
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
     let withCaption text (element: #Button) = element.Text <- text; element
     let withEntryText text (element: #Entry) = element.Text <- text; element
+    let withPickerItems items (element: Picker) = items |> Seq.iter element.Items.Add; element
     let withEditorText text (element: #Editor) = element.Text <- text; element
     let withContent content (element: #ScrollView) = element.Content <- content; element
     let withColor color (element: #BoxView) = element.Color <- color; element
@@ -195,6 +196,7 @@ module Themes =
             BoxViewStyle: Style
             ScrollViewStyle: Style
             DatePickerStyle: Style
+            PickerStyle: Style
             MapStyle: Style
         }
 
@@ -217,6 +219,7 @@ module Themes =
         member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
         member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp
+        member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> apply setUp
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
@@ -265,6 +268,7 @@ module Themes =
                     BoxViewStyle = boxViewStyle
                     ScrollViewStyle = new Style(typeof<ScrollView>)
                     DatePickerStyle = new Style(typeof<DatePicker>)
+                    PickerStyle = new Style(typeof<Picker>)
                     MapStyle = new Style(typeof<Map>)
                 }
         }

@@ -42,16 +42,16 @@ type DashboardView(theme: Theme) =
                         |> createFromRows |> withMargin (new Thickness(6.0, 0.0)) 
                         :> View)
                 ("About XRF", fun p ->
-                    theme.VerticalLayout() |> withBlocks(
+                    theme.GenerateGrid([|"Auto"; "Auto"; "*"|], [|"*"|]) |> withColumn(
                         [|
                             theme.GenerateTitle() |> withLabelText("XamarinForms.Reactive.FSharp") |> withHorizontalOptions LayoutOptions.Center
                             theme.GenerateLabel() |> withLabelText("By SpiegelSoft Ltd") |> withHorizontalOptions LayoutOptions.Center
                             theme.GenerateHyperlink() 
                                 |> withLabelText("GitHub Page") |> withHorizontalOptions LayoutOptions.Center |> withVerticalOptions LayoutOptions.End
                                 |> withHyperlinkCommand(this.ViewModel.GoToGitHubUrl)
-                        |]) :> View)
-
-        ]
+                        |])
+                        |> createFromColumns
+                        |> withVerticalOptions LayoutOptions.Fill :> View)]
     member val SubmitButton = Unchecked.defaultof<Button> with get, set
     member val PageTitle = Unchecked.defaultof<Label> with get, set
     member val UserName = Unchecked.defaultof<Entry> with get, set
