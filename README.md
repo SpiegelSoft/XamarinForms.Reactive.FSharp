@@ -16,7 +16,7 @@ type DroidPlatform() =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
     interface IPlatform with
-        member __.GetMainPage() = new RoutedViewHost() :> Page
+        member __.GetMainPage() = new RoutedViewHost() :> NavigationPage
         member __.RegisterDependencies _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 ```
@@ -27,7 +27,7 @@ type IosPlatform() =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
     interface IPlatform with
-        member __.GetMainPage() = new ReactiveUI.XamForms.RoutedViewHost() :> Xamarin.Forms.Page
+        member __.GetMainPage() = new ReactiveUI.XamForms.RoutedViewHost() :> Xamarin.Forms.NavigationPage
         member __.RegisterDependencies _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 ```
@@ -169,18 +169,18 @@ type DashboardView(theme: Theme) =
                     |> withColumnSpan 2 
                     |> withAlignment LayoutOptions.Center LayoutOptions.Center
                     |> withMargin (new Thickness(0.0, 12.0))
-                    |> withOneWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.PageTitle @>, <@ fun (v: DashboardView) -> (v.PageTitle: Label).Text @>, id)
+                    |> withOneWayBinding(this, <@ fun (vm: DashboardViewModel) -> vm.PageTitle @>, <@ fun (v: DashboardView) -> (v.PageTitle: Label).Text @>, id)
             |]) |> thenRow(
             [|
                 theme.GenerateLabel() |> withLabelText("Your name")
                 theme.GenerateEntry(fun e -> this.UserName <- e) 
                     |> withEntryPlaceholder "Enter your name here"
-                    |> withTwoWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.Name @>, <@ fun (v: DashboardView) -> (v.UserName: Entry).Text @>, id, id)
+                    |> withTwoWayBinding(this, <@ fun (vm: DashboardViewModel) -> vm.Name @>, <@ fun (v: DashboardView) -> (v.UserName: Entry).Text @>, id, id)
             |]) |> thenRow(
             [|
                 theme.GenerateLabel() |> withLabelText("Date of birth")
                 theme.GenerateDatePicker(fun e -> this.UserDateOfBirth <- e) 
-                    |> withTwoWayBinding(this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.DateOfBirth @>, <@ fun (v: DashboardView) -> (v.UserDateOfBirth: DatePicker).Date @>, id, id)
+                    |> withTwoWayBinding(this, <@ fun (vm: DashboardViewModel) -> vm.DateOfBirth @>, <@ fun (v: DashboardView) -> (v.UserDateOfBirth: DatePicker).Date @>, id, id)
             |]) |> thenRow(
             [|
                 theme.GenerateButton(fun b -> this.SubmitButton <- b)
@@ -259,7 +259,7 @@ type DashboardView(theme: Theme) =
                     |> withColumnSpan 2
                     |> withCaption("Submit")
                     |> withHorizontalOptions LayoutOptions.End
-                    |> withCommandBinding (this.ViewModel, this, <@ fun (vm: DashboardViewModel) -> vm.SubmitDetails @>, <@ fun (v: DashboardView) -> v.SubmitButton @>)
+                    |> withCommandBinding (this, <@ fun (vm: DashboardViewModel) -> vm.SubmitDetails @>, <@ fun (v: DashboardView) -> v.SubmitButton @>)
             |])
             |> createFromRows |> withMargin (new Thickness(6.0, 0.0)) :> View
     member val SubmitButton = Unchecked.defaultof<Button> with get, set
