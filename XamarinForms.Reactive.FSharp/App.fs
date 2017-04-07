@@ -21,21 +21,20 @@ module ViewReflection =
 type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel: unit -> IRoutableViewModel) as this =
     inherit ReactiveObject()
     let router = new RoutingState()
-    let dependencyResolver = Locator.CurrentMutable
-    let viewModelInstance = viewModel()
-    do
+    member internal __.Bootstrap() =
+        let dependencyResolver = Locator.CurrentMutable
         dependencyResolver.RegisterConstant(context, typeof<IUiContext>)
         dependencyResolver.RegisterConstant(platform, typeof<'TPlatform>)
         dependencyResolver.RegisterConstant(this, typeof<IScreen>)
         platform.RegisterDependencies dependencyResolver
+        let viewModelInstance = viewModel()
         for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
             match ViewReflection.findViewType interfaceType viewModelInstance with
             | Some viewType -> dependencyResolver.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
             | None -> interfaceType |> ignore
-    member internal __.Init(page:NavigationPage) =
         let view = ViewLocator.Current.ResolveView(viewModelInstance)
         view.ViewModel <- viewModelInstance
-        page.PushAsync(view :?> Page).Wait()
+        view
     interface IScreen with member __.Router = router
 
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
@@ -44,6 +43,7 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
     member val UiContext = context with get
     member val Screen = screen :> IScreen with get
     member this.Init() =
+        let view = screen.Bootstrap()
         let mainPage = platform.GetMainPage()
         this.MainPage <- mainPage
-        screen.Init(mainPage)
+        mainPage.PushAsync(view :?> Page).Wait()
