@@ -23,6 +23,7 @@ type IosPlatform() =
         member __.GetMainPage() = new ReactiveUI.XamForms.RoutedViewHost() :> Xamarin.Forms.Page
         member __.RegisterDependencies _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
+        member __.AppDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies()
 
 [<Register ("AppDelegate")>]
 type AppDelegate () =

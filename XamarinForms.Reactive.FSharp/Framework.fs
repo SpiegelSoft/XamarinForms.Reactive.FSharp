@@ -8,14 +8,12 @@ open GeographicLib
 open Xamarin.Forms.Maps
 
 open System.Linq.Expressions
-open System.Reactive.Linq
 open System
 
 open Splat
 
 module ObservableExtensions =
     open System.Reactive.Disposables
-    let ignoreOnce (observable: IObservable<'a>) = observable.FirstAsync().Subscribe(ignore) |> ignore
     let disposeWith (compositeDisposable: CompositeDisposable) (disposable: #IDisposable) = disposable.DisposeWith compositeDisposable
 
 module LocatorDefaults =

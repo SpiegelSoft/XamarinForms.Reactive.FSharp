@@ -18,14 +18,13 @@ module ViewReflection =
     let viewForInterfaceTypes instance = typesInAssembly instance |> Seq.filter isReactiveObjectType |> Seq.map (fun typeInfo -> viewForInterfaceType (typeInfo.AsType()))
     let findViewType (interfaceType: TypeInfo) instance = typesInAssembly instance |> Seq.tryFind (fun typeInfo -> interfaceType.IsAssignableFrom(typeInfo))
 
-type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel: unit -> IRoutableViewModel) as this =
+type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel: unit -> IRoutableViewModel) =
     inherit ReactiveObject()
-    let router = new RoutingState()
-    member internal __.Bootstrap() =
+    member internal this.Bootstrap(screen: IScreen) =
         let dependencyResolver = Locator.CurrentMutable
         dependencyResolver.RegisterConstant(context, typeof<IUiContext>)
         dependencyResolver.RegisterConstant(platform, typeof<'TPlatform>)
-        dependencyResolver.RegisterConstant(this, typeof<IScreen>)
+        dependencyResolver.RegisterConstant(screen, typeof<IScreen>)
         platform.RegisterDependencies dependencyResolver
         let viewModelInstance = viewModel()
         for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
@@ -35,15 +34,16 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
         let view = ViewLocator.Current.ResolveView(viewModelInstance)
         view.ViewModel <- viewModelInstance
         view
-    interface IScreen with member __.Router = router
 
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
-    let screen = new AppBootstrapper<'TPlatform>(platform, context, viewModel)
+    let router = new RoutingState()
+    let bootstrapper = new AppBootstrapper<'TPlatform>(platform, context, viewModel)
     member val UiContext = context with get
-    member val Screen = screen :> IScreen with get
+    member this.Screen = this :> IScreen
     member this.Init() =
-        let view = screen.Bootstrap()
+        let view = bootstrapper.Bootstrap(this)
         let mainPage = platform.GetMainPage()
         this.MainPage <- mainPage
         mainPage.PushAsync(view :?> Page).Wait()
+    interface IScreen with member __.Router = router
