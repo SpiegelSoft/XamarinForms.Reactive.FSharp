@@ -69,7 +69,9 @@ module internal PageSetup =
         let disappearingHandler() =
             viewModelSubscription.Dispose()
             messageSubscriptions.Clear()
-            page.ViewModel.PageDisappearing()
+            match box page.ViewModel with
+            | null -> page |> ignore
+            | _ -> page.ViewModel.PageDisappearing()
             page.DescendantRemoved.RemoveHandler descendantRemoved
             page.DescendantAdded.RemoveHandler descendantAdded
         (appearingHandler, disappearingHandler)

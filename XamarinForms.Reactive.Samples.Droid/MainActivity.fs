@@ -32,7 +32,6 @@ type DroidPlatform() =
         member __.GetMainPage() = new RoutedViewHost() :> NavigationPage
         member __.RegisterDependencies _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
-        member __.AppDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies()
 
 [<Activity (Label = "Sample App", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
