@@ -51,12 +51,10 @@
     <Compile Include="App.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
-    <None Include="any\netstandard1.6\FSharp.Core.sigdata" />
-    <None Include="any\netstandard1.6\FSharp.Core.optdata" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.4.1.12\lib\portable-net45+netcore45+wpa81+wp8\FSharp.Core.dll</HintPath>
+      <HintPath>..\packages\FSharp.Core.4.1.17\lib\portable-net45+netcore45+wpa81+wp8\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="GeographicLib">
       <HintPath>..\packages\GeographicLib.FSharp.1.1.0.1\lib\portable45-net45+win8+wp8+wpa81\GeographicLib.dll</HintPath>

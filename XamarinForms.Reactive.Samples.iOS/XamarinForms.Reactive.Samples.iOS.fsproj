@@ -109,12 +109,10 @@
     <Compile Include="Main.fs" />
     <None Include="GettingStarted.Xamarin" />
     <Content Include="packages.config" />
-    <None Include="any\netstandard1.6\FSharp.Core.sigdata" />
-    <None Include="any\netstandard1.6\FSharp.Core.optdata" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
-      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.4.1.17\lib\portable-net45+netcore45+wp8\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="GeographicLib">
       <HintPath>..\packages\GeographicLib.FSharp.1.1.0.1\lib\portable45-net45+win8+wp8+wpa81\GeographicLib.dll</HintPath>
@@ -176,8 +174,9 @@
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\XamarinForms.Reactive.Samples.Common\XamarinForms.Reactive.Samples.Common.fsproj">
-      <Project>{C4567B69-79A9-4FC1-BBA8-04F751C2A0FD}</Project>
       <Name>XamarinForms.Reactive.Samples.Common</Name>
+      <Project>{c4567b69-79a9-4fc1-bba8-04f751c2a0fd}</Project>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
