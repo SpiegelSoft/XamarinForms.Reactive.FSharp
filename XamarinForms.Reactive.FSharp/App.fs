@@ -9,6 +9,7 @@ open Xamarin.Forms
 open Splat
 
 open ReactiveUI
+open ReactiveUI.XamForms
 
 module ViewReflection =
     let private reactiveObjectTypeInfo = typeof<ReactiveObject>.GetTypeInfo()
@@ -33,7 +34,12 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
             | None -> interfaceType |> ignore
         let view = ViewLocator.Current.ResolveView(viewModelInstance)
         view.ViewModel <- viewModelInstance
-        view
+        viewModelInstance
+
+type FrontPageViewModel() = inherit ReactiveObject()
+type FrontPage(router: RoutingState, viewModelInstance) =
+    inherit ReactiveContentPage<FrontPageViewModel>()
+    override __.OnAppearing() = router.NavigateAndReset.Execute(viewModelInstance).Subscribe() |> ignore
 
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
@@ -42,8 +48,8 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
     member val UiContext = context with get
     member this.Screen = this :> IScreen
     member this.Init() =
-        let view = bootstrapper.Bootstrap(this)
-        let mainPage = platform.GetMainPage()
-        this.MainPage <- mainPage
-        mainPage.PushAsync(view :?> Page).Wait()
+        let viewModelInstance = bootstrapper.Bootstrap(this)
+        let navigationPage = new RoutedViewHost() :> NavigationPage
+        navigationPage.PushAsync(new FrontPage(router, viewModelInstance, ViewModel = new FrontPageViewModel())).Wait()
+        this.MainPage <- navigationPage
     interface IScreen with member __.Router = router

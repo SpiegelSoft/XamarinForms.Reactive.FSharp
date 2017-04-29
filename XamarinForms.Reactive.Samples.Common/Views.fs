@@ -56,4 +56,3 @@ type DashboardView(theme: Theme) =
     member val PageTitle = Unchecked.defaultof<Label> with get, set
     member val UserName = Unchecked.defaultof<Entry> with get, set
     member val UserDateOfBirth = Unchecked.defaultof<DatePicker> with get, set
-    member val GitHubLink = Unchecked.defaultof<HyperlinkLabel> with get, set

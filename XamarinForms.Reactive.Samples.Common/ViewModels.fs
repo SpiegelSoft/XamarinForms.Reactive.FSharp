@@ -33,12 +33,10 @@ type DashboardViewModel(?host: IScreen) =
         // A ReactiveCommand is an IObservable, so based on the result of the submission we can perform further actions, such as navigation.
         this.SubmitDetails.ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(fun _ -> this.DisplayAlertMessage({ Title = "Details Submitted"; Message = sprintf "Your name is %s and your date of birth is %s" this.Name ((this.DateOfBirth: DateTime).ToString("dd/MM/yyyy")); Accept = "OK" }) |> ignore)
-            |> ObservableExtensions.disposeWith(this.PageDisposables) 
-            |> ignore
+            |> ObservableExtensions.disposeWith(this.PageDisposables) |> ignore
         this.GoToGitHubUrl.ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(fun _ -> "https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp" |> Uri |> Device.OpenUri |> ignore)
-            |> ObservableExtensions.disposeWith(this.PageDisposables)
-            |> ignore
+            |> ObservableExtensions.disposeWith(this.PageDisposables) |> ignore
     override this.TearDownCommands() =
         // We set the observables and subscriptions up, so it is our responsibility to dispose of them. The Clear() method on the PageDisposable collection achieves this because of the use of disposeWith in the SetUpCommands method.
         this.PageDisposables.Clear()

@@ -29,7 +29,6 @@ type DroidPlatform() =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
     interface ICustomPlatform with
-        member __.GetMainPage() = new RoutedViewHost() :> NavigationPage
         member __.RegisterDependencies _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 
