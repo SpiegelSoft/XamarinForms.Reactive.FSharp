@@ -122,10 +122,10 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI">
-      <HintPath>..\packages\reactiveui-core.7.2.0\lib\Xamarin.iOS10\ReactiveUI.dll</HintPath>
+      <HintPath>..\packages\reactiveui-core.7.3.0\lib\Xamarin.iOS10\ReactiveUI.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.XamForms">
-      <HintPath>..\packages\reactiveui-xamforms.7.2.0\lib\portable-net45+netcore45+wp8+wpa81+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.XamForms.dll</HintPath>
+      <HintPath>..\packages\reactiveui-xamforms.7.3.0\lib\portable-net45+netcore45+wp8+wpa81+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.XamForms.dll</HintPath>
     </Reference>
     <Reference Include="Splat">
       <HintPath>..\packages\Splat.1.4.0\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
