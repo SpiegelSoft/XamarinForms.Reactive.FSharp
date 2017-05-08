@@ -16,6 +16,13 @@ module ObservableExtensions =
     open System.Reactive.Disposables
     let disposeWith (compositeDisposable: CompositeDisposable) (disposable: #IDisposable) = disposable.DisposeWith compositeDisposable
 
+module ClrExtensions =
+    let isNotNull o =
+        match box o with
+        | null -> false
+        | _ -> true
+    let isNull o = o |> isNotNull |> not
+
 module LocatorDefaults =
     let LocateIfNone(arg : 'a option) =
         match arg with

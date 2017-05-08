@@ -3,6 +3,7 @@
 open System.Reactive.Threading.Tasks
 open System.Reactive.Disposables
 open System.Collections.Generic
+open System.Reactive.Linq
 open System
 
 open Xamarin.Forms
@@ -16,9 +17,10 @@ open Themes
 
 open ExpressionConversion
 
+open ClrExtensions
+
 type IContentView = 
-    abstract member CreateContent: unit -> View
-    abstract member Content: View with get, set
+    abstract member InitialiseContent: unit -> unit
     abstract member OnContentCreated: unit -> unit
 
 module internal MessageHandling =
@@ -45,7 +47,6 @@ module internal ViewHierarchy =
             let processElement _ (eventArgs:ElementEventArgs) =
                 match box eventArgs.Element with
                 | :? GeographicMap as map -> maps.Add (map.Id, map)
-                | :? IContentView as contentView -> contentView.Content <- contentView.CreateContent()
                 | _ -> eventArgs |> ignore
             new EventHandler<ElementEventArgs> (processElement)
         let descendantRemoved = 
@@ -65,7 +66,7 @@ module internal PageSetup =
             page.DescendantAdded.AddHandler descendantAdded
             page.DescendantRemoved.AddHandler descendantRemoved
             page.ViewModel.PageAppearing()
-            match box page.Content with | null -> page.Content <- page.CreateContent(); page.OnContentCreated() | _ -> page |> ignore
+            page.InitialiseContent()
         let disappearingHandler() =
             viewModelSubscription.Dispose()
             messageSubscriptions.Clear()
@@ -76,6 +77,8 @@ module internal PageSetup =
             page.DescendantAdded.RemoveHandler descendantAdded
         (appearingHandler, disappearingHandler)
 
+type PropertyChange<'a> = { Previous: 'a; Current: 'a }
+
 [<AbstractClass>]
 type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveContentView<'TViewModel>()
@@ -84,8 +87,7 @@ type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel 
     abstract member OnContentCreated: unit -> unit
     default this.OnContentCreated() = this |> ignore
     interface IContentView with 
-        member this.CreateContent() = this.CreateContent()
-        member this.Content with get() = base.Content and set(content) = base.Content <- content
+        member this.InitialiseContent() = this.Content <- this.CreateContent()
         member this.OnContentCreated() = this.OnContentCreated()
 
 [<AbstractClass>]
@@ -97,16 +99,15 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     abstract member OnContentCreated: unit -> unit
     default __.OnContentCreated() = this |> ignore
     interface IContentView with
-        member __.CreateContent() = this.CreateContent()
-        member __.Content with get() = base.Content and set(content) = base.Content <- content
+        member __.InitialiseContent() = this.Content <- this.CreateContent()
         member __.OnContentCreated() = this.OnContentCreated()
     override __.OnAppearing() = base.OnAppearing(); appearingHandler()
     override __.OnDisappearing() = disappearingHandler(); base.OnDisappearing()
 
 type CarouselContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
-    inherit ContentPage<'TViewModel, CarouselContent<'TViewModel>>(theme)
+    inherit ReactiveContentPage<'TViewModel>()
     do base.Title <- title
-    override this.CreateContent() = createContent(page)
+    override this.OnAppearing() = this.Content <- createContent(page)
 
 and [<AbstractClass>] CarouselPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
     inherit ReactiveCarouselPage<'TViewModel>()
@@ -115,23 +116,28 @@ and [<AbstractClass>] CarouselPage<'TViewModel when 'TViewModel :> PageViewModel
         this.CreateContent() |> Seq.iter (fun kvp -> new CarouselContent<'TViewModel>(this, theme, kvp.Key, kvp.Value) |> this.Children.Add)
     abstract member CreateContent: unit -> IDictionary<string, CarouselPage<'TViewModel> -> View>
 
-type TabContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
-    inherit ContentPage<'TViewModel, TabContent<'TViewModel>>(theme)
+type TabContent(title, createContent: unit -> View) =
+    inherit ContentPage()
     do base.Title <- title
-    override this.CreateContent() = createContent(page)
+    override this.OnAppearing() = this.Content <- createContent()
 
-and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
+and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveTabbedPage<'TViewModel>()
-    override this.OnParentSet() =
-        base.OnParentSet()
-        this.CreateContent() |> Seq.iter (fun kvp -> new TabContent<'TViewModel>(this, theme, kvp.Key, kvp.Value) |> this.Children.Add)
-        this.OnContentCreated()
-    abstract member CreateContent: unit -> IDictionary<string, TabbedPage<'TViewModel> -> View>
+    let disposables = new CompositeDisposable()
+    do this.BarBackgroundColor <- Color.Beige
+    let appearingHandler, disappearingHandler = PageSetup.lifetimeHandlers this
+    let viewModelRemoved (_:'TViewModel) =
+        disappearingHandler()
+        disposables.Clear()
+    let viewModelAdded (_:'TViewModel) =
+        appearingHandler()
+    let viewModelChangeStream = this.WhenAnyValue(fun v -> v.ViewModel).Buffer(2, 1).Select(fun a -> { Previous = a.[0]; Current = a.[1] })
+    do 
+        viewModelChangeStream.Where(fun p -> isNull(p.Previous) && isNotNull(p.Current)).Subscribe(fun p -> viewModelAdded p.Current) |> disposables.Add
+        viewModelChangeStream.Where(fun p -> isNotNull(p.Previous) && isNull(p.Current)).Subscribe(fun p -> viewModelRemoved p.Previous) |> disposables.Add
+    abstract member CreateContent: unit -> IDictionary<string, unit -> View>
     abstract member OnContentCreated: unit -> unit
     default this.OnContentCreated() = this |> ignore
-
-and TabContentInPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct> =
-    {
-        TabContent: TabContent<'TViewModel>
-        TabContainer: TabbedPage<'TViewModel>
-    }
+    interface IContentView with
+        member __.InitialiseContent() = this.CreateContent() |> Seq.iter (fun kvp -> new TabContent(kvp.Key, kvp.Value) |> this.Children.Add)
+        member __.OnContentCreated() = this.OnContentCreated()
