@@ -52,6 +52,8 @@ type DashboardView(theme: Theme) =
                         |])
                         |> createFromColumns
                         |> withVerticalOptions LayoutOptions.Fill :> View)]
+    override this.OnAppearing() =
+        this.ToolbarItems.Add(new ToolbarItem("Hello", Unchecked.defaultof<string>, (fun () -> 0 |> ignore), ToolbarItemOrder.Secondary)) |> ignore
     member val SubmitButton = Unchecked.defaultof<Button> with get, set
     member val PageTitle = Unchecked.defaultof<Label> with get, set
     member val UserName = Unchecked.defaultof<Entry> with get, set

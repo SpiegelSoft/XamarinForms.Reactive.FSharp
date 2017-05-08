@@ -125,7 +125,10 @@ and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel a
     override this.OnParentSet() =
         base.OnParentSet()
         this.CreateContent() |> Seq.iter (fun kvp -> new TabContent<'TViewModel>(this, theme, kvp.Key, kvp.Value) |> this.Children.Add)
+        this.OnContentCreated()
     abstract member CreateContent: unit -> IDictionary<string, TabbedPage<'TViewModel> -> View>
+    abstract member OnContentCreated: unit -> unit
+    default this.OnContentCreated() = this |> ignore
 
 and TabContentInPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct> =
     {
