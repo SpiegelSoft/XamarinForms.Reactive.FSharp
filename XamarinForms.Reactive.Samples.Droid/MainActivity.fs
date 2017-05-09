@@ -32,6 +32,8 @@ type DroidPlatform() =
         member __.RegisterDependencies _ = 0 |> ignore
         member __.GetLocalFilePath fileName = localFilePath fileName
 
+[<assembly: ExportRendererAttribute (typeof<TabbedPage>, typeof<TabbedPageRenderer>)>] do ()
+
 [<Activity (Label = "Sample App", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsApplicationActivity()

@@ -21,7 +21,7 @@ module ViewReflection =
 
 type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel: unit -> IRoutableViewModel) =
     inherit ReactiveObject()
-    member internal this.Bootstrap(screen: IScreen) =
+    member internal __.Bootstrap(screen: IScreen) =
         let dependencyResolver = Locator.CurrentMutable
         dependencyResolver.RegisterConstant(context, typeof<IUiContext>)
         dependencyResolver.RegisterConstant(platform, typeof<'TPlatform>)
@@ -32,8 +32,6 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
             match ViewReflection.findViewType interfaceType viewModelInstance with
             | Some viewType -> dependencyResolver.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
             | None -> interfaceType |> ignore
-        let view = ViewLocator.Current.ResolveView(viewModelInstance)
-        view.ViewModel <- viewModelInstance
         viewModelInstance
 
 type FrontPageViewModel() = inherit ReactiveObject()

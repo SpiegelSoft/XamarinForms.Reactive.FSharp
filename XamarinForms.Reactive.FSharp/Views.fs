@@ -24,7 +24,7 @@ type IContentView =
     abstract member OnContentCreated: unit -> unit
 
 module internal MessageHandling =
-    let alertMessageReceived (page: Page) (alertMessage: AlertMessage) = page.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Accept).ToObservable()
+    let alertMessageReceived (page: Page) (alertMessage: AlertMessage) = page.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Acknowledge).ToObservable()
     let confirmationReceived (page: Page) (confirmation: Confirmation) = page.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline).ToObservable()
     let addMessageSubscription (page: 'TPage when 'TPage :> Page and 'TPage :> IContentView and 'TPage :> IViewFor<'TViewModel> and 'TViewModel :> PageViewModel) =
         let commands = new CompositeDisposable()
@@ -67,6 +67,7 @@ module internal PageSetup =
             page.DescendantRemoved.AddHandler descendantRemoved
             page.ViewModel.PageAppearing()
             page.InitialiseContent()
+            page.OnContentCreated()
         let disappearingHandler() =
             viewModelSubscription.Dispose()
             messageSubscriptions.Clear()
@@ -124,7 +125,6 @@ type TabContent(title, createContent: unit -> View) =
 and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveTabbedPage<'TViewModel>()
     let disposables = new CompositeDisposable()
-    do this.BarBackgroundColor <- Color.Beige
     let appearingHandler, disappearingHandler = PageSetup.lifetimeHandlers this
     let viewModelRemoved (_:'TViewModel) =
         disappearingHandler()

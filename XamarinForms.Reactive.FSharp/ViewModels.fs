@@ -44,7 +44,7 @@ module GeographicMapScaling =
         (0.7 * maxDimension |> UnitConversion.kilometres, new GeodesicLocation(centralLatitude, centralLongitude))
 
 module Modal =
-    type AlertMessage = { Title: string; Message: string; Accept: string }
+    type AlertMessage = { Title: string; Message: string; Acknowledge: string }
     type Confirmation = { Title: string; Message: string; Accept: string; Decline: string }
 
 open ExpressionConversion

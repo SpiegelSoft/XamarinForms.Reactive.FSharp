@@ -204,6 +204,7 @@ module Themes =
             DatePickerStyle: Style
             PickerStyle: Style
             MapStyle: Style
+            TabbedPageStyle: Style
         }
 
     let private apply setUp view = setUp |> Seq.iter (fun s -> s view); view
@@ -231,7 +232,7 @@ module Themes =
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
-    let private addSetters<'TView when 'TView :> View> (setters: Setter seq) (style: Style) =
+    let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) =
         let controlType = typeof<'TView>
         for setter in setters do 
             let setterType = setter.Property.DeclaringType
@@ -245,6 +246,7 @@ module Themes =
     let applyEntrySetters entrySetters (theme: Theme) = addSetters<Entry> entrySetters theme.Styles.EntryStyle; theme
     let applyImageSetters imageSetters (theme: Theme) = addSetters<Image> imageSetters theme.Styles.ImageStyle; theme
     let applyListViewSetters listViewSetters (theme: Theme) = addSetters<ListView> listViewSetters theme.Styles.ListViewStyle; theme
+    let applyTabbedPageSetters tabbedPageSetters (theme: Theme) = addSetters<TabbedPage> tabbedPageSetters theme.Styles.TabbedPageStyle; theme
     let applyBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
 
@@ -277,6 +279,7 @@ module Themes =
                     DatePickerStyle = new Style(typeof<DatePicker>)
                     PickerStyle = new Style(typeof<Picker>)
                     MapStyle = new Style(typeof<Map>)
+                    TabbedPageStyle = new Style(typeof<TabbedPage>)
                 }
         }
 

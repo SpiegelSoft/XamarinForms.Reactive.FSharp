@@ -15,3 +15,7 @@ module Themes =
                 [
                     new Setter(Property = Label.TextColorProperty, Value = Color.Silver)
                 ]
+            |> applyTabbedPageSetters
+                [
+                    new Setter(Property = TabbedPage.BarBackgroundColorProperty, Value = Color.MidnightBlue)
+                ]

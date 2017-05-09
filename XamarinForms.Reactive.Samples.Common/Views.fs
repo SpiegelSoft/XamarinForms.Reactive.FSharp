@@ -11,7 +11,7 @@ type DashboardView(theme: Theme) =
     inherit TabbedPage<DashboardViewModel>(theme)
     new() = new DashboardView(CustomTheme)
     override this.CreateContent() =
-        dict [
+       dict [
                 ("Hello World",  fun p -> 
                     theme.GenerateGrid([|"Auto"; "Auto"; "Auto"; "Auto"|], [|"Auto"; "*"|]) |> withRow(
                         [|

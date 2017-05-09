@@ -32,7 +32,7 @@ type DashboardViewModel(?host: IScreen) =
         this.GoToGitHubUrl <- ReactiveCommand.CreateFromObservable(goToGitHubUrl this) |> ObservableExtensions.disposeWith this.PageDisposables
         // A ReactiveCommand is an IObservable, so based on the result of the submission we can perform further actions, such as navigation.
         this.SubmitDetails.ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(fun _ -> this.DisplayAlertMessage({ Title = "Details Submitted"; Message = sprintf "Your name is %s and your date of birth is %s" this.Name ((this.DateOfBirth: DateTime).ToString("dd/MM/yyyy")); Accept = "OK" }) |> ignore)
+            .Subscribe(fun _ -> this.DisplayAlertMessage({ Title = "Details Submitted"; Message = sprintf "Your name is %s and your date of birth is %s" this.Name ((this.DateOfBirth: DateTime).ToString("dd/MM/yyyy")); Acknowledge = "OK" }) |> ignore)
             |> ObservableExtensions.disposeWith(this.PageDisposables) |> ignore
         this.GoToGitHubUrl.ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(fun _ -> "https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp" |> Uri |> Device.OpenUri |> ignore)
