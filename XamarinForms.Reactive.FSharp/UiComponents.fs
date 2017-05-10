@@ -205,6 +205,7 @@ module Themes =
             PickerStyle: Style
             MapStyle: Style
             TabbedPageStyle: Style
+            ActivityIndicatorStyle: Style
         }
 
     let private apply setUp view = setUp |> Seq.iter (fun s -> s view); view
@@ -227,6 +228,7 @@ module Themes =
         member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
+        member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> apply setUp
         member __.GenerateToolbarItem(name, icon, activated, toolbarItemOrder, priority) = new ToolbarItem(name, icon, activated, toolbarItemOrder, priority)
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
@@ -280,6 +282,7 @@ module Themes =
                     PickerStyle = new Style(typeof<Picker>)
                     MapStyle = new Style(typeof<Map>)
                     TabbedPageStyle = new Style(typeof<TabbedPage>)
+                    ActivityIndicatorStyle = new Style(typeof<ActivityIndicator>)
                 }
         }
 
