@@ -35,6 +35,10 @@ module ExpressionConversion =
         let call = linq :?> MethodCallExpression
         let lambda = call.Arguments.[0] :?> LambdaExpression
         Expression.Lambda<Func<'a, 'b>>(lambda.Body, lambda.Parameters)
+    let rec propertyName = function
+    | Patterns.Lambda(_, expr) -> propertyName expr
+    | Patterns.PropertyGet(_, propOrValInfo, _) -> propOrValInfo.Name
+    | _ -> failwith "You have asked for the property name of an expression that does not describe a property."
 
 module XamarinGeographic =
     let geodesicLocation (position: Position) = new GeodesicLocation(position.Latitude * 1.0<deg>, position.Longitude * 1.0<deg>)

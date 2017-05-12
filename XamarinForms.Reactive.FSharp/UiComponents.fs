@@ -93,7 +93,8 @@ module ViewHelpers =
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
     let withCaption text (element: #Button) = element.Text <- text; element
     let withEntryText text (element: #Entry) = element.Text <- text; element
-    let withPickerItems items (element: Picker) = items |> Seq.iter element.Items.Add; element
+    let withPickerItemsSource itemsSource (element: Picker) = element.ItemsSource <- itemsSource; element
+    let withPickerDisplayBinding (binding: Expr<'a -> string>) (element: Picker) = element.ItemDisplayBinding <- new TemplateBinding(propertyName binding) ; element
     let withListViewHeader header (element: #ListView) = element.Header <- header; element
     let withListViewFooter footer (element: #ListView) = element.Footer <- footer; element
     let withItemsSource source (element: #ItemsView<'v>) = element.ItemsSource <- source; element
@@ -202,6 +203,7 @@ module Themes =
             BoxViewStyle: Style
             ScrollViewStyle: Style
             DatePickerStyle: Style
+            TimePickerStyle: Style
             PickerStyle: Style
             MapStyle: Style
             TabbedPageStyle: Style
@@ -227,6 +229,7 @@ module Themes =
         member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
         member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp
+        member this.GenerateTimePicker([<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> apply setUp
@@ -279,6 +282,7 @@ module Themes =
                     BoxViewStyle = boxViewStyle
                     ScrollViewStyle = new Style(typeof<ScrollView>)
                     DatePickerStyle = new Style(typeof<DatePicker>)
+                    TimePickerStyle = new Style(typeof<TimePicker>)
                     PickerStyle = new Style(typeof<Picker>)
                     MapStyle = new Style(typeof<Map>)
                     TabbedPageStyle = new Style(typeof<TabbedPage>)
