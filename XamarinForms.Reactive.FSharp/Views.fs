@@ -58,7 +58,7 @@ module internal ViewHierarchy =
         (descendantAdded, descendantRemoved)
 
 module internal PageSetup =
-    let lifetimeHandlers page =
+    let lifetimeHandlers (disposables: CompositeDisposable) page =
         let maps = new Dictionary<Guid, GeographicMap>()
         let descendantAdded, descendantRemoved = maps |> ViewHierarchy.createDescendantEvents
         let viewModelSubscription, messageSubscriptions = MessageHandling.addMessageSubscription page
@@ -76,7 +76,9 @@ module internal PageSetup =
             | _ -> page.ViewModel.PageDisappearing()
             page.DescendantRemoved.RemoveHandler descendantRemoved
             page.DescendantAdded.RemoveHandler descendantAdded
-        (appearingHandler, disappearingHandler)
+        let viewModelAdded _ = appearingHandler()    
+        let viewModelRemoved _ = disappearingHandler(); disposables.Clear()
+        (viewModelAdded, viewModelAdded)
 
 type PropertyChange<'a> = { Previous: 'a; Current: 'a }
 
@@ -94,16 +96,19 @@ type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel 
 [<AbstractClass>]
 type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveContentPage<'TViewModel>()
-    let appearingHandler, disappearingHandler = PageSetup.lifetimeHandlers this
-    do base.BackgroundColor <- theme.Styles.BackgroundColor
+    let disposables = new CompositeDisposable()
+    let viewModelAdded, viewModelRemoved = PageSetup.lifetimeHandlers disposables this
+    let viewModelChangeStream = this.WhenAnyValue(fun v -> v.ViewModel).Buffer(2, 1).Select(fun a -> { Previous = a.[0]; Current = a.[1] })
+    do 
+        viewModelChangeStream.Where(fun p -> isNull(p.Previous) && isNotNull(p.Current)).Subscribe(fun p -> viewModelAdded p.Current) |> disposables.Add
+        viewModelChangeStream.Where(fun p -> isNotNull(p.Previous) && isNull(p.Current)).Subscribe(fun p -> viewModelRemoved p.Previous) |> disposables.Add
+        base.BackgroundColor <- theme.Styles.BackgroundColor
     abstract member CreateContent: unit -> View
     abstract member OnContentCreated: unit -> unit
     default __.OnContentCreated() = this |> ignore
     interface IContentView with
         member __.InitialiseContent() = this.Content <- this.CreateContent()
         member __.OnContentCreated() = this.OnContentCreated()
-    override __.OnAppearing() = base.OnAppearing(); appearingHandler()
-    override __.OnDisappearing() = disappearingHandler(); base.OnDisappearing()
 
 type CarouselContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
     inherit ReactiveContentPage<'TViewModel>()
@@ -125,12 +130,7 @@ type TabContent(title, createContent: unit -> View) =
 and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveTabbedPage<'TViewModel>()
     let disposables = new CompositeDisposable()
-    let appearingHandler, disappearingHandler = PageSetup.lifetimeHandlers this
-    let viewModelRemoved (_:'TViewModel) =
-        disappearingHandler()
-        disposables.Clear()
-    let viewModelAdded (_:'TViewModel) =
-        appearingHandler()
+    let viewModelAdded, viewModelRemoved = PageSetup.lifetimeHandlers disposables this
     let viewModelChangeStream = this.WhenAnyValue(fun v -> v.ViewModel).Buffer(2, 1).Select(fun a -> { Previous = a.[0]; Current = a.[1] })
     do 
         viewModelChangeStream.Where(fun p -> isNull(p.Previous) && isNotNull(p.Current)).Subscribe(fun p -> viewModelAdded p.Current) |> disposables.Add
