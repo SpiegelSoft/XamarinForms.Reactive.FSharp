@@ -316,6 +316,6 @@ To see how XRF can be used in practice, you can fire up the samples. There are m
 * [Hello World (Android)](https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp/tree/master/XamarinForms.Reactive.Sample.HelloWorld.Droid),  [Hello World (iOS)](https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp/tree/master/XamarinForms.Reactive.Sample.HelloWorld.iOS): A demo of basic core functionality, including the use of messageboxes and tabbed pages.
 * [Places (Android)](https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp/tree/master/XamarinForms.Reactive.Sample.Places.Droid): An implementation of the Google Places API using an Android app.
 
-<aside class="warning">
+<div class="alert alert-warning">
 Because I don't want to share my private Google API keys in a public repository, the `AndroidManifest.xml` files are missing from the Android projects. You need to add these in yourself.
-</aside>
+</div>
