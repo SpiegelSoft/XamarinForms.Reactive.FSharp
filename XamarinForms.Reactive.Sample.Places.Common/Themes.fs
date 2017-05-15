@@ -1,4 +1,4 @@
-﻿namespace XamarinForms.Reactive.Samples.Common
+﻿namespace XamarinForms.Reactive.Sample.Places.Common
 
 module Themes =
     open XamarinForms.Reactive.FSharp.Themes

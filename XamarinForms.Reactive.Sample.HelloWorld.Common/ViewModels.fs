@@ -1,4 +1,4 @@
-﻿namespace XamarinForms.Reactive.Samples.Common
+﻿namespace XamarinForms.Reactive.Sample.HelloWorld.Common
 
 open System.Threading.Tasks
 open System.Reactive.Linq

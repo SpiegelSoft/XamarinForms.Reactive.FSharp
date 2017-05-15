@@ -4,26 +4,16 @@ open System.IO
 open System
 
 open Xamarin.Forms.Platform.Android
-open Xamarin.Forms.Maps
 
 open ReactiveUI
 
 open Android.Content.PM
-open Android.Content
-open Android.Runtime
-open Android.Widget
-open Android.Views
 open Android.App
-open Android.OS
 
-open XamarinForms.Reactive.Samples.Common
+open XamarinForms.Reactive.Sample.HelloWorld.Common
 open XamarinForms.Reactive.FSharp
 
-open ReactiveUI.XamForms
-
 open Xamarin.Forms
-
-open Splat
 
 type DroidPlatform() =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
@@ -34,7 +24,7 @@ type DroidPlatform() =
 
 [<assembly: ExportRendererAttribute (typeof<TabbedPage>, typeof<TabbedPageRenderer>)>] do ()
 
-[<Activity (Label = "Sample App", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
+[<Activity (Label = "XRF Hello World", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsApplicationActivity()
     let createDashboardViewModel() = new DashboardViewModel() :> IRoutableViewModel

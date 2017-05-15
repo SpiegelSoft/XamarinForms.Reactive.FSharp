@@ -21,10 +21,10 @@
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
     <TargetFrameworkProfile />
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <Name>XamarinForms.Reactive.Samples.Droid</Name>
+    <Name>XamarinForms.Reactive.Sample.HelloWorld.Droid</Name>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <SelectedDevice>Samsung SM-G925F</SelectedDevice>
+    <SelectedDevice>5.1" Marshmallow (6.0.0) XXHDPI Phone</SelectedDevice>
     <DefaultDevice>5.1" Marshmallow (6.0.0) XXHDPI Phone</DefaultDevice>
     <AndroidTlsProvider>
     </AndroidTlsProvider>
@@ -203,9 +203,10 @@
       <Project>{df0b27fa-6e7d-4e1e-8a6b-02719ba4412c}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\XamarinForms.Reactive.Samples.Common\XamarinForms.Reactive.Samples.Common.fsproj">
-      <Project>{C4567B69-79A9-4FC1-BBA8-04F751C2A0FD}</Project>
-      <Name>XamarinForms.Reactive.Samples.Common</Name>
+    <ProjectReference Include="..\XamarinForms.Reactive.Sample.HelloWorld.Common\XamarinForms.Reactive.Sample.HelloWorld.Common.fsproj">
+      <Name>XamarinForms.Reactive.Sample.HelloWorld.Common</Name>
+      <Project>{c4567b69-79a9-4fc1-bba8-04f751c2a0fd}</Project>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

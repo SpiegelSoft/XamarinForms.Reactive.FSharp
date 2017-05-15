@@ -8,8 +8,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>XamarinForms.Reactive.Samples.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>XamarinForms.Reactive.Samples.iOS</AssemblyName>
-    <Name>XamarinForms.Reactive.Samples.iOS</Name>
+    <AssemblyName>XamarinForms.Reactive.Sample.HelloWorkd.iOS</AssemblyName>
+    <Name>XamarinForms.Reactive.Sample.HelloWorld.iOS</Name>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -171,11 +171,6 @@
     <ProjectReference Include="..\XamarinForms.Reactive.FSharp\XamarinForms.Reactive.FSharp.fsproj">
       <Name>XamarinForms.Reactive.FSharp</Name>
       <Project>{df0b27fa-6e7d-4e1e-8a6b-02719ba4412c}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\XamarinForms.Reactive.Samples.Common\XamarinForms.Reactive.Samples.Common.fsproj">
-      <Name>XamarinForms.Reactive.Samples.Common</Name>
-      <Project>{c4567b69-79a9-4fc1-bba8-04f751c2a0fd}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
