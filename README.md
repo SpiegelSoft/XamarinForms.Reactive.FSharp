@@ -309,3 +309,13 @@ In the sample projects, this can't be done. All ViewModels are defined in the fi
 
 Well that sounds good, but what if someone ignores the convention, and adds a `ViewModel` somewhere after its `View` in the codebase? Well then the compiler will break because  the `View` no longer recognises its `ViewModel`, and by convention, all of our views know about their viewmodels explicitly, because under the covers they implement the `IViewFor<MyViewModel>` interface. Of course, there may be a clever way around all of this, using F# augmentations or extensions, but the point is, this will be hard to do. It will be much easier, and crucially far less time-consuming, to stick to the MVVM architecture. Define your `ViewModel` in `ViewModels.fs`, and your view in `Views.fs`. Bind your view to the relevant `ViewModel` properties, and use TDD to test that your `ViewModel` sets its properties in a sensible, rational way.
 
+### Running the Samples
+
+To see how XRF can be used in practice, you can fire up the samples. There are more on the way, but for now we have
+
+* [Hello World (Android)](https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp/tree/master/XamarinForms.Reactive.Sample.HelloWorld.Droid),  [Hello World (iOS)](https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp/tree/master/XamarinForms.Reactive.Sample.HelloWorld.iOS): A demo of basic core functionality, including the use of messageboxes and tabbed pages.
+* [Places (Android)] (https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp/tree/master/XamarinForms.Reactive.Sample.Places.Droid): An implementation of the Google Places API using an Android app.
+
+<aside class="warning">
+Because I don't want to share my private Google API keys in a public repository, the `AndroidManifest.xml` files are missing from the Android projects. You need to add these in yourself.
+</aside>
