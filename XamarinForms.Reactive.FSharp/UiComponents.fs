@@ -60,6 +60,8 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
                 this.MoveToRegion(MapSpan.FromCenterAndRadius(this.Center |> XamarinGeographic.position, this.Radius |> XamarinGeographic.distance))
         | _ -> propertyName |> ignore
 
+type MapSearchBar() = inherit SearchBar()
+
 type HyperlinkLabel() =
     inherit Label()
     member this.AddCommand command = this.GestureRecognizers.Add(new TapGestureRecognizer(Command = command))
@@ -119,8 +121,6 @@ module ViewHelpers =
     let withDataTemplate (template: unit -> ViewCell) (element: #ListView) = element.ItemTemplate <- new DataTemplate(fun () -> template() :> obj)
 
 module Themes =
-    open Xamarin.Forms
-
     let withBlocks (views:View[]) (stackLayout: StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
     let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
@@ -197,6 +197,7 @@ module Themes =
             EntryStyle: Style
             EditorStyle: Style
             SearchBarStyle: Style
+            MapSearchBarStyle: Style
             ImageStyle: Style
             SwitchStyle: Style
             ListViewStyle: Style
@@ -216,6 +217,7 @@ module Themes =
             Styles: Styles
         }
         member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
+        member this.GenerateMapSearchBar([<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> apply setUp
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
         member this.GenerateButton([<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> apply setUp
         member this.GenerateLabel([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.LabelStyle) |> apply setUp
@@ -276,6 +278,7 @@ module Themes =
                     EntryStyle = new Style(typeof<Entry>)
                     EditorStyle = new Style(typeof<Editor>)
                     SearchBarStyle = new Style(typeof<SearchBar>)
+                    MapSearchBarStyle = new Style(typeof<MapSearchBar>)
                     ImageStyle = new Style(typeof<Image>)
                     SwitchStyle = new Style(typeof<Switch>)
                     ListViewStyle = new Style(typeof<ListView>)
