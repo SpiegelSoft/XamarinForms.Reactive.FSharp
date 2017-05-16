@@ -23,10 +23,10 @@ namespace XamarinForms.Reactive.FSharp.Android
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException2a89d837ce0d459b89599a4f502fbe6c of obj
-    exception ReturnNoneException2a89d837ce0d459b89599a4f502fbe6c
+    exception ReturnException2632c6d92e1a41348a03f8af0bd320bf of obj
+    exception ReturnNoneException2632c6d92e1a41348a03f8af0bd320bf
     [<AutoOpen>]
-    module FuncConvertFinalOverload2a89d837ce0d459b89599a4f502fbe6c =
+    module FuncConvertFinalOverload2632c6d92e1a41348a03f8af0bd320bf =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
@@ -1629,443 +1629,467 @@ namespace XamarinForms.Reactive.FSharp.Android
         
         (* partial *)Resource_Color () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f090052
+            // aapt resource value: 0x7f070058
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_background_cache_hint_selector_material_dark:int
             
-            // aapt resource value: 0x7f090053
+            // aapt resource value: 0x7f070059
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_background_cache_hint_selector_material_light:int
             
-            // aapt resource value: 0x7f090054
+            // aapt resource value: 0x7f07005a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_btn_colored_borderless_text_material:int
             
-            // aapt resource value: 0x7f090055
+            // aapt resource value: 0x7f07005b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_btn_colored_text_material:int
             
-            // aapt resource value: 0x7f090056
+            // aapt resource value: 0x7f07005c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_color_highlight_material:int
             
-            // aapt resource value: 0x7f090057
+            // aapt resource value: 0x7f07005d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_hint_foreground_material_dark:int
             
-            // aapt resource value: 0x7f090058
+            // aapt resource value: 0x7f07005e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_hint_foreground_material_light:int
             
-            // aapt resource value: 0x7f09000d
+            // aapt resource value: 0x7f070013
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_input_method_navigation_guard:int
             
-            // aapt resource value: 0x7f090059
+            // aapt resource value: 0x7f07005f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_primary_text_disable_only_material_dark:int
             
-            // aapt resource value: 0x7f09005a
+            // aapt resource value: 0x7f070060
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_primary_text_disable_only_material_light:int
             
-            // aapt resource value: 0x7f09005b
+            // aapt resource value: 0x7f070061
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_primary_text_material_dark:int
             
-            // aapt resource value: 0x7f09005c
+            // aapt resource value: 0x7f070062
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_primary_text_material_light:int
             
-            // aapt resource value: 0x7f09005d
+            // aapt resource value: 0x7f070063
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_search_url_text:int
             
-            // aapt resource value: 0x7f09000e
+            // aapt resource value: 0x7f070014
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_search_url_text_normal:int
             
-            // aapt resource value: 0x7f09000f
+            // aapt resource value: 0x7f070015
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_search_url_text_pressed:int
             
-            // aapt resource value: 0x7f090010
+            // aapt resource value: 0x7f070016
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_search_url_text_selected:int
             
-            // aapt resource value: 0x7f09005e
+            // aapt resource value: 0x7f070064
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_secondary_text_material_dark:int
             
-            // aapt resource value: 0x7f09005f
+            // aapt resource value: 0x7f070065
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_secondary_text_material_light:int
             
-            // aapt resource value: 0x7f090060
+            // aapt resource value: 0x7f070066
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_tint_btn_checkable:int
             
-            // aapt resource value: 0x7f090061
+            // aapt resource value: 0x7f070067
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_tint_default:int
             
-            // aapt resource value: 0x7f090062
+            // aapt resource value: 0x7f070068
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_tint_edittext:int
             
-            // aapt resource value: 0x7f090063
+            // aapt resource value: 0x7f070069
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_tint_seek_thumb:int
             
-            // aapt resource value: 0x7f090064
+            // aapt resource value: 0x7f07006a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_tint_spinner:int
             
-            // aapt resource value: 0x7f090065
+            // aapt resource value: 0x7f07006b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_tint_switch_thumb:int
             
-            // aapt resource value: 0x7f090066
+            // aapt resource value: 0x7f07006c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_tint_switch_track:int
             
-            // aapt resource value: 0x7f090011
+            // aapt resource value: 0x7f070017
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private accent_material_dark:int
             
-            // aapt resource value: 0x7f090012
+            // aapt resource value: 0x7f070018
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private accent_material_light:int
             
-            // aapt resource value: 0x7f090013
+            // aapt resource value: 0x7f070019
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private background_floating_material_dark:int
             
-            // aapt resource value: 0x7f090014
+            // aapt resource value: 0x7f07001a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private background_floating_material_light:int
             
-            // aapt resource value: 0x7f090015
+            // aapt resource value: 0x7f07001b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private background_material_dark:int
             
-            // aapt resource value: 0x7f090016
+            // aapt resource value: 0x7f07001c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private background_material_light:int
             
-            // aapt resource value: 0x7f090017
+            // aapt resource value: 0x7f07001d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bright_foreground_disabled_material_dark:int
             
-            // aapt resource value: 0x7f090018
+            // aapt resource value: 0x7f07001e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bright_foreground_disabled_material_light:int
             
-            // aapt resource value: 0x7f090019
+            // aapt resource value: 0x7f07001f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bright_foreground_inverse_material_dark:int
             
-            // aapt resource value: 0x7f09001a
+            // aapt resource value: 0x7f070020
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bright_foreground_inverse_material_light:int
             
-            // aapt resource value: 0x7f09001b
+            // aapt resource value: 0x7f070021
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bright_foreground_material_dark:int
             
-            // aapt resource value: 0x7f09001c
+            // aapt resource value: 0x7f070022
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bright_foreground_material_light:int
             
-            // aapt resource value: 0x7f09001d
+            // aapt resource value: 0x7f070023
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private button_material_dark:int
             
-            // aapt resource value: 0x7f09001e
+            // aapt resource value: 0x7f070024
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private button_material_light:int
             
-            // aapt resource value: 0x7f090008
+            // aapt resource value: 0x7f07000e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cardview_dark_background:int
             
-            // aapt resource value: 0x7f090009
+            // aapt resource value: 0x7f07000f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cardview_light_background:int
             
-            // aapt resource value: 0x7f09000a
+            // aapt resource value: 0x7f070010
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cardview_shadow_end_color:int
             
-            // aapt resource value: 0x7f09000b
+            // aapt resource value: 0x7f070011
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cardview_shadow_start_color:int
             
-            // aapt resource value: 0x7f090067
+            // aapt resource value: 0x7f07006d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_dark:int
             
-            // aapt resource value: 0x7f090000
+            // aapt resource value: 0x7f070006
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_dark_default:int
             
-            // aapt resource value: 0x7f090001
+            // aapt resource value: 0x7f070007
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_dark_disabled:int
             
-            // aapt resource value: 0x7f090002
+            // aapt resource value: 0x7f070008
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_dark_focused:int
             
-            // aapt resource value: 0x7f090003
+            // aapt resource value: 0x7f070009
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_dark_pressed:int
             
-            // aapt resource value: 0x7f090068
+            // aapt resource value: 0x7f07006e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_light:int
             
-            // aapt resource value: 0x7f090004
+            // aapt resource value: 0x7f07000a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_light_default:int
             
-            // aapt resource value: 0x7f090005
+            // aapt resource value: 0x7f07000b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_light_disabled:int
             
-            // aapt resource value: 0x7f090006
+            // aapt resource value: 0x7f07000c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_light_focused:int
             
-            // aapt resource value: 0x7f090007
+            // aapt resource value: 0x7f07000d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_text_light_pressed:int
             
-            // aapt resource value: 0x7f090069
+            // aapt resource value: 0x7f07006f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_signin_btn_tint:int
             
-            // aapt resource value: 0x7f090047
+            // aapt resource value: 0x7f07004d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_shadow_color:int
             
-            // aapt resource value: 0x7f09006a
+            // aapt resource value: 0x7f070070
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_error:int
             
-            // aapt resource value: 0x7f090048
+            // aapt resource value: 0x7f07004e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_shadow_end_color:int
             
-            // aapt resource value: 0x7f090049
+            // aapt resource value: 0x7f07004f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_shadow_mid_color:int
             
-            // aapt resource value: 0x7f09004a
+            // aapt resource value: 0x7f070050
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_shadow_start_color:int
             
-            // aapt resource value: 0x7f09004b
+            // aapt resource value: 0x7f070051
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_stroke_end_inner_color:int
             
-            // aapt resource value: 0x7f09004c
+            // aapt resource value: 0x7f070052
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_stroke_end_outer_color:int
             
-            // aapt resource value: 0x7f09004d
+            // aapt resource value: 0x7f070053
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_stroke_top_inner_color:int
             
-            // aapt resource value: 0x7f09004e
+            // aapt resource value: 0x7f070054
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_stroke_top_outer_color:int
             
-            // aapt resource value: 0x7f09004f
+            // aapt resource value: 0x7f070055
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_background_color:int
             
-            // aapt resource value: 0x7f090050
+            // aapt resource value: 0x7f070056
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_textinput_error_color_dark:int
             
-            // aapt resource value: 0x7f090051
+            // aapt resource value: 0x7f070057
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_textinput_error_color_light:int
             
-            // aapt resource value: 0x7f09006b
+            // aapt resource value: 0x7f070071
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_tint_password_toggle:int
             
-            // aapt resource value: 0x7f09001f
+            // aapt resource value: 0x7f070025
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private dim_foreground_disabled_material_dark:int
             
-            // aapt resource value: 0x7f090020
+            // aapt resource value: 0x7f070026
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private dim_foreground_disabled_material_light:int
             
-            // aapt resource value: 0x7f090021
+            // aapt resource value: 0x7f070027
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private dim_foreground_material_dark:int
             
-            // aapt resource value: 0x7f090022
+            // aapt resource value: 0x7f070028
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private dim_foreground_material_light:int
             
-            // aapt resource value: 0x7f090023
+            // aapt resource value: 0x7f070029
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private foreground_material_dark:int
             
-            // aapt resource value: 0x7f090024
+            // aapt resource value: 0x7f07002a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private foreground_material_light:int
             
-            // aapt resource value: 0x7f090025
+            // aapt resource value: 0x7f07002b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private highlighted_text_material_dark:int
             
-            // aapt resource value: 0x7f090026
+            // aapt resource value: 0x7f07002c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private highlighted_text_material_light:int
             
-            // aapt resource value: 0x7f090027
+            // aapt resource value: 0x7f07002d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_blue_grey_800:int
             
-            // aapt resource value: 0x7f090028
+            // aapt resource value: 0x7f07002e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_blue_grey_900:int
             
-            // aapt resource value: 0x7f090029
+            // aapt resource value: 0x7f07002f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_blue_grey_950:int
             
-            // aapt resource value: 0x7f09002a
+            // aapt resource value: 0x7f070030
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_deep_teal_200:int
             
-            // aapt resource value: 0x7f09002b
+            // aapt resource value: 0x7f070031
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_deep_teal_500:int
             
-            // aapt resource value: 0x7f09002c
+            // aapt resource value: 0x7f070032
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_grey_100:int
             
-            // aapt resource value: 0x7f09002d
+            // aapt resource value: 0x7f070033
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_grey_300:int
             
-            // aapt resource value: 0x7f09002e
+            // aapt resource value: 0x7f070034
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_grey_50:int
             
-            // aapt resource value: 0x7f09002f
+            // aapt resource value: 0x7f070035
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_grey_600:int
             
-            // aapt resource value: 0x7f090030
+            // aapt resource value: 0x7f070036
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_grey_800:int
             
-            // aapt resource value: 0x7f090031
+            // aapt resource value: 0x7f070037
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_grey_850:int
             
-            // aapt resource value: 0x7f090032
+            // aapt resource value: 0x7f070038
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private material_grey_900:int
             
-            // aapt resource value: 0x7f09000c
+            // aapt resource value: 0x7f070012
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_action_color_filter:int
             
-            // aapt resource value: 0x7f090033
+            // aapt resource value: 0x7f070039
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_icon_bg_color:int
             
-            // aapt resource value: 0x7f090034
+            // aapt resource value: 0x7f07003a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_material_background_media_default_color:int
             
-            // aapt resource value: 0x7f090035
+            // aapt resource value: 0x7f070000
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_primary_text:int
+            
+            // aapt resource value: 0x7f070001
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_primary_text_highlight:int
+            
+            // aapt resource value: 0x7f070002
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_secondary_text:int
+            
+            // aapt resource value: 0x7f070003
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_search_hint:int
+            
+            // aapt resource value: 0x7f070004
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_search_text:int
+            
+            // aapt resource value: 0x7f070005
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_separator:int
+            
+            // aapt resource value: 0x7f07003b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_dark_material_dark:int
             
-            // aapt resource value: 0x7f090036
+            // aapt resource value: 0x7f07003c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_dark_material_light:int
             
-            // aapt resource value: 0x7f090037
+            // aapt resource value: 0x7f07003d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_material_dark:int
             
-            // aapt resource value: 0x7f090038
+            // aapt resource value: 0x7f07003e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_material_light:int
             
-            // aapt resource value: 0x7f090039
+            // aapt resource value: 0x7f07003f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_text_default_material_dark:int
             
-            // aapt resource value: 0x7f09003a
+            // aapt resource value: 0x7f070040
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_text_default_material_light:int
             
-            // aapt resource value: 0x7f09003b
+            // aapt resource value: 0x7f070041
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_text_disabled_material_dark:int
             
-            // aapt resource value: 0x7f09003c
+            // aapt resource value: 0x7f070042
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private primary_text_disabled_material_light:int
             
-            // aapt resource value: 0x7f09003d
+            // aapt resource value: 0x7f070043
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private ripple_material_dark:int
             
-            // aapt resource value: 0x7f09003e
+            // aapt resource value: 0x7f070044
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private ripple_material_light:int
             
-            // aapt resource value: 0x7f09003f
+            // aapt resource value: 0x7f070045
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private secondary_text_default_material_dark:int
             
-            // aapt resource value: 0x7f090040
+            // aapt resource value: 0x7f070046
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private secondary_text_default_material_light:int
             
-            // aapt resource value: 0x7f090041
+            // aapt resource value: 0x7f070047
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private secondary_text_disabled_material_dark:int
             
-            // aapt resource value: 0x7f090042
+            // aapt resource value: 0x7f070048
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private secondary_text_disabled_material_light:int
             
-            // aapt resource value: 0x7f090043
+            // aapt resource value: 0x7f070049
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private switch_thumb_disabled_material_dark:int
             
-            // aapt resource value: 0x7f090044
+            // aapt resource value: 0x7f07004a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private switch_thumb_disabled_material_light:int
             
-            // aapt resource value: 0x7f09006c
+            // aapt resource value: 0x7f070072
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private switch_thumb_material_dark:int
             
-            // aapt resource value: 0x7f09006d
+            // aapt resource value: 0x7f070073
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private switch_thumb_material_light:int
             
-            // aapt resource value: 0x7f090045
+            // aapt resource value: 0x7f07004b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private switch_thumb_normal_material_dark:int
             
-            // aapt resource value: 0x7f090046
+            // aapt resource value: 0x7f07004c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private switch_thumb_normal_material_light:int
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
@@ -2076,597 +2100,637 @@ namespace XamarinForms.Reactive.FSharp.Android
         
         (* partial *)Resource_Dimension () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f0a0018
+            // aapt resource value: 0x7f080022
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_content_inset_material:int
             
-            // aapt resource value: 0x7f0a0019
+            // aapt resource value: 0x7f080023
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_content_inset_with_nav:int
             
-            // aapt resource value: 0x7f0a000d
+            // aapt resource value: 0x7f080017
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_default_height_material:int
             
-            // aapt resource value: 0x7f0a001a
+            // aapt resource value: 0x7f080024
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_default_padding_end_material:int
             
-            // aapt resource value: 0x7f0a001b
+            // aapt resource value: 0x7f080025
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_default_padding_start_material:int
             
-            // aapt resource value: 0x7f0a0021
+            // aapt resource value: 0x7f08002b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_elevation_material:int
             
-            // aapt resource value: 0x7f0a0022
+            // aapt resource value: 0x7f08002c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_icon_vertical_padding_material:int
             
-            // aapt resource value: 0x7f0a0023
+            // aapt resource value: 0x7f08002d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_overflow_padding_end_material:int
             
-            // aapt resource value: 0x7f0a0024
+            // aapt resource value: 0x7f08002e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_overflow_padding_start_material:int
             
-            // aapt resource value: 0x7f0a000e
+            // aapt resource value: 0x7f080018
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_progress_bar_size:int
             
-            // aapt resource value: 0x7f0a0025
+            // aapt resource value: 0x7f08002f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_stacked_max_height:int
             
-            // aapt resource value: 0x7f0a0026
+            // aapt resource value: 0x7f080030
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_stacked_tab_max_width:int
             
-            // aapt resource value: 0x7f0a0027
+            // aapt resource value: 0x7f080031
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_subtitle_bottom_margin_material:int
             
-            // aapt resource value: 0x7f0a0028
+            // aapt resource value: 0x7f080032
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_subtitle_top_margin_material:int
             
-            // aapt resource value: 0x7f0a0029
+            // aapt resource value: 0x7f080033
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_button_min_height_material:int
             
-            // aapt resource value: 0x7f0a002a
+            // aapt resource value: 0x7f080034
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_button_min_width_material:int
             
-            // aapt resource value: 0x7f0a002b
+            // aapt resource value: 0x7f080035
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_button_min_width_overflow_material:int
             
-            // aapt resource value: 0x7f0a000c
+            // aapt resource value: 0x7f080016
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_alert_dialog_button_bar_height:int
             
-            // aapt resource value: 0x7f0a002c
+            // aapt resource value: 0x7f080036
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_button_inset_horizontal_material:int
             
-            // aapt resource value: 0x7f0a002d
+            // aapt resource value: 0x7f080037
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_button_inset_vertical_material:int
             
-            // aapt resource value: 0x7f0a002e
+            // aapt resource value: 0x7f080038
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_button_padding_horizontal_material:int
             
-            // aapt resource value: 0x7f0a002f
+            // aapt resource value: 0x7f080039
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_button_padding_vertical_material:int
             
-            // aapt resource value: 0x7f0a0030
+            // aapt resource value: 0x7f08003a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_cascading_menus_min_smallest_width:int
             
-            // aapt resource value: 0x7f0a0011
+            // aapt resource value: 0x7f08001b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_config_prefDialogWidth:int
             
-            // aapt resource value: 0x7f0a0031
+            // aapt resource value: 0x7f08003b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_control_corner_material:int
             
-            // aapt resource value: 0x7f0a0032
+            // aapt resource value: 0x7f08003c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_control_inset_material:int
             
-            // aapt resource value: 0x7f0a0033
+            // aapt resource value: 0x7f08003d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_control_padding_material:int
             
-            // aapt resource value: 0x7f0a0012
+            // aapt resource value: 0x7f08001c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_fixed_height_major:int
             
-            // aapt resource value: 0x7f0a0013
+            // aapt resource value: 0x7f08001d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_fixed_height_minor:int
             
-            // aapt resource value: 0x7f0a0014
+            // aapt resource value: 0x7f08001e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_fixed_width_major:int
             
-            // aapt resource value: 0x7f0a0015
+            // aapt resource value: 0x7f08001f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_fixed_width_minor:int
             
-            // aapt resource value: 0x7f0a0034
+            // aapt resource value: 0x7f08003e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_list_padding_bottom_no_buttons:int
             
-            // aapt resource value: 0x7f0a0035
+            // aapt resource value: 0x7f08003f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_list_padding_top_no_title:int
             
-            // aapt resource value: 0x7f0a0016
+            // aapt resource value: 0x7f080020
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_min_width_major:int
             
-            // aapt resource value: 0x7f0a0017
+            // aapt resource value: 0x7f080021
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_min_width_minor:int
             
-            // aapt resource value: 0x7f0a0036
+            // aapt resource value: 0x7f080040
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_padding_material:int
             
-            // aapt resource value: 0x7f0a0037
+            // aapt resource value: 0x7f080041
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_padding_top_material:int
             
-            // aapt resource value: 0x7f0a0038
+            // aapt resource value: 0x7f080042
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dialog_title_divider_material:int
             
-            // aapt resource value: 0x7f0a0039
+            // aapt resource value: 0x7f080043
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_disabled_alpha_material_dark:int
             
-            // aapt resource value: 0x7f0a003a
+            // aapt resource value: 0x7f080044
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_disabled_alpha_material_light:int
             
-            // aapt resource value: 0x7f0a003b
+            // aapt resource value: 0x7f080045
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dropdownitem_icon_width:int
             
-            // aapt resource value: 0x7f0a003c
+            // aapt resource value: 0x7f080046
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dropdownitem_text_padding_left:int
             
-            // aapt resource value: 0x7f0a003d
+            // aapt resource value: 0x7f080047
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_dropdownitem_text_padding_right:int
             
-            // aapt resource value: 0x7f0a003e
+            // aapt resource value: 0x7f080048
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_edit_text_inset_bottom_material:int
             
-            // aapt resource value: 0x7f0a003f
+            // aapt resource value: 0x7f080049
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_edit_text_inset_horizontal_material:int
             
-            // aapt resource value: 0x7f0a0040
+            // aapt resource value: 0x7f08004a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_edit_text_inset_top_material:int
             
-            // aapt resource value: 0x7f0a0041
+            // aapt resource value: 0x7f08004b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_floating_window_z:int
             
-            // aapt resource value: 0x7f0a0042
+            // aapt resource value: 0x7f08004c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_list_item_padding_horizontal_material:int
             
-            // aapt resource value: 0x7f0a0043
+            // aapt resource value: 0x7f08004d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_panel_menu_list_width:int
             
-            // aapt resource value: 0x7f0a0044
+            // aapt resource value: 0x7f08004e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_progress_bar_height_material:int
             
-            // aapt resource value: 0x7f0a0045
+            // aapt resource value: 0x7f08004f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_search_view_preferred_height:int
             
-            // aapt resource value: 0x7f0a0046
+            // aapt resource value: 0x7f080050
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_search_view_preferred_width:int
             
-            // aapt resource value: 0x7f0a0047
+            // aapt resource value: 0x7f080051
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_seekbar_track_background_height_material:int
             
-            // aapt resource value: 0x7f0a0048
+            // aapt resource value: 0x7f080052
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_seekbar_track_progress_height_material:int
             
-            // aapt resource value: 0x7f0a0049
+            // aapt resource value: 0x7f080053
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_select_dialog_padding_start_material:int
             
-            // aapt resource value: 0x7f0a001d
+            // aapt resource value: 0x7f080027
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_switch_padding:int
             
-            // aapt resource value: 0x7f0a004a
+            // aapt resource value: 0x7f080054
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_body_1_material:int
             
-            // aapt resource value: 0x7f0a004b
+            // aapt resource value: 0x7f080055
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_body_2_material:int
             
-            // aapt resource value: 0x7f0a004c
+            // aapt resource value: 0x7f080056
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_button_material:int
             
-            // aapt resource value: 0x7f0a004d
+            // aapt resource value: 0x7f080057
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_caption_material:int
             
-            // aapt resource value: 0x7f0a004e
+            // aapt resource value: 0x7f080058
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_display_1_material:int
             
-            // aapt resource value: 0x7f0a004f
+            // aapt resource value: 0x7f080059
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_display_2_material:int
             
-            // aapt resource value: 0x7f0a0050
+            // aapt resource value: 0x7f08005a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_display_3_material:int
             
-            // aapt resource value: 0x7f0a0051
+            // aapt resource value: 0x7f08005b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_display_4_material:int
             
-            // aapt resource value: 0x7f0a0052
+            // aapt resource value: 0x7f08005c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_headline_material:int
             
-            // aapt resource value: 0x7f0a0053
+            // aapt resource value: 0x7f08005d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_large_material:int
             
-            // aapt resource value: 0x7f0a0054
+            // aapt resource value: 0x7f08005e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_medium_material:int
             
-            // aapt resource value: 0x7f0a0055
+            // aapt resource value: 0x7f08005f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_menu_header_material:int
             
-            // aapt resource value: 0x7f0a0056
+            // aapt resource value: 0x7f080060
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_menu_material:int
             
-            // aapt resource value: 0x7f0a0057
+            // aapt resource value: 0x7f080061
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_small_material:int
             
-            // aapt resource value: 0x7f0a0058
+            // aapt resource value: 0x7f080062
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_subhead_material:int
             
-            // aapt resource value: 0x7f0a000f
+            // aapt resource value: 0x7f080019
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_subtitle_material_toolbar:int
             
-            // aapt resource value: 0x7f0a0059
+            // aapt resource value: 0x7f080063
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_title_material:int
             
-            // aapt resource value: 0x7f0a0010
+            // aapt resource value: 0x7f08001a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_text_size_title_material_toolbar:int
             
-            // aapt resource value: 0x7f0a0009
+            // aapt resource value: 0x7f080013
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cardview_compat_inset_shadow:int
             
-            // aapt resource value: 0x7f0a000a
+            // aapt resource value: 0x7f080014
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cardview_default_elevation:int
             
-            // aapt resource value: 0x7f0a000b
+            // aapt resource value: 0x7f080015
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cardview_default_radius:int
             
-            // aapt resource value: 0x7f0a0076
+            // aapt resource value: 0x7f080080
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_appbar_elevation:int
             
-            // aapt resource value: 0x7f0a0077
+            // aapt resource value: 0x7f080081
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_active_item_max_width:int
             
-            // aapt resource value: 0x7f0a0078
+            // aapt resource value: 0x7f080082
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_active_text_size:int
             
-            // aapt resource value: 0x7f0a0079
+            // aapt resource value: 0x7f080083
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_elevation:int
             
-            // aapt resource value: 0x7f0a007a
+            // aapt resource value: 0x7f080084
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_height:int
             
-            // aapt resource value: 0x7f0a007b
+            // aapt resource value: 0x7f080085
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_item_max_width:int
             
-            // aapt resource value: 0x7f0a007c
+            // aapt resource value: 0x7f080086
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_item_min_width:int
             
-            // aapt resource value: 0x7f0a007d
+            // aapt resource value: 0x7f080087
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_margin:int
             
-            // aapt resource value: 0x7f0a007e
+            // aapt resource value: 0x7f080088
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_shadow_height:int
             
-            // aapt resource value: 0x7f0a007f
+            // aapt resource value: 0x7f080089
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_navigation_text_size:int
             
-            // aapt resource value: 0x7f0a0080
+            // aapt resource value: 0x7f08008a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_sheet_modal_elevation:int
             
-            // aapt resource value: 0x7f0a0081
+            // aapt resource value: 0x7f08008b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_bottom_sheet_peek_height_min:int
             
-            // aapt resource value: 0x7f0a0082
+            // aapt resource value: 0x7f08008c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_border_width:int
             
-            // aapt resource value: 0x7f0a0083
+            // aapt resource value: 0x7f08008d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_elevation:int
             
-            // aapt resource value: 0x7f0a0084
+            // aapt resource value: 0x7f08008e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_image_size:int
             
-            // aapt resource value: 0x7f0a0085
+            // aapt resource value: 0x7f08008f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_size_mini:int
             
-            // aapt resource value: 0x7f0a0086
+            // aapt resource value: 0x7f080090
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_size_normal:int
             
-            // aapt resource value: 0x7f0a0087
+            // aapt resource value: 0x7f080091
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_fab_translation_z_pressed:int
             
-            // aapt resource value: 0x7f0a0088
+            // aapt resource value: 0x7f080092
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_navigation_elevation:int
             
-            // aapt resource value: 0x7f0a0089
+            // aapt resource value: 0x7f080093
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_navigation_icon_padding:int
             
-            // aapt resource value: 0x7f0a008a
+            // aapt resource value: 0x7f080094
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_navigation_icon_size:int
             
-            // aapt resource value: 0x7f0a006e
+            // aapt resource value: 0x7f080078
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_navigation_max_width:int
             
-            // aapt resource value: 0x7f0a008b
+            // aapt resource value: 0x7f080095
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_navigation_padding_bottom:int
             
-            // aapt resource value: 0x7f0a008c
+            // aapt resource value: 0x7f080096
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_navigation_separator_vertical_padding:int
             
-            // aapt resource value: 0x7f0a006f
+            // aapt resource value: 0x7f080079
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_action_inline_max_width:int
             
-            // aapt resource value: 0x7f0a0070
+            // aapt resource value: 0x7f08007a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_background_corner_radius:int
             
-            // aapt resource value: 0x7f0a008d
+            // aapt resource value: 0x7f080097
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_elevation:int
             
-            // aapt resource value: 0x7f0a0071
+            // aapt resource value: 0x7f08007b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_extra_spacing_horizontal:int
             
-            // aapt resource value: 0x7f0a0072
+            // aapt resource value: 0x7f08007c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_max_width:int
             
-            // aapt resource value: 0x7f0a0073
+            // aapt resource value: 0x7f08007d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_min_width:int
             
-            // aapt resource value: 0x7f0a008e
+            // aapt resource value: 0x7f080098
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_padding_horizontal:int
             
-            // aapt resource value: 0x7f0a008f
+            // aapt resource value: 0x7f080099
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_padding_vertical:int
             
-            // aapt resource value: 0x7f0a0074
+            // aapt resource value: 0x7f08007e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_padding_vertical_2lines:int
             
-            // aapt resource value: 0x7f0a0090
+            // aapt resource value: 0x7f08009a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_text_size:int
             
-            // aapt resource value: 0x7f0a0091
+            // aapt resource value: 0x7f08009b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_tab_max_width:int
             
-            // aapt resource value: 0x7f0a0075
+            // aapt resource value: 0x7f08007f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_tab_scrollable_min_width:int
             
-            // aapt resource value: 0x7f0a0092
+            // aapt resource value: 0x7f08009c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_tab_text_size:int
             
-            // aapt resource value: 0x7f0a0093
+            // aapt resource value: 0x7f08009d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_tab_text_size_2line:int
             
-            // aapt resource value: 0x7f0a005a
+            // aapt resource value: 0x7f080064
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private disabled_alpha_material_dark:int
             
-            // aapt resource value: 0x7f0a005b
+            // aapt resource value: 0x7f080065
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private disabled_alpha_material_light:int
             
-            // aapt resource value: 0x7f0a005c
+            // aapt resource value: 0x7f080066
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private highlight_alpha_material_colored:int
             
-            // aapt resource value: 0x7f0a005d
+            // aapt resource value: 0x7f080067
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private highlight_alpha_material_dark:int
             
-            // aapt resource value: 0x7f0a005e
+            // aapt resource value: 0x7f080068
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private highlight_alpha_material_light:int
             
-            // aapt resource value: 0x7f0a005f
+            // aapt resource value: 0x7f080069
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private hint_alpha_material_dark:int
             
-            // aapt resource value: 0x7f0a0060
+            // aapt resource value: 0x7f08006a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private hint_alpha_material_light:int
             
-            // aapt resource value: 0x7f0a0061
+            // aapt resource value: 0x7f08006b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private hint_pressed_alpha_material_dark:int
             
-            // aapt resource value: 0x7f0a0062
+            // aapt resource value: 0x7f08006c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private hint_pressed_alpha_material_light:int
             
-            // aapt resource value: 0x7f0a0000
+            // aapt resource value: 0x7f08000a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private item_touch_helper_max_drag_scroll_per_frame:int
             
-            // aapt resource value: 0x7f0a0001
+            // aapt resource value: 0x7f08000b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private item_touch_helper_swipe_escape_max_velocity:int
             
-            // aapt resource value: 0x7f0a0002
+            // aapt resource value: 0x7f08000c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private item_touch_helper_swipe_escape_velocity:int
             
-            // aapt resource value: 0x7f0a0003
+            // aapt resource value: 0x7f08000d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_group_list_item_height:int
             
-            // aapt resource value: 0x7f0a0004
+            // aapt resource value: 0x7f08000e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_group_list_item_icon_size:int
             
-            // aapt resource value: 0x7f0a0005
+            // aapt resource value: 0x7f08000f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_group_list_max_height:int
             
-            // aapt resource value: 0x7f0a0008
+            // aapt resource value: 0x7f080012
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_group_list_padding_top:int
             
-            // aapt resource value: 0x7f0a0006
+            // aapt resource value: 0x7f080010
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_dialog_fixed_width_major:int
             
-            // aapt resource value: 0x7f0a0007
+            // aapt resource value: 0x7f080011
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_dialog_fixed_width_minor:int
             
-            // aapt resource value: 0x7f0a0063
+            // aapt resource value: 0x7f08006d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_action_icon_size:int
             
-            // aapt resource value: 0x7f0a0064
+            // aapt resource value: 0x7f08006e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_action_text_size:int
             
-            // aapt resource value: 0x7f0a0065
+            // aapt resource value: 0x7f08006f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_big_circle_margin:int
             
-            // aapt resource value: 0x7f0a001e
+            // aapt resource value: 0x7f080028
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_content_margin_start:int
             
-            // aapt resource value: 0x7f0a0066
+            // aapt resource value: 0x7f080070
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_large_icon_height:int
             
-            // aapt resource value: 0x7f0a0067
+            // aapt resource value: 0x7f080071
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_large_icon_width:int
             
-            // aapt resource value: 0x7f0a001f
+            // aapt resource value: 0x7f080029
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_main_column_padding_top:int
             
-            // aapt resource value: 0x7f0a0020
+            // aapt resource value: 0x7f08002a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_media_narrow_margin:int
             
-            // aapt resource value: 0x7f0a0068
+            // aapt resource value: 0x7f080072
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_right_icon_size:int
             
-            // aapt resource value: 0x7f0a001c
+            // aapt resource value: 0x7f080026
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_right_side_padding_top:int
             
-            // aapt resource value: 0x7f0a0069
+            // aapt resource value: 0x7f080073
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_small_icon_background_padding:int
             
-            // aapt resource value: 0x7f0a006a
+            // aapt resource value: 0x7f080074
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_small_icon_size_as_large:int
             
-            // aapt resource value: 0x7f0a006b
+            // aapt resource value: 0x7f080075
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_subtext_size:int
             
-            // aapt resource value: 0x7f0a006c
+            // aapt resource value: 0x7f080076
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_top_pad:int
             
-            // aapt resource value: 0x7f0a006d
+            // aapt resource value: 0x7f080077
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_top_pad_large_text:int
+            
+            // aapt resource value: 0x7f080000
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_button_padding:int
+            
+            // aapt resource value: 0x7f080001
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_powered_by_google_height:int
+            
+            // aapt resource value: 0x7f080002
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_powered_by_google_start:int
+            
+            // aapt resource value: 0x7f080003
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_height:int
+            
+            // aapt resource value: 0x7f080004
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_horizontal_margin:int
+            
+            // aapt resource value: 0x7f080005
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_primary_text:int
+            
+            // aapt resource value: 0x7f080006
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_secondary_text:int
+            
+            // aapt resource value: 0x7f080007
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_progress_horizontal_margin:int
+            
+            // aapt resource value: 0x7f080008
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_progress_size:int
+            
+            // aapt resource value: 0x7f080009
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_separator_start:int
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
 
 
@@ -3011,15 +3075,15 @@ namespace XamarinForms.Reactive.FSharp.Android
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_hide_password:int
             
-            // aapt resource value: 0x7f020122
+            // aapt resource value: 0x7f020126
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_hide_password_1:int
             
-            // aapt resource value: 0x7f020123
+            // aapt resource value: 0x7f020127
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_hide_password_2:int
             
-            // aapt resource value: 0x7f020124
+            // aapt resource value: 0x7f020128
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_hide_password_3:int
             
@@ -3027,15 +3091,15 @@ namespace XamarinForms.Reactive.FSharp.Android
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_show_password:int
             
-            // aapt resource value: 0x7f020125
+            // aapt resource value: 0x7f020129
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_show_password_1:int
             
-            // aapt resource value: 0x7f020126
+            // aapt resource value: 0x7f02012a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_show_password_2:int
             
-            // aapt resource value: 0x7f020127
+            // aapt resource value: 0x7f02012b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private avd_show_password_3:int
             
@@ -3843,11 +3907,11 @@ namespace XamarinForms.Reactive.FSharp.Android
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_icon_background:int
             
-            // aapt resource value: 0x7f020120
+            // aapt resource value: 0x7f020124
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_template_icon_bg:int
             
-            // aapt resource value: 0x7f020121
+            // aapt resource value: 0x7f020125
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notification_template_icon_low_bg:int
             
@@ -3858,6 +3922,22 @@ namespace XamarinForms.Reactive.FSharp.Android
             // aapt resource value: 0x7f02011f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private notify_panel_notification_icon_bg:int
+            
+            // aapt resource value: 0x7f020120
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private places_ic_clear:int
+            
+            // aapt resource value: 0x7f020121
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private places_ic_search:int
+            
+            // aapt resource value: 0x7f020122
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private powered_by_google_dark:int
+            
+            // aapt resource value: 0x7f020123
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private powered_by_google_light:int
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
 
 
@@ -4186,7 +4266,7 @@ namespace XamarinForms.Reactive.FSharp.Android
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private list_item:int
             
-            // aapt resource value: 0x7f0b00bb
+            // aapt resource value: 0x7f0b00c4
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private masked:int
             
@@ -4345,6 +4425,42 @@ namespace XamarinForms.Reactive.FSharp.Android
             // aapt resource value: 0x7f0b0042
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private pin:int
+            
+            // aapt resource value: 0x7f0b00bc
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_clear_button:int
+            
+            // aapt resource value: 0x7f0b00c2
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_fragment:int
+            
+            // aapt resource value: 0x7f0b00be
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_powered_by_google:int
+            
+            // aapt resource value: 0x7f0b00c0
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_primary_text:int
+            
+            // aapt resource value: 0x7f0b00c1
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_prediction_secondary_text:int
+            
+            // aapt resource value: 0x7f0b00bf
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_progress:int
+            
+            // aapt resource value: 0x7f0b00ba
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_search_button:int
+            
+            // aapt resource value: 0x7f0b00bb
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_search_input:int
+            
+            // aapt resource value: 0x7f0b00bd
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_separator:int
             
             // aapt resource value: 0x7f0b0006
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
@@ -4598,7 +4714,7 @@ namespace XamarinForms.Reactive.FSharp.Android
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private view_offset_helper:int
             
-            // aapt resource value: 0x7f0b00ba
+            // aapt resource value: 0x7f0b00c3
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private visible:int
             
@@ -4625,55 +4741,55 @@ namespace XamarinForms.Reactive.FSharp.Android
         
         (* partial *)Resource_Integer () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f070004
+            // aapt resource value: 0x7f0a0004
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_config_activityDefaultDur:int
             
-            // aapt resource value: 0x7f070005
+            // aapt resource value: 0x7f0a0005
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_config_activityShortDur:int
             
-            // aapt resource value: 0x7f070009
+            // aapt resource value: 0x7f0a0009
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private app_bar_elevation_anim_duration:int
             
-            // aapt resource value: 0x7f07000a
+            // aapt resource value: 0x7f0a000a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bottom_sheet_slide_duration:int
             
-            // aapt resource value: 0x7f070006
+            // aapt resource value: 0x7f0a0006
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private cancel_button_image_alpha:int
             
-            // aapt resource value: 0x7f070008
+            // aapt resource value: 0x7f0a0008
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private design_snackbar_text_max_lines:int
             
-            // aapt resource value: 0x7f070000
+            // aapt resource value: 0x7f0a0000
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private google_play_services_version:int
             
-            // aapt resource value: 0x7f07000b
+            // aapt resource value: 0x7f0a000b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private hide_password_duration:int
             
-            // aapt resource value: 0x7f070001
+            // aapt resource value: 0x7f0a0001
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_group_list_animation_duration_ms:int
             
-            // aapt resource value: 0x7f070002
+            // aapt resource value: 0x7f0a0002
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_group_list_fade_in_duration_ms:int
             
-            // aapt resource value: 0x7f070003
+            // aapt resource value: 0x7f0a0003
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_group_list_fade_out_duration_ms:int
             
-            // aapt resource value: 0x7f07000c
+            // aapt resource value: 0x7f0a000c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private show_password_duration:int
             
-            // aapt resource value: 0x7f070007
+            // aapt resource value: 0x7f0a0007
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private status_bar_notification_info_maxnum:int
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
@@ -4949,17 +5065,37 @@ namespace XamarinForms.Reactive.FSharp.Android
             
             // aapt resource value: 0x7f03003e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
-            static val mutable private select_dialog_item_material:int
+            static val mutable private place_autocomplete_fragment:int
             
             // aapt resource value: 0x7f03003f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
-            static val mutable private select_dialog_multichoice_material:int
+            static val mutable private place_autocomplete_item_powered_by_google:int
             
             // aapt resource value: 0x7f030040
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
-            static val mutable private select_dialog_singlechoice_material:int
+            static val mutable private place_autocomplete_item_prediction:int
             
             // aapt resource value: 0x7f030041
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_progress:int
+            
+            // aapt resource value: 0x7f030042
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private Places:int
+            
+            // aapt resource value: 0x7f030043
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private select_dialog_item_material:int
+            
+            // aapt resource value: 0x7f030044
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private select_dialog_multichoice_material:int
+            
+            // aapt resource value: 0x7f030045
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private select_dialog_singlechoice_material:int
+            
+            // aapt resource value: 0x7f030046
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private support_simple_spinner_dropdown_item:int
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
@@ -4970,325 +5106,337 @@ namespace XamarinForms.Reactive.FSharp.Android
         
         (* partial *)Resource_String () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f080026
+            // aapt resource value: 0x7f090028
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_home_description:int
             
-            // aapt resource value: 0x7f080027
+            // aapt resource value: 0x7f090029
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_home_description_format:int
             
-            // aapt resource value: 0x7f080028
+            // aapt resource value: 0x7f09002a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_home_subtitle_description_format:int
             
-            // aapt resource value: 0x7f080029
+            // aapt resource value: 0x7f09002b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_bar_up_description:int
             
-            // aapt resource value: 0x7f08002a
+            // aapt resource value: 0x7f09002c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_menu_overflow_description:int
             
-            // aapt resource value: 0x7f08002b
+            // aapt resource value: 0x7f09002d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_action_mode_done:int
             
-            // aapt resource value: 0x7f08002c
+            // aapt resource value: 0x7f09002e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_activity_chooser_view_see_all:int
             
-            // aapt resource value: 0x7f08002d
+            // aapt resource value: 0x7f09002f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_activitychooserview_choose_application:int
             
-            // aapt resource value: 0x7f08002e
+            // aapt resource value: 0x7f090030
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_capital_off:int
             
-            // aapt resource value: 0x7f08002f
+            // aapt resource value: 0x7f090031
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_capital_on:int
             
-            // aapt resource value: 0x7f08003b
+            // aapt resource value: 0x7f09003d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_body_1_material:int
             
-            // aapt resource value: 0x7f08003c
+            // aapt resource value: 0x7f09003e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_body_2_material:int
             
-            // aapt resource value: 0x7f08003d
+            // aapt resource value: 0x7f09003f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_button_material:int
             
-            // aapt resource value: 0x7f08003e
+            // aapt resource value: 0x7f090040
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_caption_material:int
             
-            // aapt resource value: 0x7f08003f
+            // aapt resource value: 0x7f090041
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_display_1_material:int
             
-            // aapt resource value: 0x7f080040
+            // aapt resource value: 0x7f090042
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_display_2_material:int
             
-            // aapt resource value: 0x7f080041
+            // aapt resource value: 0x7f090043
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_display_3_material:int
             
-            // aapt resource value: 0x7f080042
+            // aapt resource value: 0x7f090044
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_display_4_material:int
             
-            // aapt resource value: 0x7f080043
+            // aapt resource value: 0x7f090045
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_headline_material:int
             
-            // aapt resource value: 0x7f080044
+            // aapt resource value: 0x7f090046
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_menu_material:int
             
-            // aapt resource value: 0x7f080045
+            // aapt resource value: 0x7f090047
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_subhead_material:int
             
-            // aapt resource value: 0x7f080046
+            // aapt resource value: 0x7f090048
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_font_family_title_material:int
             
-            // aapt resource value: 0x7f080030
+            // aapt resource value: 0x7f090032
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_search_hint:int
             
-            // aapt resource value: 0x7f080031
+            // aapt resource value: 0x7f090033
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_searchview_description_clear:int
             
-            // aapt resource value: 0x7f080032
+            // aapt resource value: 0x7f090034
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_searchview_description_query:int
             
-            // aapt resource value: 0x7f080033
+            // aapt resource value: 0x7f090035
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_searchview_description_search:int
             
-            // aapt resource value: 0x7f080034
+            // aapt resource value: 0x7f090036
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_searchview_description_submit:int
             
-            // aapt resource value: 0x7f080035
+            // aapt resource value: 0x7f090037
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_searchview_description_voice:int
             
-            // aapt resource value: 0x7f080036
+            // aapt resource value: 0x7f090038
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_shareactionprovider_share_with:int
             
-            // aapt resource value: 0x7f080037
+            // aapt resource value: 0x7f090039
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_shareactionprovider_share_with_application:int
             
-            // aapt resource value: 0x7f080038
+            // aapt resource value: 0x7f09003a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private abc_toolbar_collapse_description:int
             
-            // aapt resource value: 0x7f080047
+            // aapt resource value: 0x7f090049
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private appbar_scrolling_view_behavior:int
             
-            // aapt resource value: 0x7f080048
+            // aapt resource value: 0x7f09004a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private bottom_sheet_behavior:int
             
-            // aapt resource value: 0x7f080049
+            // aapt resource value: 0x7f09004b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private character_counter_pattern:int
             
-            // aapt resource value: 0x7f080001
+            // aapt resource value: 0x7f090003
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_enable_button:int
             
-            // aapt resource value: 0x7f080002
+            // aapt resource value: 0x7f090004
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_enable_text:int
             
-            // aapt resource value: 0x7f080003
+            // aapt resource value: 0x7f090005
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_enable_title:int
             
-            // aapt resource value: 0x7f080004
+            // aapt resource value: 0x7f090006
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_install_button:int
             
-            // aapt resource value: 0x7f080005
+            // aapt resource value: 0x7f090007
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_install_text:int
             
-            // aapt resource value: 0x7f080006
+            // aapt resource value: 0x7f090008
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_install_title:int
             
-            // aapt resource value: 0x7f080007
+            // aapt resource value: 0x7f090009
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_notification_ticker:int
             
-            // aapt resource value: 0x7f080000
+            // aapt resource value: 0x7f090002
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_unknown_issue:int
             
-            // aapt resource value: 0x7f080008
+            // aapt resource value: 0x7f09000a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_unsupported_text:int
             
-            // aapt resource value: 0x7f080009
+            // aapt resource value: 0x7f09000b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_update_button:int
             
-            // aapt resource value: 0x7f08000a
+            // aapt resource value: 0x7f09000c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_update_text:int
             
-            // aapt resource value: 0x7f08000b
+            // aapt resource value: 0x7f09000d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_update_title:int
             
-            // aapt resource value: 0x7f08000c
+            // aapt resource value: 0x7f09000e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_updating_text:int
             
-            // aapt resource value: 0x7f08000d
+            // aapt resource value: 0x7f09000f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_google_play_services_wear_update_text:int
             
-            // aapt resource value: 0x7f08000e
+            // aapt resource value: 0x7f090010
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_open_on_phone:int
             
-            // aapt resource value: 0x7f08000f
+            // aapt resource value: 0x7f090011
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_signin_button_text:int
             
-            // aapt resource value: 0x7f080010
+            // aapt resource value: 0x7f090012
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private common_signin_button_text_long:int
             
-            // aapt resource value: 0x7f08004f
+            // aapt resource value: 0x7f090051
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private library_name:int
             
-            // aapt resource value: 0x7f080011
+            // aapt resource value: 0x7f090013
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_button_content_description:int
             
-            // aapt resource value: 0x7f080012
+            // aapt resource value: 0x7f090014
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_cast_button_connected:int
             
-            // aapt resource value: 0x7f080013
+            // aapt resource value: 0x7f090015
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_cast_button_connecting:int
             
-            // aapt resource value: 0x7f080014
+            // aapt resource value: 0x7f090016
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_cast_button_disconnected:int
             
-            // aapt resource value: 0x7f080015
+            // aapt resource value: 0x7f090017
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_chooser_searching:int
             
-            // aapt resource value: 0x7f080016
+            // aapt resource value: 0x7f090018
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_chooser_title:int
             
-            // aapt resource value: 0x7f080017
+            // aapt resource value: 0x7f090019
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_album_art:int
             
-            // aapt resource value: 0x7f080018
+            // aapt resource value: 0x7f09001a
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_casting_screen:int
             
-            // aapt resource value: 0x7f080019
+            // aapt resource value: 0x7f09001b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_close_description:int
             
-            // aapt resource value: 0x7f08001a
+            // aapt resource value: 0x7f09001c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_collapse_group:int
             
-            // aapt resource value: 0x7f08001b
+            // aapt resource value: 0x7f09001d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_disconnect:int
             
-            // aapt resource value: 0x7f08001c
+            // aapt resource value: 0x7f09001e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_expand_group:int
             
-            // aapt resource value: 0x7f08001d
+            // aapt resource value: 0x7f09001f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_no_info_available:int
             
-            // aapt resource value: 0x7f08001e
+            // aapt resource value: 0x7f090020
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_no_media_selected:int
             
-            // aapt resource value: 0x7f08001f
+            // aapt resource value: 0x7f090021
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_pause:int
             
-            // aapt resource value: 0x7f080020
+            // aapt resource value: 0x7f090022
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_play:int
             
-            // aapt resource value: 0x7f080025
+            // aapt resource value: 0x7f090027
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_stop:int
             
-            // aapt resource value: 0x7f080021
+            // aapt resource value: 0x7f090023
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_stop_casting:int
             
-            // aapt resource value: 0x7f080022
+            // aapt resource value: 0x7f090024
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_controller_volume_slider:int
             
-            // aapt resource value: 0x7f080023
+            // aapt resource value: 0x7f090025
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_system_route_name:int
             
-            // aapt resource value: 0x7f080024
+            // aapt resource value: 0x7f090026
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private mr_user_route_category_name:int
             
-            // aapt resource value: 0x7f08004a
+            // aapt resource value: 0x7f09004c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private password_toggle_content_description:int
             
-            // aapt resource value: 0x7f08004b
+            // aapt resource value: 0x7f09004d
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private path_password_eye:int
             
-            // aapt resource value: 0x7f08004c
+            // aapt resource value: 0x7f09004e
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private path_password_eye_mask_strike_through:int
             
-            // aapt resource value: 0x7f08004d
+            // aapt resource value: 0x7f09004f
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private path_password_eye_mask_visible:int
             
-            // aapt resource value: 0x7f08004e
+            // aapt resource value: 0x7f090050
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private path_password_strike_through:int
             
-            // aapt resource value: 0x7f080039
+            // aapt resource value: 0x7f090000
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_clear_button:int
+            
+            // aapt resource value: 0x7f090001
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private place_autocomplete_search_hint:int
+            
+            // aapt resource value: 0x7f09003b
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private search_menu_title:int
             
-            // aapt resource value: 0x7f08003a
+            // aapt resource value: 0x7f09003c
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private status_bar_notification_info_overflow:int
+            
+            // aapt resource value: 0x7f090052
+            [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
+            static val mutable private temp_str:int
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
 
 
