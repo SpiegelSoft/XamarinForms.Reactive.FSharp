@@ -193,9 +193,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XamarinForms.Reactive.FSharp.Android\XamarinForms.Reactive.FSharp.Android.fsproj">
+    <ProjectReference Include="..\XamarinForms.Reactive.FSharp.Android\XamarinForms.Reactive.FSharp.Android.csproj">
       <Name>XamarinForms.Reactive.FSharp.Android</Name>
-      <Project>{ef5545f2-d567-4e4c-bd4a-044236d099a6}</Project>
+      <Project>{ee741a51-0eba-4bf1-b7a4-e2dfb6e1cdde}</Project>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\XamarinForms.Reactive.FSharp\XamarinForms.Reactive.FSharp.fsproj">

@@ -78,7 +78,7 @@ module internal PageSetup =
             page.DescendantAdded.RemoveHandler descendantAdded
         let viewModelAdded _ = appearingHandler()    
         let viewModelRemoved _ = disappearingHandler(); disposables.Clear()
-        (viewModelAdded, viewModelAdded)
+        (viewModelAdded, viewModelRemoved)
 
 type PropertyChange<'a> = { Previous: 'a; Current: 'a }
 

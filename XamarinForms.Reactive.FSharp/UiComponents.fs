@@ -2,6 +2,7 @@
 
 open System.Reactive.Disposables
 open System.Collections.Generic
+open System.Reactive.Linq
 open System
 
 open Xamarin.Forms.Maps
@@ -12,6 +13,7 @@ open ReactiveUI
 open GeographicLib
 
 open ExpressionConversion
+open ClrExtensions
 
 type GeographicPin(location: GeodesicLocation) =
     member val Location = location
@@ -24,6 +26,7 @@ type GeographicMap() =
 type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
     inherit GeographicMap()
     let pinsSubscriptions = new CompositeDisposable()
+    let locationSubscription = new CompositeDisposable()
     static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap<'TMarker>>, new GeodesicLocation(), BindingMode.TwoWay)
     static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap<'TMarker>>, 1.0, BindingMode.TwoWay)
     let pinnedLocations = new ReactiveList<'TMarker>()
@@ -46,19 +49,21 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
         let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
         collection.ItemsAdded.Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
         collection.ItemsRemoved.Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
-    override __.Close() = pinsSubscriptions.Clear()
-    override this.OnPropertyChanged(propertyName) =
-        base.OnPropertyChanged(propertyName)
-        match propertyName with
-        | "VisibleRegion" ->
-            updatingVisibleRegion <- true
-            this.Center <- this.VisibleRegion.Center |> XamarinGeographic.geodesicLocation
-            this.Radius <- this.VisibleRegion.Radius |> XamarinGeographic.geographicDistance
-            updatingVisibleRegion <- false
-        | "Radius" | "Center" -> 
-            if not updatingVisibleRegion then
-                this.MoveToRegion(MapSpan.FromCenterAndRadius(this.Center |> XamarinGeographic.position, this.Radius |> XamarinGeographic.distance))
-        | _ -> propertyName |> ignore
+    member internal this.SetUpRegionMovement() =
+        this.WhenAnyValue((fun (m: GeographicMap<'TMarker>) -> m.Center), (fun (m: GeographicMap<'TMarker>) -> m.Radius))
+            .Where(fun (_, _) -> not updatingVisibleRegion)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(fun (c, r) ->
+                let region = MapSpan.FromCenterAndRadius(c |> XamarinGeographic.position, r |> XamarinGeographic.distance)
+                this.MoveToRegion(region)) |> locationSubscription.Add
+        this.WhenAnyValue(fun (m: GeographicMap<'TMarker>) -> m.VisibleRegion)
+            .Where(isNotNull)
+            .Subscribe(fun vr ->
+                updatingVisibleRegion <- true
+                this.Center <- vr.Center |> XamarinGeographic.geodesicLocation
+                this.Radius <- vr.Radius |> XamarinGeographic.geographicDistance
+                updatingVisibleRegion <- false)
+    override __.Close() = pinsSubscriptions.Clear(); locationSubscription.Clear()
 
 type MapSearchBar() = inherit SearchBar()
 
@@ -212,6 +217,7 @@ module Themes =
         }
 
     let private apply setUp view = setUp |> Seq.iter (fun s -> s view); view
+    let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
     type Theme =
         {
             Styles: Styles
@@ -234,7 +240,7 @@ module Themes =
         member this.GenerateTimePicker([<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
-        member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> apply setUp
+        member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
         member __.GenerateToolbarItem(name, icon, activated, toolbarItemOrder, priority) = new ToolbarItem(name, icon, activated, toolbarItemOrder, priority)
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
