@@ -62,7 +62,7 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
                 updatingVisibleRegion <- true
                 this.Center <- vr.Center |> XamarinGeographic.geodesicLocation
                 this.Radius <- vr.Radius |> XamarinGeographic.geographicDistance
-                updatingVisibleRegion <- false)
+                updatingVisibleRegion <- false) |> locationSubscription.Add
     override __.Close() = pinsSubscriptions.Clear(); locationSubscription.Clear()
 
 type MapSearchBar() = inherit SearchBar()

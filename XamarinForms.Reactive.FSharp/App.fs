@@ -1,7 +1,10 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open System.Reactive.Disposables
+open System.Collections.Generic
 open System.Reactive.Linq
 open System.Reflection
+open System.Threading
 open System
 
 open Xamarin.Forms
@@ -41,10 +44,23 @@ type FrontPage(router: RoutingState, viewModelInstance) =
 
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
+    let mutable observerIndex = 0
+    let navigationErrorObservers = new Dictionary<int, IObserver<exn>>()
     let router = new RoutingState()
+    let handleException ex = navigationErrorObservers.Values |> Seq.iter (fun obs -> obs.OnNext(ex))
     let bootstrapper = new AppBootstrapper<'TPlatform>(platform, context, viewModel)
+    do 
+        router.Navigate.ThrownExceptions.Subscribe(handleException) |> ignore
+        router.NavigateAndReset.ThrownExceptions.Subscribe(handleException) |> ignore
+        router.NavigateBack.ThrownExceptions.Subscribe(handleException) |> ignore
     member val UiContext = context with get
     member this.Screen = this :> IScreen
+    member __.NavigationError = Observable.Create<exn>(fun (obs: IObserver<exn>) ->
+        async {
+            let index = Interlocked.Increment(ref observerIndex)
+            navigationErrorObservers.[index] <- obs
+            return Disposable.Create(fun () -> navigationErrorObservers.Remove(index) |> ignore)
+        } |> Async.StartAsTask)
     member this.Init() =
         let viewModelInstance = bootstrapper.Bootstrap(this)
         let navigationPage = new RoutedViewHost() :> NavigationPage

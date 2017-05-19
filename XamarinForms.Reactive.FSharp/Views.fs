@@ -43,41 +43,39 @@ module internal MessageHandling =
 
 module internal ViewHierarchy =
     let createDescendantEvents (maps: IDictionary<Guid, GeographicMap>) =
-        let descendantAdded = 
-            let processElement _ (eventArgs:ElementEventArgs) =
-                match box eventArgs.Element with
-                | :? GeographicMap as map -> maps.Add (map.Id, map)
-                | _ -> eventArgs |> ignore
-            new EventHandler<ElementEventArgs> (processElement)
-        let descendantRemoved = 
-            let processElement _ (eventArgs:ElementEventArgs) =
-                match eventArgs.Element with
-                | :? GeographicMap as map -> maps.Remove map.Id |> ignore
-                | _ -> eventArgs |> ignore
-            new EventHandler<ElementEventArgs> (processElement)
+        let descendantAdded (eventArgs:ElementEventArgs) =
+            match box eventArgs.Element with
+            | :? GeographicMap as map -> maps.Add (map.Id, map)
+            | _ -> eventArgs |> ignore
+        let descendantRemoved (eventArgs:ElementEventArgs) =
+            match eventArgs.Element with
+            | :? GeographicMap as map -> maps.Remove map.Id |> ignore
+            | _ -> eventArgs |> ignore
         (descendantAdded, descendantRemoved)
 
 module internal PageSetup =
     let lifetimeHandlers (disposables: CompositeDisposable) page =
+        let descendantEvents = new CompositeDisposable()
         let maps = new Dictionary<Guid, GeographicMap>()
         let descendantAdded, descendantRemoved = maps |> ViewHierarchy.createDescendantEvents
         let viewModelSubscription, messageSubscriptions = MessageHandling.addMessageSubscription page
-        let appearingHandler() =
-            page.DescendantAdded.AddHandler descendantAdded
-            page.DescendantRemoved.AddHandler descendantRemoved
-            page.ViewModel.PageAppearing()
+        let appearingHandler (viewModel: PageViewModel) =
+            page.DescendantAdded.Subscribe(descendantAdded) |> descendantEvents.Add
+            page.DescendantRemoved.Subscribe(descendantRemoved) |> descendantEvents.Add
+            match box viewModel with
+            | null -> page |> ignore
+            | _ -> viewModel.PageAppearing()
             page.InitialiseContent()
             page.OnContentCreated()
-        let disappearingHandler() =
+        let disappearingHandler (viewModel: PageViewModel) =
             viewModelSubscription.Dispose()
             messageSubscriptions.Clear()
-            match box page.ViewModel with
+            match box viewModel with
             | null -> page |> ignore
-            | _ -> page.ViewModel.PageDisappearing()
-            page.DescendantRemoved.RemoveHandler descendantRemoved
-            page.DescendantAdded.RemoveHandler descendantAdded
-        let viewModelAdded _ = appearingHandler()    
-        let viewModelRemoved _ = disappearingHandler(); disposables.Clear()
+            | _ -> viewModel.PageDisappearing()
+            descendantEvents.Clear()
+        let viewModelAdded viewModel = appearingHandler viewModel    
+        let viewModelRemoved viewModel = disappearingHandler viewModel; disposables.Clear()
         (viewModelAdded, viewModelRemoved)
 
 type PropertyChange<'a> = { Previous: 'a; Current: 'a }

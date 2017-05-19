@@ -59,7 +59,6 @@
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\layout\Main.axml" />
-    <AndroidResource Include="Resources\layout\Places.axml" />
     <AndroidResource Include="Resources\values\Strings.xml" />
     <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
@@ -79,6 +78,13 @@
     </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.4.1.17\lib\portable-net45+netcore45+wp8\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="GeographicLib">
+      <HintPath>..\packages\GeographicLib.FSharp.1.1.0.1\lib\portable45-net45+win8+wp8+wpa81\GeographicLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.Connectivity">
       <HintPath>..\packages\Xam.Plugin.Connectivity.2.3.0\lib\MonoAndroid10\Plugin.Connectivity.dll</HintPath>
@@ -111,6 +117,8 @@
       <HintPath>..\packages\Splat.1.4.0\lib\monoandroid\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Core.dll</HintPath>
     </Reference>

@@ -23,10 +23,10 @@ namespace XamarinForms.Reactive.Sample.Places.Droid
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException904e54bd549a4c2a9be16c2036b01098 of obj
-    exception ReturnNoneException904e54bd549a4c2a9be16c2036b01098
+    exception ReturnException4ae2d7f284034a3181128b195686d06a of obj
+    exception ReturnNoneException4ae2d7f284034a3181128b195686d06a
     [<AutoOpen>]
-    module FuncConvertFinalOverload904e54bd549a4c2a9be16c2036b01098 =
+    module FuncConvertFinalOverload4ae2d7f284034a3181128b195686d06a =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
@@ -3226,8 +3226,8 @@ namespace XamarinForms.Reactive.Sample.Places.Droid
             // aapt resource value: 0x7f0c0052
             static member list_item = 2131492946
             
-            // aapt resource value: 0x7f0c00c4
-            static member masked = 2131493060
+            // aapt resource value: 0x7f0c00c3
+            static member masked = 2131493059
             
             // aapt resource value: 0x7f0c00a9
             static member media_actions = 2131493033
@@ -3348,9 +3348,6 @@ namespace XamarinForms.Reactive.Sample.Places.Droid
             
             // aapt resource value: 0x7f0c00bc
             static member place_autocomplete_clear_button = 2131493052
-            
-            // aapt resource value: 0x7f0c00c2
-            static member place_autocomplete_fragment = 2131493058
             
             // aapt resource value: 0x7f0c00be
             static member place_autocomplete_powered_by_google = 2131493054
@@ -3562,8 +3559,8 @@ namespace XamarinForms.Reactive.Sample.Places.Droid
             // aapt resource value: 0x7f0c000e
             static member view_offset_helper = 2131492878
             
-            // aapt resource value: 0x7f0c00c3
-            static member visible = 2131493059
+            // aapt resource value: 0x7f0c00c2
+            static member visible = 2131493058
             
             // aapt resource value: 0x7f0c009b
             static member volume_item_container = 2131493019
@@ -3845,19 +3842,16 @@ namespace XamarinForms.Reactive.Sample.Places.Droid
             static member place_autocomplete_progress = 2130968642
             
             // aapt resource value: 0x7f040043
-            static member Places = 2130968643
+            static member select_dialog_item_material = 2130968643
             
             // aapt resource value: 0x7f040044
-            static member select_dialog_item_material = 2130968644
+            static member select_dialog_multichoice_material = 2130968644
             
             // aapt resource value: 0x7f040045
-            static member select_dialog_multichoice_material = 2130968645
+            static member select_dialog_singlechoice_material = 2130968645
             
             // aapt resource value: 0x7f040046
-            static member select_dialog_singlechoice_material = 2130968646
-            
-            // aapt resource value: 0x7f040047
-            static member support_simple_spinner_dropdown_item = 2130968647
+            static member support_simple_spinner_dropdown_item = 2130968646
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
 
 
