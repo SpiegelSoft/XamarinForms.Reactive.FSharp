@@ -1,5 +1,6 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open System.Collections.Specialized
 open System.Reactive.Disposables
 open System.Collections.Generic
 open System.Reactive.Linq
@@ -15,7 +16,6 @@ open GeographicLib
 
 open ExpressionConversion
 open ClrExtensions
-open System.Collections.Specialized
 
 type ImageGallery() =
     inherit ScrollView()
@@ -134,17 +134,20 @@ module ViewHelpers =
     let withOneWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty, viewProperty, selector) element = 
         view.OneWayBind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
-    let withOneWayElementBinding(view: 'v :> View, viewModelProperty: Expr<'vm -> 'a>, viewProperty: BindableProperty, selector: 'a -> obj) element = 
+    let withOneWayElementBinding(view: 'v :> View, viewModelProperty: Expr<'vm -> 'a>, viewProperty: BindableProperty, selector: 'a -> 'b) element = 
         let converter = { new IValueConverter with 
-            member __.Convert(value, _, _, _) = selector(value :?> 'a)
+            member __.Convert(value, _, _, _) = 
+                selector(value :?> 'a) :> obj
             member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
         view.SetBinding(viewProperty, propertyName viewModelProperty, BindingMode.OneWay, converter)
         element
     let withCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty) element = 
         view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
-    let withTapCommand(view: View, command, commandParameter: obj option) element =
-        view.GestureRecognizers.Add(new TapGestureRecognizer(Command = command, CommandParameter = match commandParameter with | Some p -> p | None -> Unchecked.defaultof<obj>))
+    let withTapCommand(view: 'v :> View, command, commandParameter: Expr<'vm -> 'b> option) element =
+        view.BindingContextChanged.Subscribe(fun _ -> 
+            let viewModel = view.BindingContext :?> 'vm
+            view.GestureRecognizers.Add(new TapGestureRecognizer(Command = command, CommandParameter = match commandParameter with | Some p -> p |> toLinq |> (fun e -> e.Compile()) |> (fun e -> e.Invoke(viewModel)) :> obj | None -> Unchecked.defaultof<obj>))) |> ignore
         element
     let withPinBinding(markers, markerToPin) (element: GeographicMap<'TMarker>) = element.BindPinsToCollection(markers, markerToPin); element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
@@ -176,7 +179,9 @@ module ViewHelpers =
     let withGalleryItemTemplate (createTemplate: unit -> View) (element: ImageGallery) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withEditorText text (element: #Editor) = element.Text <- text; element
     let withContent content (element: #ScrollView) = element.Content <- content; element
-    let withColor color (element: #BoxView) = element.Color <- color; element
+    let withViewContent content (element: #ContentView) = element.Content <- content; element
+    let withBoxColor color (element: #BoxView) = element.Color <- color; element
+    let withOutlineColor color (element: #Frame) = element.OutlineColor <- color; element
     let withEditorTextColor color (element: #Editor) = element.TextColor <- color; element
     let withEditorFontSize fontSize (element: #Editor) = element.FontSize <- fontSize; element
     let withEditorFontAttributes fontAttributes (element: #Editor) = element.FontAttributes <- fontAttributes; element
@@ -252,7 +257,6 @@ module Themes =
         let specifiedRowCount, actualRowCount = grid.RowDefinitions.Count, rowCreation.RowCount
         if specifiedRowCount <> actualRowCount then raise <| ArgumentException(sprintf "You have tried to add %i %s to a grid for which %i %s %s specified." actualRowCount (rowNoun actualRowCount) specifiedRowCount (rowNoun specifiedRowCount) (verb specifiedRowCount))
         grid
-
     let createFromColumns (columnCreation: ColumnCreation) = 
         let grid = columnCreation.Grid
         let specifiedColumnCount, actualColumnCount = grid.ColumnDefinitions.Count, columnCreation.ColumnCount
@@ -273,6 +277,8 @@ module Themes =
             SearchBarStyle: Style
             MapSearchBarStyle: Style
             ImageStyle: Style
+            FrameStyle: Style
+            ContentViewStyle: Style
             SwitchStyle: Style
             ListViewStyle: Style
             BoxViewStyle: Style
@@ -295,6 +301,8 @@ module Themes =
         member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
         member this.GenerateMapSearchBar([<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> apply setUp
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
+        member this.GenerateFrame([<ParamArray>] setUp: (Frame -> unit)[]) = new Frame(Style = this.Styles.FrameStyle) |> apply setUp
+        member this.GenerateContentView([<ParamArray>] setUp: (ContentView -> unit)[]) = new ContentView(Style = this.Styles.ContentViewStyle) |> apply setUp
         member this.GenerateButton([<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> apply setUp
         member this.GenerateLabel([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.LabelStyle) |> apply setUp
         member this.GenerateTitle([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.TitleStyle) |> apply setUp
@@ -357,6 +365,8 @@ module Themes =
                     SearchBarStyle = new Style(typeof<SearchBar>)
                     MapSearchBarStyle = new Style(typeof<MapSearchBar>)
                     ImageStyle = new Style(typeof<Image>)
+                    FrameStyle = new Style(typeof<Frame>)
+                    ContentViewStyle = new Style(typeof<ContentView>)
                     SwitchStyle = new Style(typeof<Switch>)
                     ListViewStyle = new Style(typeof<ListView>)
                     BoxViewStyle = boxViewStyle
