@@ -22,6 +22,7 @@ module ClrExtensions =
         | null -> false
         | _ -> true
     let isNull o = o |> isNotNull |> not
+    let toObj x = x :> obj
 
 module LocatorDefaults =
     let LocateIfNone(arg : 'a option) =

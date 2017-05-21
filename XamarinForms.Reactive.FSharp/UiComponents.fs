@@ -3,6 +3,7 @@
 open System.Reactive.Disposables
 open System.Collections.Generic
 open System.Reactive.Linq
+open System.Collections
 open System
 
 open Xamarin.Forms.Maps
@@ -14,6 +15,60 @@ open GeographicLib
 
 open ExpressionConversion
 open ClrExtensions
+open System.Collections.Specialized
+
+type ImageGallery() =
+    inherit ScrollView()
+    let collectionChangedSubscription = new CompositeDisposable()
+    let imageStack = new StackLayout(Orientation = StackOrientation.Horizontal)
+    let mutable itemTemplate = Unchecked.defaultof<DataTemplate>
+    do base.Orientation <- ScrollOrientation.Horizontal; base.Content <- imageStack
+    static let itemsSourceProperty = 
+        BindableProperty.Create("ItemsSource", typeof<IList>, typeof<ImageGallery>, Unchecked.defaultof<IList>, BindingMode.TwoWay,
+            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject oldValue newValue -> (bindableObject :?> ImageGallery).ItemsSourceChanged(bindableObject, oldValue :?> IList, newValue :?> IList)))
+    static let selectedItemProperty =
+        BindableProperty.Create("SelectedItem", typeof<obj>, typeof<ImageGallery>, Unchecked.defaultof<obj>, BindingMode.TwoWay,
+            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject _ _ -> (bindableObject :?> ImageGallery).UpdateSelectedIndex())) 
+    static let selectedIndexProperty =
+        BindableProperty.Create("SelectedIndex", typeof<int>, typeof<ImageGallery>, 0, BindingMode.TwoWay,
+            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject _ _ -> (bindableObject :?> ImageGallery).UpdateSelectedItem()))
+    member __.Children = imageStack.Children
+    member __.ItemTemplate with get() = itemTemplate and set(value) = itemTemplate <- value
+    member this.ItemsSource 
+        with get() = this.GetValue(itemsSourceProperty) :?> IList
+        and set(value: IList) = this.SetValue(itemsSourceProperty, value)
+    member this.SelectedItem 
+        with get() = this.GetValue(selectedItemProperty)
+        and set(value) = this.SetValue(selectedItemProperty, value)
+    member this.SelectedIndex
+        with get() = this.GetValue(selectedIndexProperty) :?> int
+        and set(value: int) = this.SetValue(selectedIndexProperty, value)
+    member this.UpdateSelectedIndex () =
+        match this.SelectedItem = this.BindingContext with
+        | true -> 0 |> ignore
+        | false -> 
+            this.SelectedIndex <- 
+                this.Children |> Seq.map (fun c -> c.BindingContext) |> Array.ofSeq |> Array.tryFindIndex (fun item -> item = this.SelectedItem)
+                |> fun i -> match i with | Some index -> index | None -> -1
+    member this.UpdateSelectedItem() =
+        this.SelectedItem <- match this.SelectedIndex > -1  with | true -> this.Children.[this.SelectedIndex].BindingContext | false -> Unchecked.defaultof<obj>
+    member this.ItemsSourceChanged(_: BindableObject, _: IList, newValue: IList) =
+        let itemAdded newItem =
+            let view = this.ItemTemplate.CreateContent() :?> View
+            match view :> obj with
+            | :? BindableObject as bindable -> bindable.BindingContext <- newItem
+            | _ -> 0 |> ignore
+            imageStack.Children.Add(view)
+        let collectionChanged (eventArgs: NotifyCollectionChangedEventArgs) =
+            match box eventArgs.NewItems with
+            | null -> 0 |> ignore
+            | _ -> for newItem in eventArgs.NewItems do itemAdded newItem
+        match newValue with
+        | :? INotifyCollectionChanged as notify ->
+            collectionChangedSubscription.Clear()
+            notify.CollectionChanged.Subscribe(collectionChanged) |> collectionChangedSubscription.Add
+        | _ -> 0 |> ignore
+            
 
 type GeographicPin(location: GeodesicLocation) =
     member val Location = location
@@ -79,11 +134,22 @@ module ViewHelpers =
     let withOneWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty, viewProperty, selector) element = 
         view.OneWayBind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
+    let withOneWayElementBinding(view: 'v :> View, viewModelProperty: Expr<'vm -> 'a>, viewProperty: BindableProperty, selector: 'a -> obj) element = 
+        let converter = { new IValueConverter with 
+            member __.Convert(value, _, _, _) = selector(value :?> 'a)
+            member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
+        view.SetBinding(viewProperty, propertyName viewModelProperty, BindingMode.OneWay, converter)
+        element
     let withCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty) element = 
         view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
+    let withTapCommand(view: View, command, commandParameter: obj option) element =
+        view.GestureRecognizers.Add(new TapGestureRecognizer(Command = command, CommandParameter = match commandParameter with | Some p -> p | None -> Unchecked.defaultof<obj>))
+        element
     let withPinBinding(markers, markerToPin) (element: GeographicMap<'TMarker>) = element.BindPinsToCollection(markers, markerToPin); element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
+    let withHorizontalTextAlignment alignment (element: #Label) = element.HorizontalTextAlignment <- alignment; element
+    let withVerticalTextAlignment alignment (element: #Label) = element.VerticalTextAlignment <- alignment; element
     let withHorizontalOptions options (element: #View) = element.HorizontalOptions <- options; element
     let withVerticalOptions options (element: #View) = element.VerticalOptions <- options; element
     let withHeightRequest request (element: #View) = element.HeightRequest <- request; element
@@ -105,6 +171,9 @@ module ViewHelpers =
     let withListViewHeader header (element: #ListView) = element.Header <- header; element
     let withListViewFooter footer (element: #ListView) = element.Footer <- footer; element
     let withItemsSource source (element: #ItemsView<'v>) = element.ItemsSource <- source; element
+    let withGalleryItemsSource source (element: ImageGallery) = element.ItemsSource <- source; element
+    let withItemTemplate (createTemplate: unit -> View) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
+    let withGalleryItemTemplate (createTemplate: unit -> View) (element: ImageGallery) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withEditorText text (element: #Editor) = element.Text <- text; element
     let withContent content (element: #ScrollView) = element.Content <- content; element
     let withColor color (element: #BoxView) = element.Color <- color; element
@@ -211,6 +280,7 @@ module Themes =
             DatePickerStyle: Style
             TimePickerStyle: Style
             PickerStyle: Style
+            GalleryStyle: Style
             MapStyle: Style
             TabbedPageStyle: Style
             ActivityIndicatorStyle: Style
@@ -239,6 +309,7 @@ module Themes =
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp
         member this.GenerateTimePicker([<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
+        member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
         member __.GenerateToolbarItem(name, icon, activated, toolbarItemOrder, priority) = new ToolbarItem(name, icon, activated, toolbarItemOrder, priority)
@@ -293,6 +364,7 @@ module Themes =
                     DatePickerStyle = new Style(typeof<DatePicker>)
                     TimePickerStyle = new Style(typeof<TimePicker>)
                     PickerStyle = new Style(typeof<Picker>)
+                    GalleryStyle = new Style(typeof<ImageGallery>)
                     MapStyle = new Style(typeof<Map>)
                     TabbedPageStyle = new Style(typeof<TabbedPage>)
                     ActivityIndicatorStyle = new Style(typeof<ActivityIndicator>)
