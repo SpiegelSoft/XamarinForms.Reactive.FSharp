@@ -42,6 +42,13 @@ type FrontPage(router: RoutingState, viewModelInstance) =
     inherit ReactiveContentPage<FrontPageViewModel>()
     override __.OnAppearing() = router.NavigateAndReset.Execute(viewModelInstance).Subscribe() |> ignore
 
+type HostingPage() =
+    inherit RoutedViewHost()
+    member val PageDisposables = new CompositeDisposable()
+    override this.OnDisappearing() =
+        base.OnDisappearing()
+        this.PageDisposables.Clear()
+
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
     let mutable observerIndex = 0
@@ -63,7 +70,11 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
         } |> Async.StartAsTask)
     member this.Init() =
         let viewModelInstance = bootstrapper.Bootstrap(this)
-        let navigationPage = new RoutedViewHost() :> NavigationPage
+        let navigationPage = new HostingPage()
         navigationPage.PushAsync(new FrontPage(router, viewModelInstance, ViewModel = new FrontPageViewModel())).Wait()
         this.MainPage <- navigationPage
+        navigationPage.Popped.Subscribe(fun eventArgs ->
+            match eventArgs.Page :> obj with
+            | :? IContentView as view -> view.PagePopped()
+            | _ -> 0 |> ignore) |> navigationPage.PageDisposables.Add
     interface IScreen with member __.Router = router

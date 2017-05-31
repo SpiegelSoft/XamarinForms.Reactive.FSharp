@@ -22,6 +22,7 @@ open ClrExtensions
 type IContentView = 
     abstract member InitialiseContent: unit -> unit
     abstract member OnContentCreated: unit -> unit
+    abstract member PagePopped: unit -> unit
 
 module internal MessageHandling =
     let alertMessageReceived (page: Page) (alertMessage: AlertMessage) = page.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Acknowledge).ToObservable()
@@ -90,6 +91,7 @@ type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel 
     interface IContentView with 
         member this.InitialiseContent() = this.Content <- this.CreateContent()
         member this.OnContentCreated() = this.OnContentCreated()
+        member this.PagePopped() = 0 |> ignore
 
 [<AbstractClass>]
 type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
@@ -107,6 +109,7 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     interface IContentView with
         member __.InitialiseContent() = this.Content <- this.CreateContent()
         member __.OnContentCreated() = this.OnContentCreated()
+        member __.PagePopped() = this.ViewModel <- Unchecked.defaultof<'TViewModel>
 
 type CarouselContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
     inherit ReactiveContentPage<'TViewModel>()
@@ -139,3 +142,4 @@ and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel a
     interface IContentView with
         member __.InitialiseContent() = this.CreateContent() |> Seq.iter (fun kvp -> new TabContent(kvp.Key, kvp.Value) |> this.Children.Add)
         member __.OnContentCreated() = this.OnContentCreated()
+        member __.PagePopped() = this.ViewModel <- Unchecked.defaultof<'TViewModel>

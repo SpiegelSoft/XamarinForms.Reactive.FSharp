@@ -169,6 +169,7 @@ module ViewHelpers =
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
     let withCaption text (element: #Button) = element.Text <- text; element
     let withEntryText text (element: #Entry) = element.Text <- text; element
+    let withScrollOrientation orientation (element: #ScrollView) = element.Orientation <- orientation; element
     let withPickerItemsSource itemsSource (element: Picker) = element.ItemsSource <- itemsSource; element
     let withPickerDisplayBinding (binding: Expr<'a -> string>) (element: Picker) = element.ItemDisplayBinding <- new Binding(propertyName binding) ; element
     let withListViewHeader header (element: #ListView) = element.Header <- header; element
