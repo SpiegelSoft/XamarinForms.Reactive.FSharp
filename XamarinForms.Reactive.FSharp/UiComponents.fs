@@ -134,10 +134,9 @@ module ViewHelpers =
     let withOneWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty, viewProperty, selector) element = 
         view.OneWayBind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
-    let withOneWayElementBinding(view: 'v :> View, viewModelProperty: Expr<'vm -> 'a>, viewProperty: BindableProperty, selector: 'a -> 'b) element = 
+    let withOneWayElementBinding(view: 'v :> Element, viewModelProperty: Expr<'vm -> 'a>, viewProperty: BindableProperty, selector: 'a -> 'b) element = 
         let converter = { new IValueConverter with 
-            member __.Convert(value, _, _, _) = 
-                selector(value :?> 'a) :> obj
+            member __.Convert(value, _, _, _) = selector(value :?> 'a) :> obj
             member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
         view.SetBinding(viewProperty, propertyName viewModelProperty, BindingMode.OneWay, converter)
         element
@@ -198,7 +197,16 @@ module ViewHelpers =
     let withBackgroundColor color (element: #View) = element.BackgroundColor <- color; element
     let withEffect effectId (element: #Element) = element.Effects.Add(Effect.Resolve(effectId)); element     
     let withRoutingEffect (effect: #RoutingEffect) (element: #Element) = element.Effects.Add(effect); element 
-    let withDataTemplate (template: unit -> ViewCell) (element: #ListView) = element.ItemTemplate <- new DataTemplate(fun () -> template() :> obj)
+    let withDataTemplate (template: unit -> Cell) (element: #ListView) = element.ItemTemplate <- new DataTemplate(fun () -> template() :> obj); element
+    let withTextCellCommand command (element: #TextCell) = element.Command <- command; element
+    let withTextCellCommandParameter commandParameter (element: #TextCell) = element.CommandParameter <- commandParameter; element
+    let withTextCellText text (element: #TextCell) = element.Text <- text; element
+    let withTextCellTextColor textColor (element: #TextCell) = element.TextColor <- textColor; element
+    let withTextCellDetail detail (element: #TextCell) = element.Detail <- detail; element
+    let withTextCellDetailColor detailColor (element: #TextCell) = element.DetailColor <- detailColor; element
+    let withImageCellSource source (element: #ImageCell) = element.ImageSource <- source; element
+
+open ViewHelpers
 
 module Themes =
     let withBlocks (views:View[]) (stackLayout: StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
@@ -291,10 +299,13 @@ module Themes =
             MapStyle: Style
             TabbedPageStyle: Style
             ActivityIndicatorStyle: Style
+            TextCellTextColor: Color
+            TextCellDetailColor: Color
         }
 
     let private apply setUp view = setUp |> Seq.iter (fun s -> s view); view
     let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
+    let private applyCellColors (styles:Styles) (cell:#TextCell) = cell.TextColor <- styles.TextCellTextColor; cell.DetailColor <- styles.TextCellDetailColor; cell
     type Theme =
         {
             Styles: Styles
@@ -321,6 +332,10 @@ module Themes =
         member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
+        member this.GenerateTextCell([<ParamArray>] setUp: (TextCell -> unit)[]) = new TextCell() |> apply setUp |> applyCellColors this.Styles
+        member this.GenerateImageCell([<ParamArray>] setUp: (ImageCell -> unit)[]) = new ImageCell() |> apply setUp |> applyCellColors this.Styles
+        member __.GenerateViewCell([<ParamArray>] setUp: (ViewCell -> unit)[]) = new ViewCell() |> apply setUp
+        member __.GenerateCustomCell<'TCell when 'TCell :> ViewCell and 'TCell : (new : unit -> 'TCell)> ([<ParamArray>] setUp: ('TCell -> unit)[]) = new 'TCell() |> apply setUp
         member __.GenerateToolbarItem(name, icon, activated, toolbarItemOrder, priority) = new ToolbarItem(name, icon, activated, toolbarItemOrder, priority)
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
@@ -342,6 +357,8 @@ module Themes =
     let applyTabbedPageSetters tabbedPageSetters (theme: Theme) = addSetters<TabbedPage> tabbedPageSetters theme.Styles.TabbedPageStyle; theme
     let applyBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
+    let applyTextCellTextColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellTextColor = color} }
+    let applyTextCellDetailColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellDetailColor = color} }
 
     let DefaultTheme =
         let titleStyle = new Style(typeof<Label>)
@@ -379,6 +396,8 @@ module Themes =
                     MapStyle = new Style(typeof<Map>)
                     TabbedPageStyle = new Style(typeof<TabbedPage>)
                     ActivityIndicatorStyle = new Style(typeof<ActivityIndicator>)
+                    TextCellTextColor = TextCell.TextColorProperty.DefaultValue :?> Color
+                    TextCellDetailColor = TextCell.DetailColorProperty.DefaultValue :?> Color
                 }
         }
 
