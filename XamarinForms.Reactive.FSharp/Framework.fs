@@ -14,7 +14,17 @@ open Splat
 
 module ObservableExtensions =
     open System.Reactive.Disposables
+    open System.Reactive.Linq
+
+    let private readObservable (read: unit -> Async<'a>) (obs: IObserver<'a>) =
+        async {
+            let! result = read()
+            obs.OnNext(result)
+            obs.OnCompleted()
+            return Disposable.Empty
+        }
     let disposeWith (compositeDisposable: CompositeDisposable) (disposable: #IDisposable) = disposable.DisposeWith compositeDisposable
+    let observableExecution (execute: unit -> Async<'a>) = Observable.Create<'a>(fun (obs: IObserver<'a>) -> readObservable execute obs |> Async.StartAsTask)
 
 module ClrExtensions =
     let isNotNull o =
