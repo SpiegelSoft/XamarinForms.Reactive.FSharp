@@ -24,7 +24,7 @@
     </NuGetPackageImportStamp>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <SelectedDevice>5" Marshmallow (6.0.0) XXHDPI Phone</SelectedDevice>
+    <SelectedDevice>Samsung SM-G925F</SelectedDevice>
     <DefaultDevice>5" Marshmallow (6.0.0) XXHDPI Phone</DefaultDevice>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

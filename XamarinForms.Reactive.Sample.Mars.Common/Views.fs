@@ -18,7 +18,7 @@ type PhotoSetView(theme: Theme) =
                 theme.GenerateGrid([|"Auto"; "*"|], [|"2*"; "*"|]) 
                     |> withRow(
                         [|
-                            theme.GeneratePicker(fun p -> this.Cameras <- p) 
+                            theme.GenerateListView(fun v -> this.CuriositySolPhotoSets <- v) 
                                 //|> withPickerItemsSource(RoverCameras)
                                 //|> withPickerDisplayBinding(<@ fun (country: LocalisedCountry) -> country.Name @>)
                                 //|> withTwoWayBinding(this, 
@@ -26,7 +26,7 @@ type PhotoSetView(theme: Theme) =
                                 //    <@ fun (v: NewVenueView) -> (v.Country: Picker).SelectedItem @>, 
                                 //(fun (vmp: LocalisedCountry) -> vmp :> obj), 
                                 //(fun (vp: obj) -> vp :?> LocalisedCountry))
-                                |> withTwoWayBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.CameraIndex @>, <@ fun (v: PhotoSetView) -> (v.Cameras: Picker).SelectedIndex @>, id, id)
+                                //|> withTwoWayBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.CameraIndex @>, <@ fun (v: PhotoSetView) -> (v.Cameras: Picker).SelectedIndex @>, id, id)
                             theme.GenerateButton(fun b -> this.FetchPhotosButton <- b)
                                 |> withCaption("View Gallery")
                                 |> withCommandBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.FetchPhotos @>, <@ fun (v: PhotoSetView) -> v.FetchPhotosButton @>)
@@ -42,9 +42,9 @@ type PhotoSetView(theme: Theme) =
                 theme.GenerateGrid([|"Auto"; "*"|], [|"2*"; "*"|]) 
                     |> withRow(
                         [|
-                            theme.GeneratePicker(fun p -> this.Cameras <- p) 
+                            theme.GenerateListView(fun v -> this.SpiritSolPhotoSets <- v) 
                                 //|> withPickerItems RoverCameras.names
-                                |> withTwoWayBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.CameraIndex @>, <@ fun (v: PhotoSetView) -> (v.Cameras: Picker).SelectedIndex @>, id, id)
+                                //|> withTwoWayBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.CameraIndex @>, <@ fun (v: PhotoSetView) -> (v.Cameras: Picker).SelectedIndex @>, id, id)
                             theme.GenerateButton(fun b -> this.FetchPhotosButton <- b)
                                 |> withCaption("View Gallery")
                                 |> withCommandBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.FetchPhotos @>, <@ fun (v: PhotoSetView) -> v.FetchPhotosButton @>)
@@ -60,9 +60,9 @@ type PhotoSetView(theme: Theme) =
                 theme.GenerateGrid([|"Auto"; "*"|], [|"2*"; "*"|]) 
                     |> withRow(
                         [|
-                            theme.GeneratePicker(fun p -> this.Cameras <- p) 
+                            theme.GenerateListView(fun v -> this.OpportunitySolPhotoSets <- v) 
                                 //|> withPickerItems RoverCameras.names
-                                |> withTwoWayBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.CameraIndex @>, <@ fun (v: PhotoSetView) -> (v.Cameras: Picker).SelectedIndex @>, id, id)
+                                //|> withTwoWayBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.CameraIndex @>, <@ fun (v: PhotoSetView) -> (v.Cameras: Picker).SelectedIndex @>, id, id)
                             theme.GenerateButton(fun b -> this.FetchPhotosButton <- b)
                                 |> withCaption("View Gallery")
                                 |> withCommandBinding(this, <@ fun (vm: PhotoSetViewModel) -> vm.FetchPhotos @>, <@ fun (v: PhotoSetView) -> v.FetchPhotosButton @>)
@@ -75,6 +75,8 @@ type PhotoSetView(theme: Theme) =
                         |])
                     |> createFromRows :> View)
         ]
-    member val Cameras = Unchecked.defaultof<Picker> with get, set    
+    member val CuriositySolPhotoSets = Unchecked.defaultof<ListView> with get, set    
+    member val SpiritSolPhotoSets = Unchecked.defaultof<ListView> with get, set    
+    member val OpportunitySolPhotoSets = Unchecked.defaultof<ListView> with get, set    
     member val FetchPhotosButton = Unchecked.defaultof<Button> with get, set
     member val Photo = Unchecked.defaultof<Image> with get, set

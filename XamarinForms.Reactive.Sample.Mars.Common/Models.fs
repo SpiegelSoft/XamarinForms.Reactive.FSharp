@@ -98,7 +98,8 @@ module RoverCameras =
     let all = dict [(fhaz.Name, fhaz); (rhaz.Name, rhaz); (mast.Name, mast); (chemCam.Name, chemCam); (mahli.Name, mahli); (mardi.Name, mardi); (navCam.Name, navCam); (panCam.Name, panCam); (minites.Name, minites)]
 
 module RoverNames =
-    let all = [|"Curiosity"; "Spirit"; "Opportunity"|]
+    let curiosity, spirit, opportunity = "Curiosity", "Spirit", "Opportunity"
+    let all = [|curiosity; spirit; opportunity|]
 
 module Mars =
     let genericImage = "https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/pia21463.jpg" |> Uri
