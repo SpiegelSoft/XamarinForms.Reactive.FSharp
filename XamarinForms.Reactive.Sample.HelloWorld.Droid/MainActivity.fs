@@ -14,7 +14,6 @@ open XamarinForms.Reactive.Sample.HelloWorld.Common
 open XamarinForms.Reactive.FSharp
 
 open Xamarin.Forms
-open XamarinForms.Reactive.FSharp.Android
 
 type DroidPlatform() =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
@@ -35,5 +34,4 @@ type MainActivity() =
         Xamarin.FormsMaps.Init(this, bundle)
         let app = new App<ICustomPlatform>(new DroidPlatform() :> ICustomPlatform, new UiContext(this), createDashboardViewModel)
         app.Init()
-        XrfAndroid.Init()
         base.LoadApplication app

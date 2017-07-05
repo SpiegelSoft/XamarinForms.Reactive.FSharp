@@ -107,7 +107,9 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     abstract member OnContentCreated: unit -> unit
     default __.OnContentCreated() = this |> ignore
     interface IContentView with
-        member __.InitialiseContent() = this.Content <- this.CreateContent()
+        member __.InitialiseContent() =
+            this.DescendantAdded.Select(fun e -> e.Element :> obj).OfType<IContentView>().Subscribe(fun cv -> cv.InitialiseContent()) |> disposables.Add
+            this.Content <- this.CreateContent()
         member __.OnContentCreated() = this.OnContentCreated()
         member __.PagePopped() = this.ViewModel <- Unchecked.defaultof<'TViewModel>
 
@@ -140,6 +142,8 @@ and [<AbstractClass>] TabbedPage<'TViewModel when 'TViewModel :> PageViewModel a
     abstract member OnContentCreated: unit -> unit
     default this.OnContentCreated() = this |> ignore
     interface IContentView with
-        member __.InitialiseContent() = this.CreateContent() |> Seq.iter (fun kvp -> new TabContent(kvp.Key, kvp.Value) |> this.Children.Add)
+        member __.InitialiseContent() = 
+            this.DescendantAdded.Select(fun e -> e.Element :> obj).OfType<IContentView>().Subscribe(fun cv -> cv.InitialiseContent()) |> disposables.Add
+            this.CreateContent() |> Seq.iter (fun kvp -> new TabContent(kvp.Key, kvp.Value) |> this.Children.Add)
         member __.OnContentCreated() = this.OnContentCreated()
         member __.PagePopped() = this.ViewModel <- Unchecked.defaultof<'TViewModel>

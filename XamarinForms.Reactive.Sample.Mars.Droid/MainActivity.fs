@@ -21,7 +21,16 @@ open Splat
 
 open ReactiveUI
 
-type Resources = XamarinForms.Reactive.Sample.Mars.Droid.Resource
+type AndroidLogger = Android.Util.Log
+type Throwable = Java.Lang.Throwable
+
+type AndroidLogAppender() =
+    interface IAppendLog with
+        member __.Debug tag message ex = (match ex with | Some x -> AndroidLogger.Debug(tag, message, Throwable.FromException x) | None -> AndroidLogger.Debug(tag, message)) |> ignore
+        member __.Information tag message ex = (match ex with | Some x -> AndroidLogger.Info(tag, message, Throwable.FromException x) | None -> AndroidLogger.Info(tag, message)) |> ignore
+        member __.Warning tag message ex = (match ex with | Some x -> AndroidLogger.Warn(tag, message, Throwable.FromException x) | None -> AndroidLogger.Warn(tag, message)) |> ignore
+        member __.Error tag message ex = (match ex with | Some x -> AndroidLogger.Error(tag, message, Throwable.FromException x) | None -> AndroidLogger.Error(tag, message)) |> ignore
+        member __.Critical tag message ex = (match ex with | Some x -> AndroidLogger.Wtf(tag, message, Throwable.FromException x) | None -> AndroidLogger.Wtf(tag, message)) |> ignore
 
 type DroidPlatform(nasaApiKey) =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
@@ -29,6 +38,7 @@ type DroidPlatform(nasaApiKey) =
     interface IMarsPlatform with
         member this.RegisterDependencies dependencyResolver = 
             dependencyResolver.RegisterConstant(new Storage(this), typeof<IStorage>)
+            dependencyResolver.RegisterConstant(new Logger([new AndroidLogAppender()]), typeof<ILog>)
         member __.GetLocalFilePath fileName = localFilePath fileName
         member __.GetCameraDataAsync roverSolPhotoSet camera =
             async {
@@ -51,7 +61,7 @@ type DroidPlatform(nasaApiKey) =
                     return data
                 }
             async {
-                return! RoverNames.all |> Array.map pullRoverAsync |> Async.Parallel
+                return! Rovers.names |> Array.map pullRoverAsync |> Async.Parallel
             }
 
 [<Activity (Label = "XRF Mars", MainLauncher = true, Icon = "@mipmap/icon")>]
@@ -65,4 +75,5 @@ type MainActivity() =
         let metaData = this.PackageManager.GetApplicationInfo(this.PackageName, PackageInfoFlags.MetaData).MetaData
         let app = new App<IMarsPlatform>(new DroidPlatform(metaData.GetString(NasaApiKey)), new UiContext(this), createPhotoSetViewModel)
         app.Init()
+        ResourceManager.DrawableClass <- typeof<Resource_Drawable>
         base.LoadApplication app

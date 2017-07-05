@@ -48,8 +48,12 @@ module ExpressionConversion =
         Expression.Lambda<Func<'a, 'b>>(lambda.Body, lambda.Parameters)
     let rec propertyName = function
     | Patterns.Lambda(_, expr) -> propertyName expr
-    | Patterns.PropertyGet(_, propOrValInfo, _) -> propOrValInfo.Name
+    | Patterns.PropertyGet(_, propertyInfo, _) -> propertyInfo.Name
     | _ -> failwith "You have asked for the property name of an expression that does not describe a property."
+    let rec setProperty instance value = function
+    | Patterns.Lambda(_, expr) -> setProperty instance value expr
+    | Patterns.PropertyGet(_, propertyInfo, _) -> propertyInfo.SetValue(instance, value)
+    | _ -> failwith "You have tried to set a property value using an expression that does not describe a property."
 
 module XamarinGeographic =
     let geodesicLocation (position: Position) = new GeodesicLocation(position.Latitude * 1.0<deg>, position.Longitude * 1.0<deg>)

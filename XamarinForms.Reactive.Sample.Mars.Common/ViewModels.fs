@@ -7,29 +7,31 @@ open XamarinForms.Reactive.FSharp.LocatorDefaults
 open XamarinForms.Reactive.FSharp
 
 open ObservableExtensions
+open SafeReactiveCommands
 open ReactiveUI
 
-type PhotoManifestViewModel(roverName: string, launchDate: DateTime, landingDate: DateTime) =
+type PhotoManifestViewModel(roverName: string, headlineImage: string, launchDate: DateTime, landingDate: DateTime) =
     inherit ReactiveObject()
     let mutable maxDate, maxSol, totalPhotos = landingDate, 0, 0
     member val LaunchDate = launchDate
     member val LandingDate = landingDate
+    member val RoverName = roverName
+    member val HeadlineImage = headlineImage
     member val PhotoSet = ReactiveList<RoverSolPhotoSet>()
     member this.MaxSol with get() = maxSol and set(value) = this.RaiseAndSetIfChanged(&maxSol, value, "MaxSol") |> ignore
     member this.MaxDate with get() = maxDate and set(value) = this.RaiseAndSetIfChanged(&maxDate, value, "MaxDate") |> ignore
     member this.TotalPhotos with get() = totalPhotos and set(value) = this.RaiseAndSetIfChanged(&totalPhotos, value, "TotalPhotos") |> ignore
+    static member Curiosity = new PhotoManifestViewModel(Rovers.curiosity, Rovers.imagePaths.Curiosity, DateTime(2011, 11, 26), DateTime(2012, 8, 6))
+    static member Spirit = new PhotoManifestViewModel(Rovers.spirit, Rovers.imagePaths.Spirit, DateTime(2003, 6, 10), DateTime(2004, 1, 4))
+    static member Opportunity = new PhotoManifestViewModel(Rovers.opportunity, Rovers.imagePaths.Opportunity, DateTime(2003, 7, 7), DateTime(2004, 1, 25))
 
 type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorage) =
     inherit PageViewModel()
     let host, platform, storage = LocateIfNone host, LocateIfNone platform, LocateIfNone storage
-    let rovers = dict [(RoverNames.curiosity, PhotoManifestViewModel); (RoverNames.opportunity, PhotoManifestViewModel); (RoverNames.spirit, PhotoManifestViewModel)]
+    let rovers = dict [(Rovers.curiosity, PhotoManifestViewModel); (Rovers.opportunity, PhotoManifestViewModel); (Rovers.spirit, PhotoManifestViewModel)]
     let mutable cameraIndex = 0
-    let mutable imageUrl = Mars.genericImage
     let fetchPhotos (vm: PhotoSetViewModel) =
-        let result() =
-            async {
-                return { SyncResult = ApiSyncResult.SyncSucceeded; Content = Unchecked.defaultof<PhotoSet> }
-            }
+        let result() = async { return { SyncResult = ApiSyncResult.SyncSucceeded; Content = Unchecked.defaultof<PhotoSet> } }
         result |> ObservableExtensions.observableExecution
     let refreshRovers (vm: PhotoSetViewModel) =
         let result() =
@@ -37,8 +39,6 @@ type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStor
                 return! storage.GetRoversAsync()
             }
         result |> ObservableExtensions.observableExecution
-    let handleException (ex: Exception) =
-        ex |> ignore
     let cannotRetrieveFirstRovers (result: StorageResult<Rover[]>) = match (result.SyncResult, result.Content.Length) with | (SyncFailed _, 0) -> true | _ -> false
     let hasRetrievedRovers (result: StorageResult<Rover[]>) = result.Content.Length > 0
     let showConnectionError (vm: PhotoSetViewModel) (_:StorageResult<Rover[]>) =
@@ -47,17 +47,16 @@ type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStor
         for rover in results.Content do
             rover.PhotoManifest |> ignore
     member this.CameraIndex with get() = cameraIndex and set(value) = this.RaiseAndSetIfChanged(&cameraIndex, value, "Camera") |> ignore
-    member this.ImageUrl with get() = imageUrl and set(value) = this.RaiseAndSetIfChanged(&imageUrl, value, "ImageUrl") |> ignore
     member val FetchPhotos = Unchecked.defaultof<ReactiveCommand<PhotoSetViewModel, StorageResult<PhotoSet>>> with get, set
     member val RefreshRovers = Unchecked.defaultof<ReactiveCommand<PhotoSetViewModel, StorageResult<Rover[]>>> with get, set
+    member val Curiosity = PhotoManifestViewModel.Curiosity
+    member val Spirit = PhotoManifestViewModel.Spirit
+    member val Opportunity = PhotoManifestViewModel.Opportunity
     override this.SetUpCommands() =
-        this.RefreshRovers <- ReactiveCommand.CreateFromObservable(refreshRovers) |> ObservableExtensions.disposeWith this.PageDisposables
-        this.FetchPhotos <- ReactiveCommand.CreateFromObservable(fetchPhotos) |> ObservableExtensions.disposeWith this.PageDisposables
+        this.RefreshRovers <- createFromObservable(refreshRovers, None) |> ObservableExtensions.disposeWith this.PageDisposables
+        this.FetchPhotos <- createFromObservable(fetchPhotos, None) |> ObservableExtensions.disposeWith this.PageDisposables
         this.RefreshRovers.Where(cannotRetrieveFirstRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(showConnectionError this) |> ignore
         this.RefreshRovers.Where(hasRetrievedRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(showConnectionError this) |> ignore
-        this.FetchPhotos.ThrownExceptions.Subscribe(handleException)
-            |> ObservableExtensions.disposeWith this.PageDisposables
-            |> ignore
     override this.TearDownCommands() = this.PageDisposables.Clear()
     interface IRoutableViewModel with
         member __.HostScreen = host

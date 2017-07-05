@@ -78,13 +78,6 @@ type PhotoSet =
         [<JsonProperty("photos")>] mutable Photos: Photo[]
     }
 
-type Rovers =
-    {
-        Curiosity: Rover
-        Spirit: Rover
-        Opportunity: Rover
-    }
-
 module RoverCameras =
     let private fhaz = { Name = "FHAZ"; FullName = "Front Hazard Avoidance Camera" }
     let private rhaz = { Name = "RHAZ"; FullName = "Rear Hazard Avoidance Camera" }
@@ -97,12 +90,11 @@ module RoverCameras =
     let private minites = { Name = "MINITES"; FullName = "Miniature Thermal Emission Spectrometer (Mini-TES)" }
     let all = dict [(fhaz.Name, fhaz); (rhaz.Name, rhaz); (mast.Name, mast); (chemCam.Name, chemCam); (mahli.Name, mahli); (mardi.Name, mardi); (navCam.Name, navCam); (panCam.Name, panCam); (minites.Name, minites)]
 
-module RoverNames =
+module Rovers =
+    type HeadlineImagePath = { Curiosity: string; Spirit: string; Opportunity: string }
     let curiosity, spirit, opportunity = "Curiosity", "Spirit", "Opportunity"
-    let all = [|curiosity; spirit; opportunity|]
-
-module Mars =
-    let genericImage = "https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/pia21463.jpg" |> Uri
+    let names = [|curiosity; spirit; opportunity|]
+    let imagePaths = { Curiosity = "Curiosity.jpg"; Spirit = "Spirit.jpg"; Opportunity = "Opportunity.jpg" }
 
 type IMarsPlatform =
     inherit IPlatform

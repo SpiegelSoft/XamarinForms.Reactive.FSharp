@@ -128,6 +128,7 @@ type HyperlinkLabel() =
 
 module ViewHelpers =
     open Microsoft.FSharp.Quotations
+
     let withTwoWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
         view.Bind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
         element
@@ -209,6 +210,8 @@ module ViewHelpers =
 open ViewHelpers
 
 module Themes =
+    open Microsoft.FSharp.Quotations
+
     let withBlocks (views:View[]) (stackLayout: StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
     let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
@@ -304,6 +307,7 @@ module Themes =
         }
 
     let private apply setUp view = setUp |> Seq.iter (fun s -> s view); view
+    let private initialise (property: Expr<'a -> 'b>) (view: 'a) (value: 'b) = ExpressionConversion.setProperty view value property; value
     let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
     let private applyCellColors (styles:Styles) (cell:#TextCell) = cell.TextColor <- styles.TextCellTextColor; cell.DetailColor <- styles.TextCellDetailColor; cell
     type Theme =
@@ -313,17 +317,22 @@ module Themes =
         member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
         member this.GenerateMapSearchBar([<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> apply setUp
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
+        member this.GenerateImage(view, property, [<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> initialise property view |> apply setUp
         member this.GenerateFrame([<ParamArray>] setUp: (Frame -> unit)[]) = new Frame(Style = this.Styles.FrameStyle) |> apply setUp
         member this.GenerateContentView([<ParamArray>] setUp: (ContentView -> unit)[]) = new ContentView(Style = this.Styles.ContentViewStyle) |> apply setUp
         member this.GenerateButton([<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> apply setUp
+        member this.GenerateButton(view, property, [<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> initialise property view |> apply setUp
         member this.GenerateLabel([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.LabelStyle) |> apply setUp
+        member this.GenerateLabel(view, property, [<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.LabelStyle) |> initialise property view |> apply setUp
         member this.GenerateTitle([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.TitleStyle) |> apply setUp
+        member this.GenerateTitle(view, property, [<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.TitleStyle) |> initialise property view |> apply setUp
         member this.GenerateSubtitle([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.SubtitleStyle) |> apply setUp
         member this.GenerateSwitch([<ParamArray>] setUp: (Switch -> unit)[]) = new Switch(Style = this.Styles.SwitchStyle) |> apply setUp
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
         member this.GenerateEditor([<ParamArray>] setUp: (Editor -> unit)[]) = new Editor(Style = this.Styles.EditorStyle) |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
         member this.GenerateListView([<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> apply setUp
+        member this.GenerateListView(view, property, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> initialise property view |> apply setUp
         member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
         member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp

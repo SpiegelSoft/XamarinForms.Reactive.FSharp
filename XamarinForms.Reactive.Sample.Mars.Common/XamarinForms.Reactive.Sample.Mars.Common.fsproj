@@ -53,6 +53,9 @@
     <Compile Include="Views.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
+    <EmbeddedResource Include="spirit.jpg" />
+    <EmbeddedResource Include="curiosity.jpg" />
+    <EmbeddedResource Include="opportunity.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
