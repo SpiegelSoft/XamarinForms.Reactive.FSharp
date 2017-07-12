@@ -88,11 +88,6 @@ type Storage(platform: IMarsPlatform) =
         async {
             let! roversFromApi = platform.PullRoversAsync()
             do! database.RunInTransactionAsync(updateRoversFromApi roversFromApi) |> Async.AwaitTask
-            let! manifestResults = roversFromApi |> Array.map (fun r -> r.PhotoManifest) |> Array.map (database.InsertOrReplaceAsync >> Async.AwaitTask) |> Async.Parallel
-            let photoManifests = roversFromApi |> Array.map (fun r -> r.PhotoManifest)
-            let photos = photoManifests |> Array.collect (fun m -> m.Photos)
-            let photoSetDtos = photos |> Array.map RoverSolPhotoSetDto 
-            let! photoResults = photoSetDtos |> Array.map(database.InsertOrReplaceAsync >> Async.AwaitTask) |> Async.Parallel
             return roversFromApi
         }
     interface IStorage with

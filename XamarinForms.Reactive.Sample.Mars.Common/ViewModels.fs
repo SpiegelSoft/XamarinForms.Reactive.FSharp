@@ -28,7 +28,11 @@ type PhotoManifestViewModel(roverName: string, headlineImage: string, launchDate
 type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorage) =
     inherit PageViewModel()
     let host, platform, storage = LocateIfNone host, LocateIfNone platform, LocateIfNone storage
-    let rovers = dict [(Rovers.curiosity, PhotoManifestViewModel); (Rovers.opportunity, PhotoManifestViewModel); (Rovers.spirit, PhotoManifestViewModel)]
+    let rovers = dict [
+        (Rovers.curiosity, PhotoManifestViewModel.Curiosity)
+        (Rovers.opportunity, PhotoManifestViewModel.Opportunity); 
+        (Rovers.spirit, PhotoManifestViewModel.Spirit)
+    ]
     let mutable cameraIndex = 0
     let fetchPhotos (vm: PhotoSetViewModel) =
         let result() = async { return { SyncResult = ApiSyncResult.SyncSucceeded; Content = Unchecked.defaultof<PhotoSet> } }
@@ -43,9 +47,13 @@ type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStor
     let hasRetrievedRovers (result: StorageResult<Rover[]>) = result.Content.Length > 0
     let showConnectionError (vm: PhotoSetViewModel) (_:StorageResult<Rover[]>) =
         vm.DisplayAlertMessage({ Title = "Connection Required"; Message = "A workimg connection is required to retrieve the image set for the first time. Please check your connection and try again."; Acknowledge = "OK" }).Subscribe() |> ignore
-    let updateManifests (vm: PhotoSetViewModel) (results:StorageResult<Rover[]>) =
-        for rover in results.Content do
-            rover.PhotoManifest |> ignore
+    let updateManifest (rover: Rover) =
+        let photoManifest = rover.PhotoManifest
+        let roverViewModel = rovers.[photoManifest.Name]
+        roverViewModel.PhotoSet.Clear()
+        photoManifest.Photos |> Seq.iter roverViewModel.PhotoSet.Add
+        roverViewModel.PhotoSet.AddRange(photoManifest.Photos)
+    let updateManifests (vm: PhotoSetViewModel) (results:StorageResult<Rover[]>) = results.Content |> Seq.iter updateManifest
     member this.CameraIndex with get() = cameraIndex and set(value) = this.RaiseAndSetIfChanged(&cameraIndex, value, "Camera") |> ignore
     member val FetchPhotos = Unchecked.defaultof<ReactiveCommand<PhotoSetViewModel, StorageResult<PhotoSet>>> with get, set
     member val RefreshRovers = Unchecked.defaultof<ReactiveCommand<PhotoSetViewModel, StorageResult<Rover[]>>> with get, set
@@ -56,7 +64,7 @@ type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStor
         this.RefreshRovers <- createFromObservable(refreshRovers, None) |> ObservableExtensions.disposeWith this.PageDisposables
         this.FetchPhotos <- createFromObservable(fetchPhotos, None) |> ObservableExtensions.disposeWith this.PageDisposables
         this.RefreshRovers.Where(cannotRetrieveFirstRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(showConnectionError this) |> ignore
-        this.RefreshRovers.Where(hasRetrievedRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(showConnectionError this) |> ignore
+        this.RefreshRovers.Where(hasRetrievedRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(updateManifests this) |> ignore
     override this.TearDownCommands() = this.PageDisposables.Clear()
     interface IRoutableViewModel with
         member __.HostScreen = host
