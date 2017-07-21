@@ -1,9 +1,7 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
 open System.Reactive.Disposables
-open System.Threading.Tasks
 open System.Reactive.Linq
-open System.Threading
 open System
 
 open GeographicLib

@@ -208,6 +208,7 @@ module ViewHelpers =
     let withImageCellSource source (element: #ImageCell) = element.ImageSource <- source; element
 
 open ViewHelpers
+open System.Collections.ObjectModel
 
 module Themes =
     open Microsoft.FSharp.Quotations

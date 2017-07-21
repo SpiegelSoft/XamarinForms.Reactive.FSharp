@@ -13,17 +13,18 @@ open ReactiveUI
 type PhotoManifestViewModel(roverName: string, headlineImage: string, launchDate: DateTime, landingDate: DateTime) =
     inherit ReactiveObject()
     let mutable maxDate, maxSol, totalPhotos = landingDate, 0, 0
+    let photoSet = ReactiveList<RoverSolPhotoSet>()
     member val LaunchDate = launchDate
     member val LandingDate = landingDate
     member val RoverName = roverName
     member val HeadlineImage = headlineImage
-    member val PhotoSet = ReactiveList<RoverSolPhotoSet>()
+    member __.PhotoSet = photoSet
     member this.MaxSol with get() = maxSol and set(value) = this.RaiseAndSetIfChanged(&maxSol, value, "MaxSol") |> ignore
     member this.MaxDate with get() = maxDate and set(value) = this.RaiseAndSetIfChanged(&maxDate, value, "MaxDate") |> ignore
     member this.TotalPhotos with get() = totalPhotos and set(value) = this.RaiseAndSetIfChanged(&totalPhotos, value, "TotalPhotos") |> ignore
-    static member Curiosity = new PhotoManifestViewModel(Rovers.curiosity, Rovers.imagePaths.Curiosity, DateTime(2011, 11, 26), DateTime(2012, 8, 6))
-    static member Spirit = new PhotoManifestViewModel(Rovers.spirit, Rovers.imagePaths.Spirit, DateTime(2003, 6, 10), DateTime(2004, 1, 4))
-    static member Opportunity = new PhotoManifestViewModel(Rovers.opportunity, Rovers.imagePaths.Opportunity, DateTime(2003, 7, 7), DateTime(2004, 1, 25))
+    static member val Curiosity = new PhotoManifestViewModel(Rovers.curiosity, Rovers.imagePaths.Curiosity, DateTime(2011, 11, 26), DateTime(2012, 8, 6))
+    static member val Spirit = new PhotoManifestViewModel(Rovers.spirit, Rovers.imagePaths.Spirit, DateTime(2003, 6, 10), DateTime(2004, 1, 4))
+    static member val Opportunity = new PhotoManifestViewModel(Rovers.opportunity, Rovers.imagePaths.Opportunity, DateTime(2003, 7, 7), DateTime(2004, 1, 25))
 
 type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorage) =
     inherit PageViewModel()
@@ -47,13 +48,13 @@ type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStor
     let hasRetrievedRovers (result: StorageResult<Rover[]>) = result.Content.Length > 0
     let showConnectionError (vm: PhotoSetViewModel) (_:StorageResult<Rover[]>) =
         vm.DisplayAlertMessage({ Title = "Connection Required"; Message = "A workimg connection is required to retrieve the image set for the first time. Please check your connection and try again."; Acknowledge = "OK" }).Subscribe() |> ignore
-    let updateManifest (rover: Rover) =
+    let updateManifest (vm: PhotoSetViewModel) (rover: Rover) =
         let photoManifest = rover.PhotoManifest
         let roverViewModel = rovers.[photoManifest.Name]
         roverViewModel.PhotoSet.Clear()
         photoManifest.Photos |> Seq.iter roverViewModel.PhotoSet.Add
-        roverViewModel.PhotoSet.AddRange(photoManifest.Photos)
-    let updateManifests (vm: PhotoSetViewModel) (results:StorageResult<Rover[]>) = results.Content |> Seq.iter updateManifest
+    let updateManifests (vm: PhotoSetViewModel) (results:StorageResult<Rover[]>) = 
+        results.Content |> Seq.iter (updateManifest vm)
     member this.CameraIndex with get() = cameraIndex and set(value) = this.RaiseAndSetIfChanged(&cameraIndex, value, "Camera") |> ignore
     member val FetchPhotos = Unchecked.defaultof<ReactiveCommand<PhotoSetViewModel, StorageResult<PhotoSet>>> with get, set
     member val RefreshRovers = Unchecked.defaultof<ReactiveCommand<PhotoSetViewModel, StorageResult<Rover[]>>> with get, set

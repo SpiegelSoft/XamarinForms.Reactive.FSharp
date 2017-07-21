@@ -1,7 +1,9 @@
 ﻿namespace XamarinForms.Reactive.Sample.Mars.Common
 
+open System.Reactive.Linq
 open System
 open ReactiveUI.XamForms
+open ReactiveUI
 open XamarinForms.Reactive.FSharp.Themes
 open XamarinForms.Reactive.FSharp
 open Xamarin.Forms
@@ -44,11 +46,13 @@ type RoverFrontPage(vm, theme) =
                             let mutable solNumberLabel = Unchecked.defaultof<Label> 
                             let mutable totalPhotosLabel = Unchecked.defaultof<Label> 
                             let mutable camerasLabel = Unchecked.defaultof<Label> 
+                            let sol s = 
+                                sprintf "Sol %i" s
                             theme.GenerateGrid([|"Auto"; "Auto"|], [|"Auto"; "*"|]) |> withColumn(
                                 [|
                                     theme.GenerateLabel(fun l -> solNumberLabel <- l)
-                                        |> withOneWayElementBinding(solNumberLabel, <@ fun (vm: RoverSolPhotoSet) -> vm.Sol @>, Label.TextProperty, fun s -> sprintf "Sol %i" s)
-                                        |> withColumnSpan 2
+                                        |> withOneWayElementBinding(solNumberLabel, <@ fun (vm: RoverSolPhotoSet) -> vm.Sol @>, Label.TextProperty, sol)
+                                        |> withRowSpan 2
                                 |]) |> thenColumn(
                                 [|
                                     theme.GenerateLabel(fun l -> totalPhotosLabel <- l)

@@ -91,7 +91,7 @@ type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel 
     interface IContentView with 
         member this.InitialiseContent() = this.Content <- this.CreateContent()
         member this.OnContentCreated() = this.OnContentCreated()
-        member this.PagePopped() = 0 |> ignore
+        member this.PagePopped() = this |> ignore
 
 [<AbstractClass>]
 type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
