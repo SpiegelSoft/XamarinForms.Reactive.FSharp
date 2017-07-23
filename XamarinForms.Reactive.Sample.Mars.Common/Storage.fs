@@ -27,6 +27,7 @@ type StorageResult<'a> =
 
 type RoverSolPhotoSetDto(photoSet: RoverSolPhotoSet) =
     [<Indexed; MaxLength(16)>] member val RoverName = photoSet.RoverName with get, set
+    [<MaxLength(256)>] member val HeadlineImage = photoSet.HeadlineImage with get, set
     [<Indexed>] member val Sol = photoSet.Sol with get, set
     member val TotalPhotos = photoSet.TotalPhotos with get, set
     member val Cameras = String.Join(",", photoSet.Cameras) with get, set
@@ -34,6 +35,8 @@ type RoverSolPhotoSetDto(photoSet: RoverSolPhotoSet) =
     member this.PhotoSet() =
         {
             RoverName = this.RoverName
+            HeadlineImage = this.HeadlineImage
+            DefaultImage = this.HeadlineImage
             Sol = this.Sol
             TotalPhotos = this.TotalPhotos
             Cameras = this.Cameras.Split(',') |> Array.ofSeq
@@ -78,7 +81,7 @@ type Storage(platform: IMarsPlatform) =
     let toRovers manifests = manifests |> Array.map (fun m -> { PhotoManifest = m })
     let updateRoversFromApi roversFromApi (conn: SQLiteConnection) =
         let manifestDtos = roversFromApi |> Array.map (fun r -> r.PhotoManifest) |> Array.map PhotoManifestDto
-        let manifestResults = manifestDtos |> Array.map conn.InsertOrReplace
+        let _ = manifestDtos |> Array.map conn.InsertOrReplace
         let photoManifests = roversFromApi |> Array.map (fun r -> r.PhotoManifest)
         let photos = photoManifests |> Array.collect (fun m -> m.Photos)
         let photoSetDtos = photos |> Array.map RoverSolPhotoSetDto 
@@ -94,6 +97,7 @@ type Storage(platform: IMarsPlatform) =
         member __.GetRoversAsync() =
             async {
                 let tablesResult = createTables.Result
+                tablesResult |> ignore
                 let! savedPhotoSets = database.Table<RoverSolPhotoSetDto>().ToListAsync() |> Async.AwaitTask
                 let photoSetDictionary = savedPhotoSets |> Seq.map (fun s -> s.PhotoSet()) |> Seq.groupBy (fun photoSet -> photoSet.RoverName) |> dict
                 let! savedManifests = database.Table<PhotoManifestDto>().ToListAsync() |> Async.AwaitTask

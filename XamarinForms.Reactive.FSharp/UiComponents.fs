@@ -176,7 +176,12 @@ module ViewHelpers =
     let withListViewFooter footer (element: #ListView) = element.Footer <- footer; element
     let withItemsSource source (element: #ItemsView<'v>) = element.ItemsSource <- source; element
     let withGalleryItemsSource source (element: ImageGallery) = element.ItemsSource <- source; element
-    let withItemTemplate (createTemplate: unit -> View) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
+    let viewCell view = new ViewCell(View = view)
+    let withViewCellTemplate (createTemplate: unit -> ViewCell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
+    let withTextCellTemplate (createTemplate: unit -> TextCell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
+    let withImageCellTemplate (createTemplate: unit -> ImageCell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
+    let withEntryCellTemplate (createTemplate: unit -> EntryCell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
+    let withSwitchCellTemplate (createTemplate: unit -> SwitchCell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withGalleryItemTemplate (createTemplate: unit -> View) (element: ImageGallery) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withEditorText text (element: #Editor) = element.Text <- text; element
     let withContent content (element: #ScrollView) = element.Content <- content; element
@@ -332,8 +337,8 @@ module Themes =
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
         member this.GenerateEditor([<ParamArray>] setUp: (Editor -> unit)[]) = new Editor(Style = this.Styles.EditorStyle) |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
-        member this.GenerateListView([<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> apply setUp
-        member this.GenerateListView(view, property, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(Style = this.Styles.ListViewStyle) |> initialise property view |> apply setUp
+        member this.GenerateListView(cachingStrategy: ListViewCachingStrategy, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(cachingStrategy, Style = this.Styles.ListViewStyle) |> apply setUp
+        member this.GenerateListView(view, property, cachingStrategy: ListViewCachingStrategy, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(cachingStrategy, Style = this.Styles.ListViewStyle) |> initialise property view |> apply setUp
         member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
         member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp

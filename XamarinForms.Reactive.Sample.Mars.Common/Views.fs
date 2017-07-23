@@ -1,13 +1,15 @@
 ﻿namespace XamarinForms.Reactive.Sample.Mars.Common
 
-open System.Reactive.Linq
 open System
+
 open ReactiveUI.XamForms
 open ReactiveUI
+
+open XamarinForms.Reactive.FSharp.ViewHelpers
 open XamarinForms.Reactive.FSharp.Themes
 open XamarinForms.Reactive.FSharp
+
 open Xamarin.Forms
-open XamarinForms.Reactive.FSharp.ViewHelpers
 
 type RoverFrontPage(vm, theme) =
     inherit ContentView<PhotoManifestViewModel>(theme)
@@ -16,10 +18,12 @@ type RoverFrontPage(vm, theme) =
     member val Title = Unchecked.defaultof<Label> with get, set    
     member val LaunchDate = Unchecked.defaultof<Label> with get, set    
     member val LandingDate = Unchecked.defaultof<Label> with get, set    
+    member val MaxSol = Unchecked.defaultof<Label> with get, set    
+    member val TotalPhotos = Unchecked.defaultof<Label> with get, set    
     member val Photo = Unchecked.defaultof<Image> with get, set
     override this.CreateContent() =
         let dateString (d:DateTime) = d.ToString("dd-MMM-yyyy")
-        theme.GenerateGrid([|"Auto"; "Auto"; "Auto"; "*"|], [|"Auto"; "*"|])
+        theme.GenerateGrid([|"Auto"; "Auto"; "Auto"; "Auto"; "Auto"; "*"|], [|"Auto"; "*"|])
             |> withRow(
                 [|
                     theme.GenerateTitle(this, <@ fun (v: RoverFrontPage) -> v.Title @>) |> withColumnSpan 2
@@ -40,32 +44,33 @@ type RoverFrontPage(vm, theme) =
                 |])
             |> thenRow(
                 [|
-                    theme.GenerateListView(this, <@ fun (v: RoverFrontPage) -> v.PhotoSets @>) |> withColumnSpan 2
+                    theme.GenerateLabel() |> withHorizontalOptions LayoutOptions.Start |> withLabelText("Maximum Sol")
+                    theme.GenerateLabel(this, <@ fun (v: RoverFrontPage) -> v.MaxSol @>) |> withHorizontalOptions LayoutOptions.End
+                        |> withOneWayBinding(this, <@ fun vm -> vm.MaxSol @>, <@ fun v -> v.MaxSol.Text @>, fun s -> s.ToString())
+                |])
+            |> thenRow(
+                [|
+                    theme.GenerateLabel() |> withHorizontalOptions LayoutOptions.Start |> withLabelText("Total Photos")
+                    theme.GenerateLabel(this, <@ fun (v: RoverFrontPage) -> v.TotalPhotos @>) |> withHorizontalOptions LayoutOptions.End
+                        |> withOneWayBinding(this, <@ fun vm -> vm.TotalPhotos @>, <@ fun v -> v.TotalPhotos.Text @>, fun s -> s.ToString())
+                |])
+            |> thenRow(
+                [|
+                    theme.GenerateListView(this, <@ fun (v: RoverFrontPage) -> v.PhotoSets @>, ListViewCachingStrategy.RecycleElement) 
+                        |> withColumnSpan 2
                         |> withItemsSource(this.ViewModel.PhotoSet)
-                        |> withItemTemplate(fun () -> 
-                            let mutable solNumberLabel = Unchecked.defaultof<Label> 
-                            let mutable totalPhotosLabel = Unchecked.defaultof<Label> 
-                            let mutable camerasLabel = Unchecked.defaultof<Label> 
-                            let sol s = 
-                                sprintf "Sol %i" s
-                            theme.GenerateGrid([|"Auto"; "Auto"|], [|"Auto"; "*"|]) |> withColumn(
-                                [|
-                                    theme.GenerateLabel(fun l -> solNumberLabel <- l)
-                                        |> withOneWayElementBinding(solNumberLabel, <@ fun (vm: RoverSolPhotoSet) -> vm.Sol @>, Label.TextProperty, sol)
-                                        |> withRowSpan 2
-                                |]) |> thenColumn(
-                                [|
-                                    theme.GenerateLabel(fun l -> totalPhotosLabel <- l)
-                                        |> withOneWayElementBinding(totalPhotosLabel, <@ fun (vm: RoverSolPhotoSet) -> vm.TotalPhotos @>, Label.TextProperty, fun s -> sprintf "%i Photo%s" s (if s > 1 then "s" else ""))
-                                    theme.GenerateLabel(fun l -> camerasLabel <- l)
-                                        |> withOneWayElementBinding(camerasLabel, <@ fun (vm: RoverSolPhotoSet) -> vm.Cameras @>, Label.TextProperty, fun c -> String.Join(", ", c))
-                                |])|> createFromColumns :> View)
+                        |> withImageCellTemplate(fun () -> 
+                            let mutable imageCell = Unchecked.defaultof<ImageCell> 
+                            theme.GenerateImageCell(fun i -> imageCell <- i) 
+                                |> withOneWayElementBinding(imageCell, <@ fun (vm: RoverSolPhotoSet) -> vm.Sol @>, ImageCell.TextProperty, fun s -> sprintf "Sol %i" s)
+                                |> withOneWayElementBinding(imageCell, <@ fun (vm: RoverSolPhotoSet) -> vm.Description @>, ImageCell.DetailProperty, id)
+                                |> withOneWayElementBinding(imageCell, <@ fun (vm: RoverSolPhotoSet) -> vm.ImageSource @>, ImageCell.ImageSourceProperty, ImageSource.FromFile))
                 |])
             |> createFromRows |> withPadding (new Thickness(18.0, 0.0)) :> View
 
 type PhotoSetView(theme) =
     inherit TabbedPage<PhotoSetViewModel>(theme)
-    new() = new PhotoSetView(DefaultTheme)
+    new() = new PhotoSetView(Themes.XrfMars)
     override this.OnContentCreated() =
         this.ViewModel.RefreshRovers.Execute(this.ViewModel).Subscribe() |> ignore
     override this.CreateContent() =

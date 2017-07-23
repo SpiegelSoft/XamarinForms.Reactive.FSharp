@@ -6,6 +6,18 @@ open Newtonsoft.Json
 
 open XamarinForms.Reactive.FSharp
 
+module Themes =
+    open XamarinForms.Reactive.FSharp.Themes
+    open Xamarin.Forms
+    let XrfMars = 
+        DefaultTheme 
+            |> applyLabelSetters 
+                [
+                    new Setter(Property = Label.TextColorProperty, Value = Color.Yellow)
+                    new Setter(Property = Label.FontAttributesProperty, Value = FontAttributes.Bold)
+                ]
+            |> applyTextCellTextColor Color.Yellow
+
 type PhotoCamera = 
     {
         [<JsonProperty("id")>] mutable Id: int
@@ -23,13 +35,22 @@ type RoverCamera =
 type RoverSolPhotoSet =
     {
         mutable RoverName: string
+        mutable HeadlineImage: string
+        mutable DefaultImage: string
         [<JsonProperty("sol")>] mutable Sol: int
         [<JsonProperty("total_photos")>] mutable TotalPhotos: int
         [<JsonProperty("cameras")>] mutable Cameras: string[]
     }
+    member this.Description = sprintf "%i Cameras, %i Photos" this.Cameras.Length this.TotalPhotos
+    member this.ImageSource =
+        match String.IsNullOrEmpty this.HeadlineImage with
+        | true -> this.DefaultImage
+        | false -> this.HeadlineImage
     static member DefaultValue() =
         {
-            RoverName = ""
+            RoverName = String.Empty
+            HeadlineImage = String.Empty
+            DefaultImage = String.Empty
             Sol = 0
             TotalPhotos = 0
             Cameras = [||]
@@ -94,7 +115,13 @@ module Rovers =
     type HeadlineImagePath = { Curiosity: string; Spirit: string; Opportunity: string }
     let curiosity, spirit, opportunity = "Curiosity", "Spirit", "Opportunity"
     let names = [|curiosity; spirit; opportunity|]
-    let imagePaths = { Curiosity = "Curiosity.jpg"; Spirit = "Spirit.jpg"; Opportunity = "Opportunity.jpg" }
+    let imagePaths = { Curiosity = "curiosity.jpg"; Spirit = "spirit.jpg"; Opportunity = "opportunity.jpg" }
+    let imagePath name = 
+        match name with 
+        | n when n = curiosity -> imagePaths.Curiosity
+        | n when n = spirit -> imagePaths.Spirit
+        | n when n = opportunity -> imagePaths.Opportunity
+        | _ -> String.Empty
 
 type IMarsPlatform =
     inherit IPlatform

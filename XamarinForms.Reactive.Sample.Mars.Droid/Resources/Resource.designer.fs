@@ -23,10 +23,10 @@ namespace XamarinForms.Reactive.Sample.Mars.Droid
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException8026cfbcb30e43cc82b435f03eb9a0a7 of obj
-    exception ReturnNoneException8026cfbcb30e43cc82b435f03eb9a0a7
+    exception ReturnExceptiond8964f3a748e4a35b82d0538240a824c of obj
+    exception ReturnNoneExceptiond8964f3a748e4a35b82d0538240a824c
     [<AutoOpen>]
-    module FuncConvertFinalOverload8026cfbcb30e43cc82b435f03eb9a0a7 =
+    module FuncConvertFinalOverloadd8964f3a748e4a35b82d0538240a824c =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
@@ -3553,7 +3553,16 @@ namespace XamarinForms.Reactive.Sample.Mars.Droid
         (* partial *)Resource_Mipmap () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
             // aapt resource value: 0x7f030000
-            static member Icon = 2130903040
+            static member curiosity = 2130903040
+            
+            // aapt resource value: 0x7f030001
+            static member Icon = 2130903041
+            
+            // aapt resource value: 0x7f030002
+            static member opportunity = 2130903042
+            
+            // aapt resource value: 0x7f030003
+            static member spirit = 2130903043
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
 
 
