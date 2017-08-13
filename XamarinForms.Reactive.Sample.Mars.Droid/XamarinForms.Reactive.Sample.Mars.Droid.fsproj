@@ -24,7 +24,7 @@
     </NuGetPackageImportStamp>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <SelectedDevice>Samsung SM-G925F</SelectedDevice>
+    <SelectedDevice>5" Marshmallow (6.0.0) XXHDPI Phone</SelectedDevice>
     <DefaultDevice>5" Marshmallow (6.0.0) XXHDPI Phone</DefaultDevice>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>
   </PropertyGroup>

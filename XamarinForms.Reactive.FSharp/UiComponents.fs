@@ -213,7 +213,6 @@ module ViewHelpers =
     let withImageCellSource source (element: #ImageCell) = element.ImageSource <- source; element
 
 open ViewHelpers
-open System.Collections.ObjectModel
 
 module Themes =
     open Microsoft.FSharp.Quotations
@@ -312,8 +311,8 @@ module Themes =
             TextCellDetailColor: Color
         }
 
-    let private apply setUp view = setUp |> Seq.iter (fun s -> s view); view
-    let private initialise (property: Expr<'a -> 'b>) (view: 'a) (value: 'b) = ExpressionConversion.setProperty view value property; value
+    let apply setUp view = setUp |> Seq.iter (fun s -> s view); view
+    let initialise (property: Expr<'a -> 'b>) (view: 'a) (value: 'b) = ExpressionConversion.setProperty view value property; value
     let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
     let private applyCellColors (styles:Styles) (cell:#TextCell) = cell.TextColor <- styles.TextCellTextColor; cell.DetailColor <- styles.TextCellDetailColor; cell
     type Theme =
@@ -354,6 +353,7 @@ module Themes =
         member __.GenerateToolbarItem(name, icon, activated, toolbarItemOrder, priority) = new ToolbarItem(name, icon, activated, toolbarItemOrder, priority)
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
+        member __.AbsoluteLayout([<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
     let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) =
         let controlType = typeof<'TView>
@@ -372,8 +372,17 @@ module Themes =
     let applyTabbedPageSetters tabbedPageSetters (theme: Theme) = addSetters<TabbedPage> tabbedPageSetters theme.Styles.TabbedPageStyle; theme
     let applyBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
-    let applyTextCellTextColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellTextColor = color} }
-    let applyTextCellDetailColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellDetailColor = color} }
+    let applyTextCellTextColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellTextColor = color } }
+    let applyTextCellDetailColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellDetailColor = color } }
+    let withSuccessLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Green)); label
+    let withInfoLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Blue)); label
+    let withWarningLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Yellow)); label
+    let withErrorLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Red)); label
+    let private withBlackText (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Black)); label
+    let withInverseSuccessLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Green)); label |> withBlackText
+    let withInverseInfoLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Blue)); label |> withBlackText
+    let withInverseWarningLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Yellow)); label |> withBlackText
+    let withInverseErrorLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Red)); label |> withBlackText
 
     let DefaultTheme =
         let titleStyle = new Style(typeof<Label>)
