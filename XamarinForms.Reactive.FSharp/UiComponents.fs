@@ -211,6 +211,8 @@ module ViewHelpers =
     let withTextCellDetail detail (element: #TextCell) = element.Detail <- detail; element
     let withTextCellDetailColor detailColor (element: #TextCell) = element.DetailColor <- detailColor; element
     let withImageCellSource source (element: #ImageCell) = element.ImageSource <- source; element
+    let withAbsoluteLayoutBounds bounds (element: #View) = AbsoluteLayout.SetLayoutBounds(element, bounds)
+    let withAbsoluteLayoutFlags flags (element: #View) = AbsoluteLayout.SetLayoutFlags(element, flags)
 
 open ViewHelpers
 
@@ -218,6 +220,8 @@ module Themes =
     open Microsoft.FSharp.Quotations
 
     let withBlocks (views:View[]) (stackLayout: StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
+    let withAbsoluteOverlays (views:View[]) (absoluteLayout: AbsoluteLayout) = views |> Seq.iter absoluteLayout.Children.Add; absoluteLayout
+    let withRelativeOverlays (views:View[]) (relativeLayout: RelativeLayout) = views |> Seq.iter relativeLayout.Children.Add; relativeLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
     let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
     type RowCreation =
@@ -237,6 +241,14 @@ module Themes =
             ColumnCount: int
         }
 
+    let private infoForeground = Color.FromHex("#00529B") 
+    let private infoBackground = Color.FromHex("#BDE5F8") 
+    let private successForeground = Color.FromHex("#4F8A10") 
+    let private successBackground = Color.FromHex("#DFF2BF") 
+    let private warningForeground = Color.FromHex("#9F6000") 
+    let private warningBackground = Color.FromHex("#FEEFB3") 
+    let private errorForeground = Color.FromHex("#D8000C") 
+    let private errorBackground = Color.FromHex("#FFBABA") 
     let private elementNoun i = if i = 1 then "element" else "elements"
     let private columnNoun i = if i = 1 then "column" else "columns"
     let private rowNoun i = if i = 1 then "row" else "rows"
@@ -354,6 +366,7 @@ module Themes =
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
         member __.AbsoluteLayout([<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> apply setUp
+        member __.RelativeLayout([<ParamArray>] setUp: (RelativeLayout -> unit)[]) = new RelativeLayout () |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
     let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) =
         let controlType = typeof<'TView>
@@ -374,15 +387,16 @@ module Themes =
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
     let applyTextCellTextColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellTextColor = color } }
     let applyTextCellDetailColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellDetailColor = color } }
-    let withSuccessLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Green)); label
-    let withInfoLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Blue)); label
-    let withWarningLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Yellow)); label
-    let withErrorLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Red)); label
-    let private withBlackText (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = Color.Black)); label
-    let withInverseSuccessLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Green)); label |> withBlackText
-    let withInverseInfoLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Blue)); label |> withBlackText
-    let withInverseWarningLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Yellow)); label |> withBlackText
-    let withInverseErrorLabelStyle (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.BackgroundColorProperty, Value = Color.Red)); label |> withBlackText
+    let private withForegroundColor color (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = color)); label
+    let private withBackgroundColor color (label: Label) = label.Style.Setters.Add(new Setter(Property = VisualElement.BackgroundColorProperty, Value = color)); label
+    let withSuccessLabelStyle (label: Label) = label |> withForegroundColor successForeground |> withBackgroundColor successBackground
+    let withInfoLabelStyle (label: Label) = label |> withForegroundColor infoForeground |> withBackgroundColor infoBackground
+    let withWarningLabelStyle (label: Label) = label |> withForegroundColor warningForeground |> withBackgroundColor warningBackground
+    let withErrorLabelStyle (label: Label) = label |> withForegroundColor errorForeground |> withBackgroundColor errorBackground
+    let withInverseSuccessLabelStyle (label: Label) = label |> withBackgroundColor successForeground |> withForegroundColor successBackground
+    let withInverseInfoLabelStyle (label: Label) = label |> withBackgroundColor infoForeground |> withForegroundColor infoBackground
+    let withInverseWarningLabelStyle (label: Label) = label |> withBackgroundColor warningForeground |> withForegroundColor warningBackground
+    let withInverseErrorLabelStyle (label: Label) = label |> withBackgroundColor errorForeground |> withForegroundColor errorBackground
 
     let DefaultTheme =
         let titleStyle = new Style(typeof<Label>)

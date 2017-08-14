@@ -2,6 +2,12 @@
 // for more guidance on F# programming.
 open Microsoft.FSharp.Quotations
 
+#r "bin/Debug/Xamarin.Forms.Core.dll"
+
+open Xamarin.Forms
+
+Color.FromHex("#00529B")
+
 let rec propertyName = function
 | Patterns.Lambda(_, expr) -> propertyName expr
 | Patterns.PropertyGet(_, propOrValInfo, _) -> propOrValInfo.Name
