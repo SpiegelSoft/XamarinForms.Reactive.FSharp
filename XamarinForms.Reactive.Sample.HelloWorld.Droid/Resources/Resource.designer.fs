@@ -23,10 +23,10 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnExceptionabbc0dee7cc442beb9645e43896c8c5a of obj
-    exception ReturnNoneExceptionabbc0dee7cc442beb9645e43896c8c5a
+    exception ReturnExceptioncf82319f359d4c5c80740257ef70c82b of obj
+    exception ReturnNoneExceptioncf82319f359d4c5c80740257ef70c82b
     [<AutoOpen>]
-    module FuncConvertFinalOverloadabbc0dee7cc442beb9645e43896c8c5a =
+    module FuncConvertFinalOverloadcf82319f359d4c5c80740257ef70c82b =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
@@ -113,137 +113,137 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
         
         (* partial *)Resource_Attribute () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f01007a
-            static member actionBarDivider = 2130772090
-            
-            // aapt resource value: 0x7f01007b
-            static member actionBarItemBackground = 2130772091
-            
-            // aapt resource value: 0x7f010074
-            static member actionBarPopupTheme = 2130772084
-            
-            // aapt resource value: 0x7f010079
-            static member actionBarSize = 2130772089
-            
-            // aapt resource value: 0x7f010076
-            static member actionBarSplitStyle = 2130772086
-            
-            // aapt resource value: 0x7f010075
-            static member actionBarStyle = 2130772085
-            
-            // aapt resource value: 0x7f010070
-            static member actionBarTabBarStyle = 2130772080
-            
-            // aapt resource value: 0x7f01006f
-            static member actionBarTabStyle = 2130772079
-            
-            // aapt resource value: 0x7f010071
-            static member actionBarTabTextStyle = 2130772081
-            
-            // aapt resource value: 0x7f010077
-            static member actionBarTheme = 2130772087
-            
-            // aapt resource value: 0x7f010078
-            static member actionBarWidgetTheme = 2130772088
-            
-            // aapt resource value: 0x7f010095
-            static member actionButtonStyle = 2130772117
-            
-            // aapt resource value: 0x7f010091
-            static member actionDropDownStyle = 2130772113
-            
-            // aapt resource value: 0x7f0100e6
-            static member actionLayout = 2130772198
-            
             // aapt resource value: 0x7f01007c
-            static member actionMenuTextAppearance = 2130772092
+            static member actionBarDivider = 2130772092
             
             // aapt resource value: 0x7f01007d
-            static member actionMenuTextColor = 2130772093
+            static member actionBarItemBackground = 2130772093
             
-            // aapt resource value: 0x7f010080
-            static member actionModeBackground = 2130772096
+            // aapt resource value: 0x7f010076
+            static member actionBarPopupTheme = 2130772086
             
-            // aapt resource value: 0x7f01007f
-            static member actionModeCloseButtonStyle = 2130772095
+            // aapt resource value: 0x7f01007b
+            static member actionBarSize = 2130772091
             
-            // aapt resource value: 0x7f010082
-            static member actionModeCloseDrawable = 2130772098
+            // aapt resource value: 0x7f010078
+            static member actionBarSplitStyle = 2130772088
             
-            // aapt resource value: 0x7f010084
-            static member actionModeCopyDrawable = 2130772100
-            
-            // aapt resource value: 0x7f010083
-            static member actionModeCutDrawable = 2130772099
-            
-            // aapt resource value: 0x7f010088
-            static member actionModeFindDrawable = 2130772104
-            
-            // aapt resource value: 0x7f010085
-            static member actionModePasteDrawable = 2130772101
-            
-            // aapt resource value: 0x7f01008a
-            static member actionModePopupWindowStyle = 2130772106
-            
-            // aapt resource value: 0x7f010086
-            static member actionModeSelectAllDrawable = 2130772102
-            
-            // aapt resource value: 0x7f010087
-            static member actionModeShareDrawable = 2130772103
-            
-            // aapt resource value: 0x7f010081
-            static member actionModeSplitBackground = 2130772097
-            
-            // aapt resource value: 0x7f01007e
-            static member actionModeStyle = 2130772094
-            
-            // aapt resource value: 0x7f010089
-            static member actionModeWebSearchDrawable = 2130772105
+            // aapt resource value: 0x7f010077
+            static member actionBarStyle = 2130772087
             
             // aapt resource value: 0x7f010072
-            static member actionOverflowButtonStyle = 2130772082
+            static member actionBarTabBarStyle = 2130772082
+            
+            // aapt resource value: 0x7f010071
+            static member actionBarTabStyle = 2130772081
             
             // aapt resource value: 0x7f010073
-            static member actionOverflowMenuStyle = 2130772083
+            static member actionBarTabTextStyle = 2130772083
             
-            // aapt resource value: 0x7f0100e8
-            static member actionProviderClass = 2130772200
+            // aapt resource value: 0x7f010079
+            static member actionBarTheme = 2130772089
             
-            // aapt resource value: 0x7f0100e7
-            static member actionViewClass = 2130772199
+            // aapt resource value: 0x7f01007a
+            static member actionBarWidgetTheme = 2130772090
             
-            // aapt resource value: 0x7f01009d
-            static member activityChooserViewStyle = 2130772125
+            // aapt resource value: 0x7f010097
+            static member actionButtonStyle = 2130772119
             
-            // aapt resource value: 0x7f0100c1
-            static member alertDialogButtonGroupStyle = 2130772161
+            // aapt resource value: 0x7f010093
+            static member actionDropDownStyle = 2130772115
             
-            // aapt resource value: 0x7f0100c2
-            static member alertDialogCenterButtons = 2130772162
+            // aapt resource value: 0x7f0100e9
+            static member actionLayout = 2130772201
             
-            // aapt resource value: 0x7f0100c0
-            static member alertDialogStyle = 2130772160
+            // aapt resource value: 0x7f01007e
+            static member actionMenuTextAppearance = 2130772094
+            
+            // aapt resource value: 0x7f01007f
+            static member actionMenuTextColor = 2130772095
+            
+            // aapt resource value: 0x7f010082
+            static member actionModeBackground = 2130772098
+            
+            // aapt resource value: 0x7f010081
+            static member actionModeCloseButtonStyle = 2130772097
+            
+            // aapt resource value: 0x7f010084
+            static member actionModeCloseDrawable = 2130772100
+            
+            // aapt resource value: 0x7f010086
+            static member actionModeCopyDrawable = 2130772102
+            
+            // aapt resource value: 0x7f010085
+            static member actionModeCutDrawable = 2130772101
+            
+            // aapt resource value: 0x7f01008a
+            static member actionModeFindDrawable = 2130772106
+            
+            // aapt resource value: 0x7f010087
+            static member actionModePasteDrawable = 2130772103
+            
+            // aapt resource value: 0x7f01008c
+            static member actionModePopupWindowStyle = 2130772108
+            
+            // aapt resource value: 0x7f010088
+            static member actionModeSelectAllDrawable = 2130772104
+            
+            // aapt resource value: 0x7f010089
+            static member actionModeShareDrawable = 2130772105
+            
+            // aapt resource value: 0x7f010083
+            static member actionModeSplitBackground = 2130772099
+            
+            // aapt resource value: 0x7f010080
+            static member actionModeStyle = 2130772096
+            
+            // aapt resource value: 0x7f01008b
+            static member actionModeWebSearchDrawable = 2130772107
+            
+            // aapt resource value: 0x7f010074
+            static member actionOverflowButtonStyle = 2130772084
+            
+            // aapt resource value: 0x7f010075
+            static member actionOverflowMenuStyle = 2130772085
+            
+            // aapt resource value: 0x7f0100eb
+            static member actionProviderClass = 2130772203
+            
+            // aapt resource value: 0x7f0100ea
+            static member actionViewClass = 2130772202
+            
+            // aapt resource value: 0x7f01009f
+            static member activityChooserViewStyle = 2130772127
+            
+            // aapt resource value: 0x7f0100c4
+            static member alertDialogButtonGroupStyle = 2130772164
+            
+            // aapt resource value: 0x7f0100c5
+            static member alertDialogCenterButtons = 2130772165
             
             // aapt resource value: 0x7f0100c3
-            static member alertDialogTheme = 2130772163
+            static member alertDialogStyle = 2130772163
             
-            // aapt resource value: 0x7f0100d6
-            static member allowStacking = 2130772182
+            // aapt resource value: 0x7f0100c6
+            static member alertDialogTheme = 2130772166
             
-            // aapt resource value: 0x7f0100d7
-            static member alpha = 2130772183
+            // aapt resource value: 0x7f0100d9
+            static member allowStacking = 2130772185
+            
+            // aapt resource value: 0x7f0100da
+            static member alpha = 2130772186
             
             // aapt resource value: 0x7f010010
             static member ambientEnabled = 2130771984
             
-            // aapt resource value: 0x7f0100de
-            static member arrowHeadLength = 2130772190
+            // aapt resource value: 0x7f0100e1
+            static member arrowHeadLength = 2130772193
             
-            // aapt resource value: 0x7f0100df
-            static member arrowShaftLength = 2130772191
+            // aapt resource value: 0x7f0100e2
+            static member arrowShaftLength = 2130772194
             
-            // aapt resource value: 0x7f0100c8
-            static member autoCompleteTextViewStyle = 2130772168
+            // aapt resource value: 0x7f0100cb
+            static member autoCompleteTextViewStyle = 2130772171
             
             // aapt resource value: 0x7f010045
             static member background = 2130772037
@@ -254,59 +254,59 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010046
             static member backgroundStacked = 2130772038
             
-            // aapt resource value: 0x7f01011b
-            static member backgroundTint = 2130772251
+            // aapt resource value: 0x7f01011e
+            static member backgroundTint = 2130772254
             
-            // aapt resource value: 0x7f01011c
-            static member backgroundTintMode = 2130772252
+            // aapt resource value: 0x7f01011f
+            static member backgroundTintMode = 2130772255
             
-            // aapt resource value: 0x7f0100e0
-            static member barLength = 2130772192
+            // aapt resource value: 0x7f0100e3
+            static member barLength = 2130772195
             
-            // aapt resource value: 0x7f010146
-            static member behavior_autoHide = 2130772294
+            // aapt resource value: 0x7f010149
+            static member behavior_autoHide = 2130772297
             
-            // aapt resource value: 0x7f010123
-            static member behavior_hideable = 2130772259
+            // aapt resource value: 0x7f010126
+            static member behavior_hideable = 2130772262
             
-            // aapt resource value: 0x7f01014f
-            static member behavior_overlapTop = 2130772303
+            // aapt resource value: 0x7f010152
+            static member behavior_overlapTop = 2130772306
             
-            // aapt resource value: 0x7f010122
-            static member behavior_peekHeight = 2130772258
+            // aapt resource value: 0x7f010125
+            static member behavior_peekHeight = 2130772261
             
-            // aapt resource value: 0x7f010124
-            static member behavior_skipCollapsed = 2130772260
+            // aapt resource value: 0x7f010127
+            static member behavior_skipCollapsed = 2130772263
             
-            // aapt resource value: 0x7f010144
-            static member borderWidth = 2130772292
+            // aapt resource value: 0x7f010147
+            static member borderWidth = 2130772295
             
-            // aapt resource value: 0x7f01009a
-            static member borderlessButtonStyle = 2130772122
+            // aapt resource value: 0x7f01009c
+            static member borderlessButtonStyle = 2130772124
             
-            // aapt resource value: 0x7f01013e
-            static member bottomSheetDialogTheme = 2130772286
+            // aapt resource value: 0x7f010141
+            static member bottomSheetDialogTheme = 2130772289
             
-            // aapt resource value: 0x7f01013f
-            static member bottomSheetStyle = 2130772287
+            // aapt resource value: 0x7f010142
+            static member bottomSheetStyle = 2130772290
             
-            // aapt resource value: 0x7f010097
-            static member buttonBarButtonStyle = 2130772119
+            // aapt resource value: 0x7f010099
+            static member buttonBarButtonStyle = 2130772121
             
-            // aapt resource value: 0x7f0100c6
-            static member buttonBarNegativeButtonStyle = 2130772166
+            // aapt resource value: 0x7f0100c9
+            static member buttonBarNegativeButtonStyle = 2130772169
             
-            // aapt resource value: 0x7f0100c7
-            static member buttonBarNeutralButtonStyle = 2130772167
+            // aapt resource value: 0x7f0100ca
+            static member buttonBarNeutralButtonStyle = 2130772170
             
-            // aapt resource value: 0x7f0100c5
-            static member buttonBarPositiveButtonStyle = 2130772165
+            // aapt resource value: 0x7f0100c8
+            static member buttonBarPositiveButtonStyle = 2130772168
             
-            // aapt resource value: 0x7f010096
-            static member buttonBarStyle = 2130772118
+            // aapt resource value: 0x7f010098
+            static member buttonBarStyle = 2130772120
             
-            // aapt resource value: 0x7f010110
-            static member buttonGravity = 2130772240
+            // aapt resource value: 0x7f010113
+            static member buttonGravity = 2130772243
             
             // aapt resource value: 0x7f01005a
             static member buttonPanelSideLayout = 2130772058
@@ -314,17 +314,17 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f01001a
             static member buttonSize = 2130771994
             
-            // aapt resource value: 0x7f0100c9
-            static member buttonStyle = 2130772169
+            // aapt resource value: 0x7f0100cc
+            static member buttonStyle = 2130772172
             
-            // aapt resource value: 0x7f0100ca
-            static member buttonStyleSmall = 2130772170
+            // aapt resource value: 0x7f0100cd
+            static member buttonStyleSmall = 2130772173
             
-            // aapt resource value: 0x7f0100d8
-            static member buttonTint = 2130772184
+            // aapt resource value: 0x7f0100db
+            static member buttonTint = 2130772187
             
-            // aapt resource value: 0x7f0100d9
-            static member buttonTintMode = 2130772185
+            // aapt resource value: 0x7f0100dc
+            static member buttonTintMode = 2130772188
             
             // aapt resource value: 0x7f010001
             static member cameraBearing = 2130771969
@@ -365,68 +365,68 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010032
             static member cardUseCompatPadding = 2130772018
             
-            // aapt resource value: 0x7f0100cb
-            static member checkboxStyle = 2130772171
+            // aapt resource value: 0x7f0100ce
+            static member checkboxStyle = 2130772174
             
-            // aapt resource value: 0x7f0100cc
-            static member checkedTextViewStyle = 2130772172
+            // aapt resource value: 0x7f0100cf
+            static member checkedTextViewStyle = 2130772175
             
             // aapt resource value: 0x7f010019
             static member circleCrop = 2130771993
             
-            // aapt resource value: 0x7f0100f3
-            static member closeIcon = 2130772211
+            // aapt resource value: 0x7f0100f6
+            static member closeIcon = 2130772214
             
             // aapt resource value: 0x7f010057
             static member closeItemLayout = 2130772055
             
-            // aapt resource value: 0x7f010112
-            static member collapseContentDescription = 2130772242
+            // aapt resource value: 0x7f010115
+            static member collapseContentDescription = 2130772245
             
-            // aapt resource value: 0x7f010111
-            static member collapseIcon = 2130772241
+            // aapt resource value: 0x7f010114
+            static member collapseIcon = 2130772244
             
-            // aapt resource value: 0x7f010131
-            static member collapsedTitleGravity = 2130772273
+            // aapt resource value: 0x7f010134
+            static member collapsedTitleGravity = 2130772276
             
-            // aapt resource value: 0x7f01012b
-            static member collapsedTitleTextAppearance = 2130772267
+            // aapt resource value: 0x7f01012e
+            static member collapsedTitleTextAppearance = 2130772270
             
-            // aapt resource value: 0x7f0100da
-            static member color = 2130772186
-            
-            // aapt resource value: 0x7f0100b8
-            static member colorAccent = 2130772152
-            
-            // aapt resource value: 0x7f0100bf
-            static member colorBackgroundFloating = 2130772159
-            
-            // aapt resource value: 0x7f0100bc
-            static member colorButtonNormal = 2130772156
-            
-            // aapt resource value: 0x7f0100ba
-            static member colorControlActivated = 2130772154
+            // aapt resource value: 0x7f0100dd
+            static member color = 2130772189
             
             // aapt resource value: 0x7f0100bb
-            static member colorControlHighlight = 2130772155
+            static member colorAccent = 2130772155
+            
+            // aapt resource value: 0x7f0100c2
+            static member colorBackgroundFloating = 2130772162
+            
+            // aapt resource value: 0x7f0100bf
+            static member colorButtonNormal = 2130772159
+            
+            // aapt resource value: 0x7f0100bd
+            static member colorControlActivated = 2130772157
+            
+            // aapt resource value: 0x7f0100be
+            static member colorControlHighlight = 2130772158
+            
+            // aapt resource value: 0x7f0100bc
+            static member colorControlNormal = 2130772156
             
             // aapt resource value: 0x7f0100b9
-            static member colorControlNormal = 2130772153
+            static member colorPrimary = 2130772153
             
-            // aapt resource value: 0x7f0100b6
-            static member colorPrimary = 2130772150
-            
-            // aapt resource value: 0x7f0100b7
-            static member colorPrimaryDark = 2130772151
+            // aapt resource value: 0x7f0100ba
+            static member colorPrimaryDark = 2130772154
             
             // aapt resource value: 0x7f01001b
             static member colorScheme = 2130771995
             
-            // aapt resource value: 0x7f0100bd
-            static member colorSwitchThumbNormal = 2130772157
+            // aapt resource value: 0x7f0100c0
+            static member colorSwitchThumbNormal = 2130772160
             
-            // aapt resource value: 0x7f0100f8
-            static member commitIcon = 2130772216
+            // aapt resource value: 0x7f0100fb
+            static member commitIcon = 2130772219
             
             // aapt resource value: 0x7f010050
             static member contentInsetEnd = 2130772048
@@ -461,35 +461,35 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010037
             static member contentPaddingTop = 2130772023
             
-            // aapt resource value: 0x7f01012c
-            static member contentScrim = 2130772268
+            // aapt resource value: 0x7f01012f
+            static member contentScrim = 2130772271
             
-            // aapt resource value: 0x7f0100be
-            static member controlBackground = 2130772158
-            
-            // aapt resource value: 0x7f010165
-            static member counterEnabled = 2130772325
-            
-            // aapt resource value: 0x7f010166
-            static member counterMaxLength = 2130772326
+            // aapt resource value: 0x7f0100c1
+            static member controlBackground = 2130772161
             
             // aapt resource value: 0x7f010168
-            static member counterOverflowTextAppearance = 2130772328
+            static member counterEnabled = 2130772328
             
-            // aapt resource value: 0x7f010167
-            static member counterTextAppearance = 2130772327
+            // aapt resource value: 0x7f010169
+            static member counterMaxLength = 2130772329
+            
+            // aapt resource value: 0x7f01016b
+            static member counterOverflowTextAppearance = 2130772331
+            
+            // aapt resource value: 0x7f01016a
+            static member counterTextAppearance = 2130772330
             
             // aapt resource value: 0x7f010048
             static member customNavigationLayout = 2130772040
             
-            // aapt resource value: 0x7f0100f2
-            static member defaultQueryHint = 2130772210
+            // aapt resource value: 0x7f0100f5
+            static member defaultQueryHint = 2130772213
             
-            // aapt resource value: 0x7f01008f
-            static member dialogPreferredPadding = 2130772111
+            // aapt resource value: 0x7f010091
+            static member dialogPreferredPadding = 2130772113
             
-            // aapt resource value: 0x7f01008e
-            static member dialogTheme = 2130772110
+            // aapt resource value: 0x7f010090
+            static member dialogTheme = 2130772112
             
             // aapt resource value: 0x7f01003e
             static member displayOptions = 2130772030
@@ -497,89 +497,89 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010044
             static member divider = 2130772036
             
-            // aapt resource value: 0x7f01009c
-            static member dividerHorizontal = 2130772124
+            // aapt resource value: 0x7f01009e
+            static member dividerHorizontal = 2130772126
             
-            // aapt resource value: 0x7f0100e4
-            static member dividerPadding = 2130772196
+            // aapt resource value: 0x7f0100e7
+            static member dividerPadding = 2130772199
             
-            // aapt resource value: 0x7f01009b
-            static member dividerVertical = 2130772123
+            // aapt resource value: 0x7f01009d
+            static member dividerVertical = 2130772125
             
-            // aapt resource value: 0x7f0100dc
-            static member drawableSize = 2130772188
+            // aapt resource value: 0x7f0100df
+            static member drawableSize = 2130772191
             
             // aapt resource value: 0x7f010039
             static member drawerArrowStyle = 2130772025
             
-            // aapt resource value: 0x7f0100ae
-            static member dropDownListViewStyle = 2130772142
+            // aapt resource value: 0x7f0100b0
+            static member dropDownListViewStyle = 2130772144
             
-            // aapt resource value: 0x7f010092
-            static member dropdownListPreferredItemHeight = 2130772114
+            // aapt resource value: 0x7f010094
+            static member dropdownListPreferredItemHeight = 2130772116
             
-            // aapt resource value: 0x7f0100a3
-            static member editTextBackground = 2130772131
+            // aapt resource value: 0x7f0100a5
+            static member editTextBackground = 2130772133
             
-            // aapt resource value: 0x7f0100a2
-            static member editTextColor = 2130772130
+            // aapt resource value: 0x7f0100a4
+            static member editTextColor = 2130772132
             
-            // aapt resource value: 0x7f0100cd
-            static member editTextStyle = 2130772173
+            // aapt resource value: 0x7f0100d0
+            static member editTextStyle = 2130772176
             
             // aapt resource value: 0x7f010055
             static member elevation = 2130772053
             
-            // aapt resource value: 0x7f010163
-            static member errorEnabled = 2130772323
+            // aapt resource value: 0x7f010166
+            static member errorEnabled = 2130772326
             
-            // aapt resource value: 0x7f010164
-            static member errorTextAppearance = 2130772324
+            // aapt resource value: 0x7f010167
+            static member errorTextAppearance = 2130772327
             
             // aapt resource value: 0x7f010059
             static member expandActivityOverflowButtonDrawable = 2130772057
             
-            // aapt resource value: 0x7f01011d
-            static member expanded = 2130772253
+            // aapt resource value: 0x7f010120
+            static member expanded = 2130772256
             
-            // aapt resource value: 0x7f010132
-            static member expandedTitleGravity = 2130772274
-            
-            // aapt resource value: 0x7f010125
-            static member expandedTitleMargin = 2130772261
-            
-            // aapt resource value: 0x7f010129
-            static member expandedTitleMarginBottom = 2130772265
+            // aapt resource value: 0x7f010135
+            static member expandedTitleGravity = 2130772277
             
             // aapt resource value: 0x7f010128
-            static member expandedTitleMarginEnd = 2130772264
+            static member expandedTitleMargin = 2130772264
             
-            // aapt resource value: 0x7f010126
-            static member expandedTitleMarginStart = 2130772262
+            // aapt resource value: 0x7f01012c
+            static member expandedTitleMarginBottom = 2130772268
             
-            // aapt resource value: 0x7f010127
-            static member expandedTitleMarginTop = 2130772263
+            // aapt resource value: 0x7f01012b
+            static member expandedTitleMarginEnd = 2130772267
+            
+            // aapt resource value: 0x7f010129
+            static member expandedTitleMarginStart = 2130772265
             
             // aapt resource value: 0x7f01012a
-            static member expandedTitleTextAppearance = 2130772266
+            static member expandedTitleMarginTop = 2130772266
+            
+            // aapt resource value: 0x7f01012d
+            static member expandedTitleTextAppearance = 2130772269
             
             // aapt resource value: 0x7f01002d
             static member externalRouteEnabledDrawable = 2130772013
             
-            // aapt resource value: 0x7f010142
-            static member fabSize = 2130772290
+            // aapt resource value: 0x7f010145
+            static member fabSize = 2130772293
             
-            // aapt resource value: 0x7f010147
-            static member foregroundInsidePadding = 2130772295
+            // aapt resource value: 0x7f01014a
+            static member foregroundInsidePadding = 2130772298
             
-            // aapt resource value: 0x7f0100dd
-            static member gapBetweenBars = 2130772189
+            // aapt resource value: 0x7f0100e0
+            static member gapBetweenBars = 2130772192
             
-            // aapt resource value: 0x7f0100f4
-            static member goIcon = 2130772212
+            // aapt resource value: 0x7f0100f7
+            static member goIcon = 2130772215
             
-            // aapt resource value: 0x7f01014d
-            static member headerLayout = 2130772301
+            // aapt resource value: 0x7f010150
+            static member headerLayout = 2130772304
             
             // aapt resource value: 0x7f01003a
             static member height = 2130772026
@@ -587,17 +587,17 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f01004e
             static member hideOnContentScroll = 2130772046
             
-            // aapt resource value: 0x7f010169
-            static member hintAnimationEnabled = 2130772329
+            // aapt resource value: 0x7f01016c
+            static member hintAnimationEnabled = 2130772332
             
-            // aapt resource value: 0x7f010162
-            static member hintEnabled = 2130772322
+            // aapt resource value: 0x7f010165
+            static member hintEnabled = 2130772325
             
-            // aapt resource value: 0x7f010161
-            static member hintTextAppearance = 2130772321
+            // aapt resource value: 0x7f010164
+            static member hintTextAppearance = 2130772324
             
-            // aapt resource value: 0x7f010094
-            static member homeAsUpIndicator = 2130772116
+            // aapt resource value: 0x7f010096
+            static member homeAsUpIndicator = 2130772118
             
             // aapt resource value: 0x7f010049
             static member homeLayout = 2130772041
@@ -605,8 +605,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010042
             static member icon = 2130772034
             
-            // aapt resource value: 0x7f0100f0
-            static member iconifiedByDefault = 2130772208
+            // aapt resource value: 0x7f0100f3
+            static member iconifiedByDefault = 2130772211
             
             // aapt resource value: 0x7f010018
             static member imageAspectRatio = 2130771992
@@ -614,8 +614,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010017
             static member imageAspectRatioAdjust = 2130771991
             
-            // aapt resource value: 0x7f0100a4
-            static member imageButtonStyle = 2130772132
+            // aapt resource value: 0x7f0100a6
+            static member imageButtonStyle = 2130772134
             
             // aapt resource value: 0x7f01004b
             static member indeterminateProgressStyle = 2130772043
@@ -623,29 +623,29 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010058
             static member initialActivityCount = 2130772056
             
-            // aapt resource value: 0x7f01014e
-            static member insetForeground = 2130772302
+            // aapt resource value: 0x7f010151
+            static member insetForeground = 2130772305
             
             // aapt resource value: 0x7f01003b
             static member isLightTheme = 2130772027
             
-            // aapt resource value: 0x7f01014b
-            static member itemBackground = 2130772299
+            // aapt resource value: 0x7f01014e
+            static member itemBackground = 2130772302
             
-            // aapt resource value: 0x7f010149
-            static member itemIconTint = 2130772297
+            // aapt resource value: 0x7f01014c
+            static member itemIconTint = 2130772300
             
             // aapt resource value: 0x7f01004d
             static member itemPadding = 2130772045
             
-            // aapt resource value: 0x7f01014c
-            static member itemTextAppearance = 2130772300
+            // aapt resource value: 0x7f01014f
+            static member itemTextAppearance = 2130772303
             
-            // aapt resource value: 0x7f01014a
-            static member itemTextColor = 2130772298
+            // aapt resource value: 0x7f01014d
+            static member itemTextColor = 2130772301
             
-            // aapt resource value: 0x7f010136
-            static member keylines = 2130772278
+            // aapt resource value: 0x7f010139
+            static member keylines = 2130772281
             
             // aapt resource value: 0x7f010015
             static member latLngBoundsNorthEastLatitude = 2130771989
@@ -659,47 +659,47 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010014
             static member latLngBoundsSouthWestLongitude = 2130771988
             
-            // aapt resource value: 0x7f0100ef
-            static member layout = 2130772207
+            // aapt resource value: 0x7f0100f2
+            static member layout = 2130772210
             
             // aapt resource value: 0x7f01001d
             static member layoutManager = 2130771997
             
-            // aapt resource value: 0x7f010139
-            static member layout_anchor = 2130772281
+            // aapt resource value: 0x7f01013c
+            static member layout_anchor = 2130772284
+            
+            // aapt resource value: 0x7f01013e
+            static member layout_anchorGravity = 2130772286
             
             // aapt resource value: 0x7f01013b
-            static member layout_anchorGravity = 2130772283
+            static member layout_behavior = 2130772283
+            
+            // aapt resource value: 0x7f010137
+            static member layout_collapseMode = 2130772279
             
             // aapt resource value: 0x7f010138
-            static member layout_behavior = 2130772280
+            static member layout_collapseParallaxMultiplier = 2130772280
             
-            // aapt resource value: 0x7f010134
-            static member layout_collapseMode = 2130772276
+            // aapt resource value: 0x7f010140
+            static member layout_dodgeInsetEdges = 2130772288
             
-            // aapt resource value: 0x7f010135
-            static member layout_collapseParallaxMultiplier = 2130772277
+            // aapt resource value: 0x7f01013f
+            static member layout_insetEdge = 2130772287
             
             // aapt resource value: 0x7f01013d
-            static member layout_dodgeInsetEdges = 2130772285
+            static member layout_keyline = 2130772285
             
-            // aapt resource value: 0x7f01013c
-            static member layout_insetEdge = 2130772284
+            // aapt resource value: 0x7f010123
+            static member layout_scrollFlags = 2130772259
             
-            // aapt resource value: 0x7f01013a
-            static member layout_keyline = 2130772282
+            // aapt resource value: 0x7f010124
+            static member layout_scrollInterpolator = 2130772260
             
-            // aapt resource value: 0x7f010120
-            static member layout_scrollFlags = 2130772256
+            // aapt resource value: 0x7f0100b8
+            static member listChoiceBackgroundIndicator = 2130772152
             
-            // aapt resource value: 0x7f010121
-            static member layout_scrollInterpolator = 2130772257
-            
-            // aapt resource value: 0x7f0100b5
-            static member listChoiceBackgroundIndicator = 2130772149
-            
-            // aapt resource value: 0x7f010090
-            static member listDividerAlertDialog = 2130772112
+            // aapt resource value: 0x7f010092
+            static member listDividerAlertDialog = 2130772114
             
             // aapt resource value: 0x7f01005e
             static member listItemLayout = 2130772062
@@ -707,26 +707,26 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f01005b
             static member listLayout = 2130772059
             
-            // aapt resource value: 0x7f0100d5
-            static member listMenuViewStyle = 2130772181
+            // aapt resource value: 0x7f0100d8
+            static member listMenuViewStyle = 2130772184
             
-            // aapt resource value: 0x7f0100af
-            static member listPopupWindowStyle = 2130772143
-            
-            // aapt resource value: 0x7f0100a9
-            static member listPreferredItemHeight = 2130772137
+            // aapt resource value: 0x7f0100b1
+            static member listPopupWindowStyle = 2130772145
             
             // aapt resource value: 0x7f0100ab
-            static member listPreferredItemHeightLarge = 2130772139
-            
-            // aapt resource value: 0x7f0100aa
-            static member listPreferredItemHeightSmall = 2130772138
-            
-            // aapt resource value: 0x7f0100ac
-            static member listPreferredItemPaddingLeft = 2130772140
+            static member listPreferredItemHeight = 2130772139
             
             // aapt resource value: 0x7f0100ad
-            static member listPreferredItemPaddingRight = 2130772141
+            static member listPreferredItemHeightLarge = 2130772141
+            
+            // aapt resource value: 0x7f0100ac
+            static member listPreferredItemHeightSmall = 2130772140
+            
+            // aapt resource value: 0x7f0100ae
+            static member listPreferredItemPaddingLeft = 2130772142
+            
+            // aapt resource value: 0x7f0100af
+            static member listPreferredItemPaddingRight = 2130772143
             
             // aapt resource value: 0x7f010006
             static member liteMode = 2130771974
@@ -734,20 +734,20 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010043
             static member logo = 2130772035
             
-            // aapt resource value: 0x7f010115
-            static member logoDescription = 2130772245
+            // aapt resource value: 0x7f010118
+            static member logoDescription = 2130772248
             
             // aapt resource value: 0x7f010000
             static member mapType = 2130771968
             
-            // aapt resource value: 0x7f010150
-            static member maxActionInlineWidth = 2130772304
+            // aapt resource value: 0x7f010153
+            static member maxActionInlineWidth = 2130772307
             
-            // aapt resource value: 0x7f01010f
-            static member maxButtonHeight = 2130772239
+            // aapt resource value: 0x7f010112
+            static member maxButtonHeight = 2130772242
             
-            // aapt resource value: 0x7f0100e2
-            static member measureWithLargestChild = 2130772194
+            // aapt resource value: 0x7f0100e5
+            static member measureWithLargestChild = 2130772197
             
             // aapt resource value: 0x7f010021
             static member mediaRouteAudioTrackDrawable = 2130772001
@@ -785,74 +785,74 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f01002c
             static member mediaRouteTvIconDrawable = 2130772012
             
-            // aapt resource value: 0x7f010148
-            static member menu = 2130772296
+            // aapt resource value: 0x7f01014b
+            static member menu = 2130772299
             
             // aapt resource value: 0x7f01005c
             static member multiChoiceItemLayout = 2130772060
             
-            // aapt resource value: 0x7f010114
-            static member navigationContentDescription = 2130772244
+            // aapt resource value: 0x7f010117
+            static member navigationContentDescription = 2130772247
             
-            // aapt resource value: 0x7f010113
-            static member navigationIcon = 2130772243
+            // aapt resource value: 0x7f010116
+            static member navigationIcon = 2130772246
             
             // aapt resource value: 0x7f01003d
             static member navigationMode = 2130772029
             
-            // aapt resource value: 0x7f0100eb
-            static member overlapAnchor = 2130772203
-            
-            // aapt resource value: 0x7f0100ed
-            static member paddingBottomNoButtons = 2130772205
-            
-            // aapt resource value: 0x7f010119
-            static member paddingEnd = 2130772249
-            
-            // aapt resource value: 0x7f010118
-            static member paddingStart = 2130772248
-            
             // aapt resource value: 0x7f0100ee
-            static member paddingTopNoTitle = 2130772206
+            static member overlapAnchor = 2130772206
             
-            // aapt resource value: 0x7f0100b2
-            static member panelBackground = 2130772146
+            // aapt resource value: 0x7f0100f0
+            static member paddingBottomNoButtons = 2130772208
             
-            // aapt resource value: 0x7f0100b4
-            static member panelMenuListTheme = 2130772148
+            // aapt resource value: 0x7f01011c
+            static member paddingEnd = 2130772252
             
-            // aapt resource value: 0x7f0100b3
-            static member panelMenuListWidth = 2130772147
+            // aapt resource value: 0x7f01011b
+            static member paddingStart = 2130772251
             
-            // aapt resource value: 0x7f01016c
-            static member passwordToggleContentDescription = 2130772332
+            // aapt resource value: 0x7f0100f1
+            static member paddingTopNoTitle = 2130772209
             
-            // aapt resource value: 0x7f01016b
-            static member passwordToggleDrawable = 2130772331
+            // aapt resource value: 0x7f0100b5
+            static member panelBackground = 2130772149
             
-            // aapt resource value: 0x7f01016a
-            static member passwordToggleEnabled = 2130772330
+            // aapt resource value: 0x7f0100b7
+            static member panelMenuListTheme = 2130772151
             
-            // aapt resource value: 0x7f01016d
-            static member passwordToggleTint = 2130772333
+            // aapt resource value: 0x7f0100b6
+            static member panelMenuListWidth = 2130772150
+            
+            // aapt resource value: 0x7f01016f
+            static member passwordToggleContentDescription = 2130772335
             
             // aapt resource value: 0x7f01016e
-            static member passwordToggleTintMode = 2130772334
+            static member passwordToggleDrawable = 2130772334
             
-            // aapt resource value: 0x7f0100a0
-            static member popupMenuStyle = 2130772128
+            // aapt resource value: 0x7f01016d
+            static member passwordToggleEnabled = 2130772333
+            
+            // aapt resource value: 0x7f010170
+            static member passwordToggleTint = 2130772336
+            
+            // aapt resource value: 0x7f010171
+            static member passwordToggleTintMode = 2130772337
+            
+            // aapt resource value: 0x7f0100a2
+            static member popupMenuStyle = 2130772130
             
             // aapt resource value: 0x7f010056
             static member popupTheme = 2130772054
             
-            // aapt resource value: 0x7f0100a1
-            static member popupWindowStyle = 2130772129
+            // aapt resource value: 0x7f0100a3
+            static member popupWindowStyle = 2130772131
             
-            // aapt resource value: 0x7f0100e9
-            static member preserveIconSpacing = 2130772201
+            // aapt resource value: 0x7f0100ec
+            static member preserveIconSpacing = 2130772204
             
-            // aapt resource value: 0x7f010143
-            static member pressedTranslationZ = 2130772291
+            // aapt resource value: 0x7f010146
+            static member pressedTranslationZ = 2130772294
             
             // aapt resource value: 0x7f01004c
             static member progressBarPadding = 2130772044
@@ -860,65 +860,65 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f01004a
             static member progressBarStyle = 2130772042
             
-            // aapt resource value: 0x7f0100fa
-            static member queryBackground = 2130772218
+            // aapt resource value: 0x7f0100fd
+            static member queryBackground = 2130772221
             
-            // aapt resource value: 0x7f0100f1
-            static member queryHint = 2130772209
-            
-            // aapt resource value: 0x7f0100ce
-            static member radioButtonStyle = 2130772174
-            
-            // aapt resource value: 0x7f0100cf
-            static member ratingBarStyle = 2130772175
-            
-            // aapt resource value: 0x7f0100d0
-            static member ratingBarStyleIndicator = 2130772176
+            // aapt resource value: 0x7f0100f4
+            static member queryHint = 2130772212
             
             // aapt resource value: 0x7f0100d1
-            static member ratingBarStyleSmall = 2130772177
+            static member radioButtonStyle = 2130772177
+            
+            // aapt resource value: 0x7f0100d2
+            static member ratingBarStyle = 2130772178
+            
+            // aapt resource value: 0x7f0100d3
+            static member ratingBarStyleIndicator = 2130772179
+            
+            // aapt resource value: 0x7f0100d4
+            static member ratingBarStyleSmall = 2130772180
             
             // aapt resource value: 0x7f01001f
             static member reverseLayout = 2130771999
             
-            // aapt resource value: 0x7f010141
-            static member rippleColor = 2130772289
+            // aapt resource value: 0x7f010144
+            static member rippleColor = 2130772292
             
             // aapt resource value: 0x7f01001c
             static member scopeUris = 2130771996
             
-            // aapt resource value: 0x7f010130
-            static member scrimAnimationDuration = 2130772272
+            // aapt resource value: 0x7f010133
+            static member scrimAnimationDuration = 2130772275
             
-            // aapt resource value: 0x7f01012f
-            static member scrimVisibleHeightTrigger = 2130772271
+            // aapt resource value: 0x7f010132
+            static member scrimVisibleHeightTrigger = 2130772274
             
-            // aapt resource value: 0x7f0100f6
-            static member searchHintIcon = 2130772214
+            // aapt resource value: 0x7f0100f9
+            static member searchHintIcon = 2130772217
             
-            // aapt resource value: 0x7f0100f5
-            static member searchIcon = 2130772213
+            // aapt resource value: 0x7f0100f8
+            static member searchIcon = 2130772216
             
-            // aapt resource value: 0x7f0100a8
-            static member searchViewStyle = 2130772136
+            // aapt resource value: 0x7f0100aa
+            static member searchViewStyle = 2130772138
             
-            // aapt resource value: 0x7f0100d2
-            static member seekBarStyle = 2130772178
+            // aapt resource value: 0x7f0100d5
+            static member seekBarStyle = 2130772181
             
-            // aapt resource value: 0x7f010098
-            static member selectableItemBackground = 2130772120
+            // aapt resource value: 0x7f01009a
+            static member selectableItemBackground = 2130772122
             
-            // aapt resource value: 0x7f010099
-            static member selectableItemBackgroundBorderless = 2130772121
+            // aapt resource value: 0x7f01009b
+            static member selectableItemBackgroundBorderless = 2130772123
             
-            // aapt resource value: 0x7f0100e5
-            static member showAsAction = 2130772197
+            // aapt resource value: 0x7f0100e8
+            static member showAsAction = 2130772200
             
-            // aapt resource value: 0x7f0100e3
-            static member showDividers = 2130772195
+            // aapt resource value: 0x7f0100e6
+            static member showDividers = 2130772198
             
-            // aapt resource value: 0x7f010106
-            static member showText = 2130772230
+            // aapt resource value: 0x7f010109
+            static member showText = 2130772233
             
             // aapt resource value: 0x7f01005f
             static member showTitle = 2130772063
@@ -929,17 +929,17 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f01001e
             static member spanCount = 2130771998
             
-            // aapt resource value: 0x7f0100db
-            static member spinBars = 2130772187
+            // aapt resource value: 0x7f0100de
+            static member spinBars = 2130772190
             
-            // aapt resource value: 0x7f010093
-            static member spinnerDropDownItemStyle = 2130772115
+            // aapt resource value: 0x7f010095
+            static member spinnerDropDownItemStyle = 2130772117
             
-            // aapt resource value: 0x7f0100d3
-            static member spinnerStyle = 2130772179
+            // aapt resource value: 0x7f0100d6
+            static member spinnerStyle = 2130772182
             
-            // aapt resource value: 0x7f010105
-            static member splitTrack = 2130772229
+            // aapt resource value: 0x7f010108
+            static member splitTrack = 2130772232
             
             // aapt resource value: 0x7f010060
             static member srcCompat = 2130772064
@@ -947,209 +947,218 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f010020
             static member stackFromEnd = 2130772000
             
-            // aapt resource value: 0x7f0100ec
-            static member state_above_anchor = 2130772204
+            // aapt resource value: 0x7f0100ef
+            static member state_above_anchor = 2130772207
             
-            // aapt resource value: 0x7f01011e
-            static member state_collapsed = 2130772254
+            // aapt resource value: 0x7f010121
+            static member state_collapsed = 2130772257
             
-            // aapt resource value: 0x7f01011f
-            static member state_collapsible = 2130772255
+            // aapt resource value: 0x7f010122
+            static member state_collapsible = 2130772258
             
-            // aapt resource value: 0x7f010137
-            static member statusBarBackground = 2130772279
+            // aapt resource value: 0x7f01013a
+            static member statusBarBackground = 2130772282
             
-            // aapt resource value: 0x7f01012d
-            static member statusBarScrim = 2130772269
+            // aapt resource value: 0x7f010130
+            static member statusBarScrim = 2130772272
             
-            // aapt resource value: 0x7f0100ea
-            static member subMenuArrow = 2130772202
+            // aapt resource value: 0x7f0100ed
+            static member subMenuArrow = 2130772205
             
-            // aapt resource value: 0x7f0100fb
-            static member submitBackground = 2130772219
+            // aapt resource value: 0x7f0100fe
+            static member submitBackground = 2130772222
             
             // aapt resource value: 0x7f01003f
             static member subtitle = 2130772031
             
-            // aapt resource value: 0x7f010108
-            static member subtitleTextAppearance = 2130772232
+            // aapt resource value: 0x7f01010b
+            static member subtitleTextAppearance = 2130772235
             
-            // aapt resource value: 0x7f010117
-            static member subtitleTextColor = 2130772247
+            // aapt resource value: 0x7f01011a
+            static member subtitleTextColor = 2130772250
             
             // aapt resource value: 0x7f010041
             static member subtitleTextStyle = 2130772033
             
-            // aapt resource value: 0x7f0100f9
-            static member suggestionRowLayout = 2130772217
+            // aapt resource value: 0x7f0100fc
+            static member suggestionRowLayout = 2130772220
             
-            // aapt resource value: 0x7f010103
-            static member switchMinWidth = 2130772227
+            // aapt resource value: 0x7f010106
+            static member switchMinWidth = 2130772230
             
-            // aapt resource value: 0x7f010104
-            static member switchPadding = 2130772228
+            // aapt resource value: 0x7f010107
+            static member switchPadding = 2130772231
             
-            // aapt resource value: 0x7f0100d4
-            static member switchStyle = 2130772180
+            // aapt resource value: 0x7f0100d7
+            static member switchStyle = 2130772183
             
-            // aapt resource value: 0x7f010102
-            static member switchTextAppearance = 2130772226
-            
-            // aapt resource value: 0x7f010154
-            static member tabBackground = 2130772308
-            
-            // aapt resource value: 0x7f010153
-            static member tabContentStart = 2130772307
-            
-            // aapt resource value: 0x7f010156
-            static member tabGravity = 2130772310
-            
-            // aapt resource value: 0x7f010151
-            static member tabIndicatorColor = 2130772305
-            
-            // aapt resource value: 0x7f010152
-            static member tabIndicatorHeight = 2130772306
-            
-            // aapt resource value: 0x7f010158
-            static member tabMaxWidth = 2130772312
+            // aapt resource value: 0x7f010105
+            static member switchTextAppearance = 2130772229
             
             // aapt resource value: 0x7f010157
-            static member tabMinWidth = 2130772311
+            static member tabBackground = 2130772311
             
-            // aapt resource value: 0x7f010155
-            static member tabMode = 2130772309
-            
-            // aapt resource value: 0x7f010160
-            static member tabPadding = 2130772320
-            
-            // aapt resource value: 0x7f01015f
-            static member tabPaddingBottom = 2130772319
-            
-            // aapt resource value: 0x7f01015e
-            static member tabPaddingEnd = 2130772318
-            
-            // aapt resource value: 0x7f01015c
-            static member tabPaddingStart = 2130772316
-            
-            // aapt resource value: 0x7f01015d
-            static member tabPaddingTop = 2130772317
-            
-            // aapt resource value: 0x7f01015b
-            static member tabSelectedTextColor = 2130772315
+            // aapt resource value: 0x7f010156
+            static member tabContentStart = 2130772310
             
             // aapt resource value: 0x7f010159
-            static member tabTextAppearance = 2130772313
+            static member tabGravity = 2130772313
+            
+            // aapt resource value: 0x7f010154
+            static member tabIndicatorColor = 2130772308
+            
+            // aapt resource value: 0x7f010155
+            static member tabIndicatorHeight = 2130772309
+            
+            // aapt resource value: 0x7f01015b
+            static member tabMaxWidth = 2130772315
             
             // aapt resource value: 0x7f01015a
-            static member tabTextColor = 2130772314
+            static member tabMinWidth = 2130772314
             
-            // aapt resource value: 0x7f010064
-            static member textAllCaps = 2130772068
+            // aapt resource value: 0x7f010158
+            static member tabMode = 2130772312
             
-            // aapt resource value: 0x7f01008b
-            static member textAppearanceLargePopupMenu = 2130772107
+            // aapt resource value: 0x7f010163
+            static member tabPadding = 2130772323
             
-            // aapt resource value: 0x7f0100b0
-            static member textAppearanceListItem = 2130772144
+            // aapt resource value: 0x7f010162
+            static member tabPaddingBottom = 2130772322
             
-            // aapt resource value: 0x7f0100b1
-            static member textAppearanceListItemSmall = 2130772145
+            // aapt resource value: 0x7f010161
+            static member tabPaddingEnd = 2130772321
+            
+            // aapt resource value: 0x7f01015f
+            static member tabPaddingStart = 2130772319
+            
+            // aapt resource value: 0x7f010160
+            static member tabPaddingTop = 2130772320
+            
+            // aapt resource value: 0x7f01015e
+            static member tabSelectedTextColor = 2130772318
+            
+            // aapt resource value: 0x7f01015c
+            static member tabTextAppearance = 2130772316
+            
+            // aapt resource value: 0x7f01015d
+            static member tabTextColor = 2130772317
+            
+            // aapt resource value: 0x7f010066
+            static member textAllCaps = 2130772070
             
             // aapt resource value: 0x7f01008d
-            static member textAppearancePopupMenuHeader = 2130772109
+            static member textAppearanceLargePopupMenu = 2130772109
             
-            // aapt resource value: 0x7f0100a6
-            static member textAppearanceSearchResultSubtitle = 2130772134
+            // aapt resource value: 0x7f0100b2
+            static member textAppearanceListItem = 2130772146
             
-            // aapt resource value: 0x7f0100a5
-            static member textAppearanceSearchResultTitle = 2130772133
+            // aapt resource value: 0x7f0100b3
+            static member textAppearanceListItemSecondary = 2130772147
             
-            // aapt resource value: 0x7f01008c
-            static member textAppearanceSmallPopupMenu = 2130772108
+            // aapt resource value: 0x7f0100b4
+            static member textAppearanceListItemSmall = 2130772148
             
-            // aapt resource value: 0x7f0100c4
-            static member textColorAlertDialogListItem = 2130772164
+            // aapt resource value: 0x7f01008f
+            static member textAppearancePopupMenuHeader = 2130772111
             
-            // aapt resource value: 0x7f010140
-            static member textColorError = 2130772288
+            // aapt resource value: 0x7f0100a8
+            static member textAppearanceSearchResultSubtitle = 2130772136
             
             // aapt resource value: 0x7f0100a7
-            static member textColorSearchUrl = 2130772135
+            static member textAppearanceSearchResultTitle = 2130772135
             
-            // aapt resource value: 0x7f01011a
-            static member theme = 2130772250
+            // aapt resource value: 0x7f01008e
+            static member textAppearanceSmallPopupMenu = 2130772110
             
-            // aapt resource value: 0x7f0100e1
-            static member thickness = 2130772193
+            // aapt resource value: 0x7f0100c7
+            static member textColorAlertDialogListItem = 2130772167
             
-            // aapt resource value: 0x7f010101
-            static member thumbTextPadding = 2130772225
+            // aapt resource value: 0x7f010143
+            static member textColorError = 2130772291
             
-            // aapt resource value: 0x7f0100fc
-            static member thumbTint = 2130772220
+            // aapt resource value: 0x7f0100a9
+            static member textColorSearchUrl = 2130772137
             
-            // aapt resource value: 0x7f0100fd
-            static member thumbTintMode = 2130772221
+            // aapt resource value: 0x7f01011d
+            static member theme = 2130772253
             
-            // aapt resource value: 0x7f010061
-            static member tickMark = 2130772065
+            // aapt resource value: 0x7f0100e4
+            static member thickness = 2130772196
             
-            // aapt resource value: 0x7f010062
-            static member tickMarkTint = 2130772066
+            // aapt resource value: 0x7f010104
+            static member thumbTextPadding = 2130772228
+            
+            // aapt resource value: 0x7f0100ff
+            static member thumbTint = 2130772223
+            
+            // aapt resource value: 0x7f010100
+            static member thumbTintMode = 2130772224
             
             // aapt resource value: 0x7f010063
-            static member tickMarkTintMode = 2130772067
+            static member tickMark = 2130772067
+            
+            // aapt resource value: 0x7f010064
+            static member tickMarkTint = 2130772068
+            
+            // aapt resource value: 0x7f010065
+            static member tickMarkTintMode = 2130772069
+            
+            // aapt resource value: 0x7f010061
+            static member tint = 2130772065
+            
+            // aapt resource value: 0x7f010062
+            static member tintMode = 2130772066
             
             // aapt resource value: 0x7f01003c
             static member title = 2130772028
             
-            // aapt resource value: 0x7f010133
-            static member titleEnabled = 2130772275
-            
-            // aapt resource value: 0x7f010109
-            static member titleMargin = 2130772233
-            
-            // aapt resource value: 0x7f01010d
-            static member titleMarginBottom = 2130772237
-            
-            // aapt resource value: 0x7f01010b
-            static member titleMarginEnd = 2130772235
-            
-            // aapt resource value: 0x7f01010a
-            static member titleMarginStart = 2130772234
+            // aapt resource value: 0x7f010136
+            static member titleEnabled = 2130772278
             
             // aapt resource value: 0x7f01010c
-            static member titleMarginTop = 2130772236
+            static member titleMargin = 2130772236
+            
+            // aapt resource value: 0x7f010110
+            static member titleMarginBottom = 2130772240
             
             // aapt resource value: 0x7f01010e
-            static member titleMargins = 2130772238
+            static member titleMarginEnd = 2130772238
             
-            // aapt resource value: 0x7f010107
-            static member titleTextAppearance = 2130772231
+            // aapt resource value: 0x7f01010d
+            static member titleMarginStart = 2130772237
             
-            // aapt resource value: 0x7f010116
-            static member titleTextColor = 2130772246
+            // aapt resource value: 0x7f01010f
+            static member titleMarginTop = 2130772239
+            
+            // aapt resource value: 0x7f010111
+            static member titleMargins = 2130772241
+            
+            // aapt resource value: 0x7f01010a
+            static member titleTextAppearance = 2130772234
+            
+            // aapt resource value: 0x7f010119
+            static member titleTextColor = 2130772249
             
             // aapt resource value: 0x7f010040
             static member titleTextStyle = 2130772032
             
-            // aapt resource value: 0x7f01012e
-            static member toolbarId = 2130772270
+            // aapt resource value: 0x7f010131
+            static member toolbarId = 2130772273
             
-            // aapt resource value: 0x7f01009f
-            static member toolbarNavigationButtonStyle = 2130772127
+            // aapt resource value: 0x7f0100a1
+            static member toolbarNavigationButtonStyle = 2130772129
             
-            // aapt resource value: 0x7f01009e
-            static member toolbarStyle = 2130772126
+            // aapt resource value: 0x7f0100a0
+            static member toolbarStyle = 2130772128
             
-            // aapt resource value: 0x7f0100fe
-            static member track = 2130772222
+            // aapt resource value: 0x7f010101
+            static member track = 2130772225
             
-            // aapt resource value: 0x7f0100ff
-            static member trackTint = 2130772223
+            // aapt resource value: 0x7f010102
+            static member trackTint = 2130772226
             
-            // aapt resource value: 0x7f010100
-            static member trackTintMode = 2130772224
+            // aapt resource value: 0x7f010103
+            static member trackTintMode = 2130772227
             
             // aapt resource value: 0x7f010007
             static member uiCompass = 2130771975
@@ -1172,44 +1181,44 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f01000c
             static member uiZoomGestures = 2130771980
             
-            // aapt resource value: 0x7f010145
-            static member useCompatPadding = 2130772293
+            // aapt resource value: 0x7f010148
+            static member useCompatPadding = 2130772296
             
             // aapt resource value: 0x7f01000d
             static member useViewLifecycle = 2130771981
             
-            // aapt resource value: 0x7f0100f7
-            static member voiceIcon = 2130772215
-            
-            // aapt resource value: 0x7f010065
-            static member windowActionBar = 2130772069
+            // aapt resource value: 0x7f0100fa
+            static member voiceIcon = 2130772218
             
             // aapt resource value: 0x7f010067
-            static member windowActionBarOverlay = 2130772071
-            
-            // aapt resource value: 0x7f010068
-            static member windowActionModeOverlay = 2130772072
-            
-            // aapt resource value: 0x7f01006c
-            static member windowFixedHeightMajor = 2130772076
-            
-            // aapt resource value: 0x7f01006a
-            static member windowFixedHeightMinor = 2130772074
+            static member windowActionBar = 2130772071
             
             // aapt resource value: 0x7f010069
-            static member windowFixedWidthMajor = 2130772073
+            static member windowActionBarOverlay = 2130772073
             
-            // aapt resource value: 0x7f01006b
-            static member windowFixedWidthMinor = 2130772075
-            
-            // aapt resource value: 0x7f01006d
-            static member windowMinWidthMajor = 2130772077
+            // aapt resource value: 0x7f01006a
+            static member windowActionModeOverlay = 2130772074
             
             // aapt resource value: 0x7f01006e
-            static member windowMinWidthMinor = 2130772078
+            static member windowFixedHeightMajor = 2130772078
             
-            // aapt resource value: 0x7f010066
-            static member windowNoTitle = 2130772070
+            // aapt resource value: 0x7f01006c
+            static member windowFixedHeightMinor = 2130772076
+            
+            // aapt resource value: 0x7f01006b
+            static member windowFixedWidthMajor = 2130772075
+            
+            // aapt resource value: 0x7f01006d
+            static member windowFixedWidthMinor = 2130772077
+            
+            // aapt resource value: 0x7f01006f
+            static member windowMinWidthMajor = 2130772079
+            
+            // aapt resource value: 0x7f010070
+            static member windowMinWidthMinor = 2130772080
+            
+            // aapt resource value: 0x7f010068
+            static member windowNoTitle = 2130772072
             
             // aapt resource value: 0x7f01000e
             static member zOrderOnTop = 2130771982
@@ -2929,11 +2938,11 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
         
         (* partial *)Resource_Id () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f0b0089
-            static member MyButton = 2131427465
+            // aapt resource value: 0x7f0b008b
+            static member MyButton = 2131427467
             
-            // aapt resource value: 0x7f0b00a7
-            static member action0 = 2131427495
+            // aapt resource value: 0x7f0b00a9
+            static member action0 = 2131427497
             
             // aapt resource value: 0x7f0b006e
             static member action_bar = 2131427438
@@ -2956,17 +2965,17 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b004b
             static member action_bar_title = 2131427403
             
-            // aapt resource value: 0x7f0b00a4
-            static member action_container = 2131427492
+            // aapt resource value: 0x7f0b00a6
+            static member action_container = 2131427494
             
             // aapt resource value: 0x7f0b006f
             static member action_context_bar = 2131427439
             
-            // aapt resource value: 0x7f0b00ab
-            static member action_divider = 2131427499
+            // aapt resource value: 0x7f0b00ad
+            static member action_divider = 2131427501
             
-            // aapt resource value: 0x7f0b00a5
-            static member action_image = 2131427493
+            // aapt resource value: 0x7f0b00a7
+            static member action_image = 2131427495
             
             // aapt resource value: 0x7f0b0003
             static member action_menu_divider = 2131427331
@@ -2983,17 +2992,17 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b004d
             static member action_mode_close_button = 2131427405
             
-            // aapt resource value: 0x7f0b00a6
-            static member action_text = 2131427494
+            // aapt resource value: 0x7f0b00a8
+            static member action_text = 2131427496
             
-            // aapt resource value: 0x7f0b00b4
-            static member actions = 2131427508
+            // aapt resource value: 0x7f0b00b6
+            static member actions = 2131427510
             
             // aapt resource value: 0x7f0b004e
             static member activity_chooser_view_content = 2131427406
             
-            // aapt resource value: 0x7f0b0024
-            static member add = 2131427364
+            // aapt resource value: 0x7f0b0029
+            static member add = 2131427369
             
             // aapt resource value: 0x7f0b0014
             static member adjust_height = 2131427348
@@ -3022,8 +3031,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0055
             static member buttonPanel = 2131427413
             
-            // aapt resource value: 0x7f0b00a8
-            static member cancel_action = 2131427496
+            // aapt resource value: 0x7f0b00aa
+            static member cancel_action = 2131427498
             
             // aapt resource value: 0x7f0b003a
             static member center = 2131427386
@@ -3037,8 +3046,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0065
             static member checkbox = 2131427429
             
-            // aapt resource value: 0x7f0b00b0
-            static member chronometer = 2131427504
+            // aapt resource value: 0x7f0b00b2
+            static member chronometer = 2131427506
             
             // aapt resource value: 0x7f0b0043
             static member clip_horizontal = 2131427395
@@ -3049,8 +3058,14 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b002f
             static member collapseActionView = 2131427375
             
+            // aapt resource value: 0x7f0b007f
+            static member container = 2131427455
+            
             // aapt resource value: 0x7f0b0058
             static member contentPanel = 2131427416
+            
+            // aapt resource value: 0x7f0b0080
+            static member coordinator = 2131427456
             
             // aapt resource value: 0x7f0b005f
             static member custom = 2131427423
@@ -3067,20 +3082,20 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0051
             static member default_activity_button = 2131427409
             
-            // aapt resource value: 0x7f0b0080
-            static member design_bottom_sheet = 2131427456
+            // aapt resource value: 0x7f0b0082
+            static member design_bottom_sheet = 2131427458
+            
+            // aapt resource value: 0x7f0b0089
+            static member design_menu_item_action_area = 2131427465
+            
+            // aapt resource value: 0x7f0b0088
+            static member design_menu_item_action_area_stub = 2131427464
             
             // aapt resource value: 0x7f0b0087
-            static member design_menu_item_action_area = 2131427463
+            static member design_menu_item_text = 2131427463
             
             // aapt resource value: 0x7f0b0086
-            static member design_menu_item_action_area_stub = 2131427462
-            
-            // aapt resource value: 0x7f0b0085
-            static member design_menu_item_text = 2131427461
-            
-            // aapt resource value: 0x7f0b0084
-            static member design_navigation_view = 2131427460
+            static member design_navigation_view = 2131427462
             
             // aapt resource value: 0x7f0b001e
             static member disableHome = 2131427358
@@ -3091,8 +3106,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b002c
             static member ``end`` = 2131427372
             
-            // aapt resource value: 0x7f0b00ba
-            static member end_padder = 2131427514
+            // aapt resource value: 0x7f0b00bc
+            static member end_padder = 2131427516
             
             // aapt resource value: 0x7f0b0035
             static member enterAlways = 2131427381
@@ -3133,8 +3148,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0053
             static member icon = 2131427411
             
-            // aapt resource value: 0x7f0b00b5
-            static member icon_group = 2131427509
+            // aapt resource value: 0x7f0b00b7
+            static member icon_group = 2131427511
             
             // aapt resource value: 0x7f0b0016
             static member icon_only = 2131427350
@@ -3145,8 +3160,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0050
             static member image = 2131427408
             
-            // aapt resource value: 0x7f0b00b1
-            static member info = 2131427505
+            // aapt resource value: 0x7f0b00b3
+            static member info = 2131427507
             
             // aapt resource value: 0x7f0b0000
             static member item_touch_helper_previous_elevation = 2131427328
@@ -3160,11 +3175,11 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b001b
             static member light = 2131427355
             
-            // aapt resource value: 0x7f0b00b6
-            static member line1 = 2131427510
-            
             // aapt resource value: 0x7f0b00b8
-            static member line3 = 2131427512
+            static member line1 = 2131427512
+            
+            // aapt resource value: 0x7f0b00ba
+            static member line3 = 2131427514
             
             // aapt resource value: 0x7f0b001c
             static member listMode = 2131427356
@@ -3172,11 +3187,11 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0052
             static member list_item = 2131427410
             
-            // aapt resource value: 0x7f0b00bc
-            static member masked = 2131427516
+            // aapt resource value: 0x7f0b00be
+            static member masked = 2131427518
             
-            // aapt resource value: 0x7f0b00aa
-            static member media_actions = 2131427498
+            // aapt resource value: 0x7f0b00ac
+            static member media_actions = 2131427500
             
             // aapt resource value: 0x7f0b002d
             static member middle = 2131427373
@@ -3184,86 +3199,86 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0048
             static member mini = 2131427400
             
-            // aapt resource value: 0x7f0b0096
-            static member mr_art = 2131427478
-            
-            // aapt resource value: 0x7f0b008b
-            static member mr_chooser_list = 2131427467
-            
-            // aapt resource value: 0x7f0b008e
-            static member mr_chooser_route_desc = 2131427470
-            
-            // aapt resource value: 0x7f0b008c
-            static member mr_chooser_route_icon = 2131427468
+            // aapt resource value: 0x7f0b0098
+            static member mr_art = 2131427480
             
             // aapt resource value: 0x7f0b008d
-            static member mr_chooser_route_name = 2131427469
-            
-            // aapt resource value: 0x7f0b008a
-            static member mr_chooser_title = 2131427466
-            
-            // aapt resource value: 0x7f0b0093
-            static member mr_close = 2131427475
-            
-            // aapt resource value: 0x7f0b0099
-            static member mr_control_divider = 2131427481
-            
-            // aapt resource value: 0x7f0b009f
-            static member mr_control_playback_ctrl = 2131427487
-            
-            // aapt resource value: 0x7f0b00a2
-            static member mr_control_subtitle = 2131427490
-            
-            // aapt resource value: 0x7f0b00a1
-            static member mr_control_title = 2131427489
-            
-            // aapt resource value: 0x7f0b00a0
-            static member mr_control_title_container = 2131427488
-            
-            // aapt resource value: 0x7f0b0094
-            static member mr_custom_control = 2131427476
-            
-            // aapt resource value: 0x7f0b0095
-            static member mr_default_control = 2131427477
+            static member mr_chooser_list = 2131427469
             
             // aapt resource value: 0x7f0b0090
-            static member mr_dialog_area = 2131427472
+            static member mr_chooser_route_desc = 2131427472
+            
+            // aapt resource value: 0x7f0b008e
+            static member mr_chooser_route_icon = 2131427470
             
             // aapt resource value: 0x7f0b008f
-            static member mr_expandable_area = 2131427471
+            static member mr_chooser_route_name = 2131427471
             
-            // aapt resource value: 0x7f0b00a3
-            static member mr_group_expand_collapse = 2131427491
+            // aapt resource value: 0x7f0b008c
+            static member mr_chooser_title = 2131427468
             
-            // aapt resource value: 0x7f0b0097
-            static member mr_media_main_control = 2131427479
-            
-            // aapt resource value: 0x7f0b0092
-            static member mr_name = 2131427474
-            
-            // aapt resource value: 0x7f0b0098
-            static member mr_playback_control = 2131427480
-            
-            // aapt resource value: 0x7f0b0091
-            static member mr_title_bar = 2131427473
-            
-            // aapt resource value: 0x7f0b009a
-            static member mr_volume_control = 2131427482
+            // aapt resource value: 0x7f0b0095
+            static member mr_close = 2131427477
             
             // aapt resource value: 0x7f0b009b
-            static member mr_volume_group_list = 2131427483
+            static member mr_control_divider = 2131427483
+            
+            // aapt resource value: 0x7f0b00a1
+            static member mr_control_playback_ctrl = 2131427489
+            
+            // aapt resource value: 0x7f0b00a4
+            static member mr_control_subtitle = 2131427492
+            
+            // aapt resource value: 0x7f0b00a3
+            static member mr_control_title = 2131427491
+            
+            // aapt resource value: 0x7f0b00a2
+            static member mr_control_title_container = 2131427490
+            
+            // aapt resource value: 0x7f0b0096
+            static member mr_custom_control = 2131427478
+            
+            // aapt resource value: 0x7f0b0097
+            static member mr_default_control = 2131427479
+            
+            // aapt resource value: 0x7f0b0092
+            static member mr_dialog_area = 2131427474
+            
+            // aapt resource value: 0x7f0b0091
+            static member mr_expandable_area = 2131427473
+            
+            // aapt resource value: 0x7f0b00a5
+            static member mr_group_expand_collapse = 2131427493
+            
+            // aapt resource value: 0x7f0b0099
+            static member mr_media_main_control = 2131427481
+            
+            // aapt resource value: 0x7f0b0094
+            static member mr_name = 2131427476
+            
+            // aapt resource value: 0x7f0b009a
+            static member mr_playback_control = 2131427482
+            
+            // aapt resource value: 0x7f0b0093
+            static member mr_title_bar = 2131427475
+            
+            // aapt resource value: 0x7f0b009c
+            static member mr_volume_control = 2131427484
             
             // aapt resource value: 0x7f0b009d
-            static member mr_volume_item_icon = 2131427485
+            static member mr_volume_group_list = 2131427485
             
-            // aapt resource value: 0x7f0b009e
-            static member mr_volume_slider = 2131427486
+            // aapt resource value: 0x7f0b009f
+            static member mr_volume_item_icon = 2131427487
             
-            // aapt resource value: 0x7f0b0025
-            static member multiply = 2131427365
+            // aapt resource value: 0x7f0b00a0
+            static member mr_volume_slider = 2131427488
             
-            // aapt resource value: 0x7f0b0083
-            static member navigation_header_container = 2131427459
+            // aapt resource value: 0x7f0b0024
+            static member multiply = 2131427364
+            
+            // aapt resource value: 0x7f0b0085
+            static member navigation_header_container = 2131427461
             
             // aapt resource value: 0x7f0b0031
             static member never = 2131427377
@@ -3274,14 +3289,14 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0011
             static member normal = 2131427345
             
-            // aapt resource value: 0x7f0b00b3
-            static member notification_background = 2131427507
+            // aapt resource value: 0x7f0b00b5
+            static member notification_background = 2131427509
             
-            // aapt resource value: 0x7f0b00ad
-            static member notification_main_column = 2131427501
+            // aapt resource value: 0x7f0b00af
+            static member notification_main_column = 2131427503
             
-            // aapt resource value: 0x7f0b00ac
-            static member notification_main_column_container = 2131427500
+            // aapt resource value: 0x7f0b00ae
+            static member notification_main_column_container = 2131427502
             
             // aapt resource value: 0x7f0b0041
             static member parallax = 2131427393
@@ -3304,17 +3319,17 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b003f
             static member right = 2131427391
             
-            // aapt resource value: 0x7f0b00b2
-            static member right_icon = 2131427506
+            // aapt resource value: 0x7f0b00b4
+            static member right_icon = 2131427508
             
-            // aapt resource value: 0x7f0b00ae
-            static member right_side = 2131427502
+            // aapt resource value: 0x7f0b00b0
+            static member right_side = 2131427504
             
             // aapt resource value: 0x7f0b0012
             static member satellite = 2131427346
             
-            // aapt resource value: 0x7f0b0026
-            static member screen = 2131427366
+            // aapt resource value: 0x7f0b0025
+            static member screen = 2131427365
             
             // aapt resource value: 0x7f0b0038
             static member scroll = 2131427384
@@ -3379,11 +3394,11 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b007d
             static member smallLabel = 2131427453
             
-            // aapt resource value: 0x7f0b0082
-            static member snackbar_action = 2131427458
+            // aapt resource value: 0x7f0b0084
+            static member snackbar_action = 2131427460
             
-            // aapt resource value: 0x7f0b0081
-            static member snackbar_text = 2131427457
+            // aapt resource value: 0x7f0b0083
+            static member snackbar_text = 2131427459
             
             // aapt resource value: 0x7f0b0039
             static member snap = 2131427385
@@ -3394,14 +3409,14 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0008
             static member split_action_bar = 2131427336
             
+            // aapt resource value: 0x7f0b0026
+            static member src_atop = 2131427366
+            
             // aapt resource value: 0x7f0b0027
-            static member src_atop = 2131427367
+            static member src_in = 2131427367
             
             // aapt resource value: 0x7f0b0028
-            static member src_in = 2131427368
-            
-            // aapt resource value: 0x7f0b0029
-            static member src_over = 2131427369
+            static member src_over = 2131427368
             
             // aapt resource value: 0x7f0b0017
             static member standard = 2131427351
@@ -3409,8 +3424,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0040
             static member start = 2131427392
             
-            // aapt resource value: 0x7f0b00a9
-            static member status_bar_latest_event_content = 2131427497
+            // aapt resource value: 0x7f0b00ab
+            static member status_bar_latest_event_content = 2131427499
             
             // aapt resource value: 0x7f0b0068
             static member submenuarrow = 2131427432
@@ -3424,11 +3439,11 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0013
             static member terrain = 2131427347
             
-            // aapt resource value: 0x7f0b00b9
-            static member text = 2131427513
+            // aapt resource value: 0x7f0b00bb
+            static member text = 2131427515
             
-            // aapt resource value: 0x7f0b00b7
-            static member text2 = 2131427511
+            // aapt resource value: 0x7f0b00b9
+            static member text2 = 2131427513
             
             // aapt resource value: 0x7f0b005c
             static member textSpacerNoButtons = 2131427420
@@ -3436,8 +3451,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b005b
             static member textSpacerNoTitle = 2131427419
             
-            // aapt resource value: 0x7f0b0088
-            static member text_input_password_toggle = 2131427464
+            // aapt resource value: 0x7f0b008a
+            static member text_input_password_toggle = 2131427466
             
             // aapt resource value: 0x7f0b000c
             static member textinput_counter = 2131427340
@@ -3445,8 +3460,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b000d
             static member textinput_error = 2131427341
             
-            // aapt resource value: 0x7f0b00af
-            static member time = 2131427503
+            // aapt resource value: 0x7f0b00b1
+            static member time = 2131427505
             
             // aapt resource value: 0x7f0b0054
             static member title = 2131427412
@@ -3463,8 +3478,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b0060
             static member topPanel = 2131427424
             
-            // aapt resource value: 0x7f0b007f
-            static member touch_outside = 2131427455
+            // aapt resource value: 0x7f0b0081
+            static member touch_outside = 2131427457
             
             // aapt resource value: 0x7f0b000a
             static member transition_current_scene = 2131427338
@@ -3481,11 +3496,11 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0x7f0b000e
             static member view_offset_helper = 2131427342
             
-            // aapt resource value: 0x7f0b00bb
-            static member visible = 2131427515
+            // aapt resource value: 0x7f0b00bd
+            static member visible = 2131427517
             
-            // aapt resource value: 0x7f0b009c
-            static member volume_item_container = 2131427484
+            // aapt resource value: 0x7f0b009e
+            static member volume_item_container = 2131427486
             
             // aapt resource value: 0x7f0b0018
             static member wide = 2131427352
@@ -5407,6 +5422,12 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 1
             static member AppCompatImageView_srcCompat = 1
             
+            // aapt resource value: 2
+            static member AppCompatImageView_tint = 2
+            
+            // aapt resource value: 3
+            static member AppCompatImageView_tintMode = 3
+            
             [<Microsoft.FSharp.Core.DefaultValueAttribute(false)>]
             static val mutable private AppCompatSeekBar:int[]
             
@@ -5551,17 +5572,17 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 58
             static member AppCompatTheme_activityChooserViewStyle = 58
             
-            // aapt resource value: 94
-            static member AppCompatTheme_alertDialogButtonGroupStyle = 94
-            
             // aapt resource value: 95
-            static member AppCompatTheme_alertDialogCenterButtons = 95
-            
-            // aapt resource value: 93
-            static member AppCompatTheme_alertDialogStyle = 93
+            static member AppCompatTheme_alertDialogButtonGroupStyle = 95
             
             // aapt resource value: 96
-            static member AppCompatTheme_alertDialogTheme = 96
+            static member AppCompatTheme_alertDialogCenterButtons = 96
+            
+            // aapt resource value: 94
+            static member AppCompatTheme_alertDialogStyle = 94
+            
+            // aapt resource value: 97
+            static member AppCompatTheme_alertDialogTheme = 97
             
             // aapt resource value: 1
             static member AppCompatTheme_android_windowAnimationStyle = 1
@@ -5569,8 +5590,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 0
             static member AppCompatTheme_android_windowIsFloating = 0
             
-            // aapt resource value: 101
-            static member AppCompatTheme_autoCompleteTextViewStyle = 101
+            // aapt resource value: 102
+            static member AppCompatTheme_autoCompleteTextViewStyle = 102
             
             // aapt resource value: 55
             static member AppCompatTheme_borderlessButtonStyle = 55
@@ -5578,59 +5599,59 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 52
             static member AppCompatTheme_buttonBarButtonStyle = 52
             
-            // aapt resource value: 99
-            static member AppCompatTheme_buttonBarNegativeButtonStyle = 99
-            
             // aapt resource value: 100
-            static member AppCompatTheme_buttonBarNeutralButtonStyle = 100
+            static member AppCompatTheme_buttonBarNegativeButtonStyle = 100
             
-            // aapt resource value: 98
-            static member AppCompatTheme_buttonBarPositiveButtonStyle = 98
+            // aapt resource value: 101
+            static member AppCompatTheme_buttonBarNeutralButtonStyle = 101
+            
+            // aapt resource value: 99
+            static member AppCompatTheme_buttonBarPositiveButtonStyle = 99
             
             // aapt resource value: 51
             static member AppCompatTheme_buttonBarStyle = 51
             
-            // aapt resource value: 102
-            static member AppCompatTheme_buttonStyle = 102
-            
             // aapt resource value: 103
-            static member AppCompatTheme_buttonStyleSmall = 103
+            static member AppCompatTheme_buttonStyle = 103
             
             // aapt resource value: 104
-            static member AppCompatTheme_checkboxStyle = 104
+            static member AppCompatTheme_buttonStyleSmall = 104
             
             // aapt resource value: 105
-            static member AppCompatTheme_checkedTextViewStyle = 105
+            static member AppCompatTheme_checkboxStyle = 105
             
-            // aapt resource value: 85
-            static member AppCompatTheme_colorAccent = 85
-            
-            // aapt resource value: 92
-            static member AppCompatTheme_colorBackgroundFloating = 92
-            
-            // aapt resource value: 89
-            static member AppCompatTheme_colorButtonNormal = 89
-            
-            // aapt resource value: 87
-            static member AppCompatTheme_colorControlActivated = 87
-            
-            // aapt resource value: 88
-            static member AppCompatTheme_colorControlHighlight = 88
+            // aapt resource value: 106
+            static member AppCompatTheme_checkedTextViewStyle = 106
             
             // aapt resource value: 86
-            static member AppCompatTheme_colorControlNormal = 86
+            static member AppCompatTheme_colorAccent = 86
             
-            // aapt resource value: 83
-            static member AppCompatTheme_colorPrimary = 83
-            
-            // aapt resource value: 84
-            static member AppCompatTheme_colorPrimaryDark = 84
+            // aapt resource value: 93
+            static member AppCompatTheme_colorBackgroundFloating = 93
             
             // aapt resource value: 90
-            static member AppCompatTheme_colorSwitchThumbNormal = 90
+            static member AppCompatTheme_colorButtonNormal = 90
+            
+            // aapt resource value: 88
+            static member AppCompatTheme_colorControlActivated = 88
+            
+            // aapt resource value: 89
+            static member AppCompatTheme_colorControlHighlight = 89
+            
+            // aapt resource value: 87
+            static member AppCompatTheme_colorControlNormal = 87
+            
+            // aapt resource value: 84
+            static member AppCompatTheme_colorPrimary = 84
+            
+            // aapt resource value: 85
+            static member AppCompatTheme_colorPrimaryDark = 85
             
             // aapt resource value: 91
-            static member AppCompatTheme_controlBackground = 91
+            static member AppCompatTheme_colorSwitchThumbNormal = 91
+            
+            // aapt resource value: 92
+            static member AppCompatTheme_controlBackground = 92
             
             // aapt resource value: 44
             static member AppCompatTheme_dialogPreferredPadding = 44
@@ -5656,8 +5677,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 63
             static member AppCompatTheme_editTextColor = 63
             
-            // aapt resource value: 106
-            static member AppCompatTheme_editTextStyle = 106
+            // aapt resource value: 107
+            static member AppCompatTheme_editTextStyle = 107
             
             // aapt resource value: 49
             static member AppCompatTheme_homeAsUpIndicator = 49
@@ -5665,14 +5686,14 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 65
             static member AppCompatTheme_imageButtonStyle = 65
             
-            // aapt resource value: 82
-            static member AppCompatTheme_listChoiceBackgroundIndicator = 82
+            // aapt resource value: 83
+            static member AppCompatTheme_listChoiceBackgroundIndicator = 83
             
             // aapt resource value: 45
             static member AppCompatTheme_listDividerAlertDialog = 45
             
-            // aapt resource value: 114
-            static member AppCompatTheme_listMenuViewStyle = 114
+            // aapt resource value: 115
+            static member AppCompatTheme_listMenuViewStyle = 115
             
             // aapt resource value: 76
             static member AppCompatTheme_listPopupWindowStyle = 76
@@ -5692,14 +5713,14 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 74
             static member AppCompatTheme_listPreferredItemPaddingRight = 74
             
-            // aapt resource value: 79
-            static member AppCompatTheme_panelBackground = 79
+            // aapt resource value: 80
+            static member AppCompatTheme_panelBackground = 80
+            
+            // aapt resource value: 82
+            static member AppCompatTheme_panelMenuListTheme = 82
             
             // aapt resource value: 81
-            static member AppCompatTheme_panelMenuListTheme = 81
-            
-            // aapt resource value: 80
-            static member AppCompatTheme_panelMenuListWidth = 80
+            static member AppCompatTheme_panelMenuListWidth = 81
             
             // aapt resource value: 61
             static member AppCompatTheme_popupMenuStyle = 61
@@ -5707,23 +5728,23 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 62
             static member AppCompatTheme_popupWindowStyle = 62
             
-            // aapt resource value: 107
-            static member AppCompatTheme_radioButtonStyle = 107
-            
             // aapt resource value: 108
-            static member AppCompatTheme_ratingBarStyle = 108
+            static member AppCompatTheme_radioButtonStyle = 108
             
             // aapt resource value: 109
-            static member AppCompatTheme_ratingBarStyleIndicator = 109
+            static member AppCompatTheme_ratingBarStyle = 109
             
             // aapt resource value: 110
-            static member AppCompatTheme_ratingBarStyleSmall = 110
+            static member AppCompatTheme_ratingBarStyleIndicator = 110
+            
+            // aapt resource value: 111
+            static member AppCompatTheme_ratingBarStyleSmall = 111
             
             // aapt resource value: 69
             static member AppCompatTheme_searchViewStyle = 69
             
-            // aapt resource value: 111
-            static member AppCompatTheme_seekBarStyle = 111
+            // aapt resource value: 112
+            static member AppCompatTheme_seekBarStyle = 112
             
             // aapt resource value: 53
             static member AppCompatTheme_selectableItemBackground = 53
@@ -5734,11 +5755,11 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 48
             static member AppCompatTheme_spinnerDropDownItemStyle = 48
             
-            // aapt resource value: 112
-            static member AppCompatTheme_spinnerStyle = 112
-            
             // aapt resource value: 113
-            static member AppCompatTheme_switchStyle = 113
+            static member AppCompatTheme_spinnerStyle = 113
+            
+            // aapt resource value: 114
+            static member AppCompatTheme_switchStyle = 114
             
             // aapt resource value: 40
             static member AppCompatTheme_textAppearanceLargePopupMenu = 40
@@ -5747,7 +5768,10 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             static member AppCompatTheme_textAppearanceListItem = 77
             
             // aapt resource value: 78
-            static member AppCompatTheme_textAppearanceListItemSmall = 78
+            static member AppCompatTheme_textAppearanceListItemSecondary = 78
+            
+            // aapt resource value: 79
+            static member AppCompatTheme_textAppearanceListItemSmall = 79
             
             // aapt resource value: 42
             static member AppCompatTheme_textAppearancePopupMenuHeader = 42
@@ -5761,8 +5785,8 @@ namespace XamarinForms.Reactive.Sample.elloWorld.Droid
             // aapt resource value: 41
             static member AppCompatTheme_textAppearanceSmallPopupMenu = 41
             
-            // aapt resource value: 97
-            static member AppCompatTheme_textColorAlertDialogListItem = 97
+            // aapt resource value: 98
+            static member AppCompatTheme_textColorAlertDialogListItem = 98
             
             // aapt resource value: 68
             static member AppCompatTheme_textColorSearchUrl = 68

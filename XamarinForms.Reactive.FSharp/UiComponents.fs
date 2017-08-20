@@ -17,6 +17,15 @@ open GeographicLib
 open ExpressionConversion
 open ClrExtensions
 
+type FrameOverlay() =
+    inherit Frame()
+    static let boundaryProperty =
+        BindableProperty.Create("Boundary", typeof<Rectangle>, typeof<Frame>, Rectangle.Zero, BindingMode.OneWay,
+            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject _ newValue -> AbsoluteLayout.SetLayoutBounds(bindableObject, newValue :?> Rectangle)))
+    member this.Boundary
+        with get() = this.GetValue(boundaryProperty) :?> Rectangle
+        and set(value: Rectangle) = this.SetValue(boundaryProperty, value)
+
 type ImageGallery() =
     inherit ScrollView()
     let collectionChangedSubscription = new CompositeDisposable()
@@ -128,7 +137,7 @@ type HyperlinkLabel() =
 
 module ViewHelpers =
     open Microsoft.FSharp.Quotations
-
+    let unitRectangle = Rectangle.FromLTRB(0.0, 0.0, 1.0, 1.0)
     let withTwoWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
         view.Bind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
         element
@@ -211,8 +220,8 @@ module ViewHelpers =
     let withTextCellDetail detail (element: #TextCell) = element.Detail <- detail; element
     let withTextCellDetailColor detailColor (element: #TextCell) = element.DetailColor <- detailColor; element
     let withImageCellSource source (element: #ImageCell) = element.ImageSource <- source; element
-    let withAbsoluteLayoutBounds bounds (element: #View) = AbsoluteLayout.SetLayoutBounds(element, bounds)
-    let withAbsoluteLayoutFlags flags (element: #View) = AbsoluteLayout.SetLayoutFlags(element, flags)
+    let withAbsoluteLayoutBounds bounds (element: #View) = AbsoluteLayout.SetLayoutBounds(element, bounds); element
+    let withAbsoluteLayoutFlags flags (element: #View) = AbsoluteLayout.SetLayoutFlags(element, flags); element
 
 open ViewHelpers
 
@@ -220,8 +229,8 @@ module Themes =
     open Microsoft.FSharp.Quotations
 
     let withBlocks (views:View[]) (stackLayout: StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
-    let withAbsoluteOverlays (views:View[]) (absoluteLayout: AbsoluteLayout) = views |> Seq.iter absoluteLayout.Children.Add; absoluteLayout
-    let withRelativeOverlays (views:View[]) (relativeLayout: RelativeLayout) = views |> Seq.iter relativeLayout.Children.Add; relativeLayout
+    let withAbsoluteOverlayViews (views:View[]) (absoluteLayout: #AbsoluteLayout) = views |> Seq.iter absoluteLayout.Children.Add; absoluteLayout
+    let withRelativeOverlayViews (views:View[]) (relativeLayout: #RelativeLayout) = views |> Seq.iter relativeLayout.Children.Add; relativeLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
     let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
     type RowCreation =
@@ -241,14 +250,16 @@ module Themes =
             ColumnCount: int
         }
 
-    let private infoForeground = Color.FromHex("#00529B") 
-    let private infoBackground = Color.FromHex("#BDE5F8") 
     let private successForeground = Color.FromHex("#4F8A10") 
     let private successBackground = Color.FromHex("#DFF2BF") 
+    let private infoForeground = Color.FromHex("#00529B") 
+    let private infoBackground = Color.FromHex("#BDE5F8") 
     let private warningForeground = Color.FromHex("#9F6000") 
     let private warningBackground = Color.FromHex("#FEEFB3") 
     let private errorForeground = Color.FromHex("#D8000C") 
     let private errorBackground = Color.FromHex("#FFBABA") 
+    let private withForegroundColor color (style: Style) = style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = color)); style
+    let private withBackgroundColor color (style: Style) = style.Setters.Add(new Setter(Property = VisualElement.BackgroundColorProperty, Value = color)); style
     let private elementNoun i = if i = 1 then "element" else "elements"
     let private columnNoun i = if i = 1 then "column" else "columns"
     let private rowNoun i = if i = 1 then "row" else "rows"
@@ -336,6 +347,9 @@ module Themes =
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
         member this.GenerateImage(view, property, [<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> initialise property view |> apply setUp
         member this.GenerateFrame([<ParamArray>] setUp: (Frame -> unit)[]) = new Frame(Style = this.Styles.FrameStyle) |> apply setUp
+        member this.GenerateFrame(view, property, [<ParamArray>] setUp: (Frame -> unit)[]) = new Frame(Style = this.Styles.FrameStyle) |> initialise property view |> apply setUp
+        member this.GenerateFrameOverlay([<ParamArray>] setUp: (FrameOverlay -> unit)[]) = new FrameOverlay(Style = this.Styles.FrameStyle) |> apply setUp
+        member this.GenerateFrameOverlay(view, property, [<ParamArray>] setUp: (FrameOverlay -> unit)[]) = new FrameOverlay(Style = this.Styles.FrameStyle) |> initialise property view |> apply setUp
         member this.GenerateContentView([<ParamArray>] setUp: (ContentView -> unit)[]) = new ContentView(Style = this.Styles.ContentViewStyle) |> apply setUp
         member this.GenerateButton([<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> apply setUp
         member this.GenerateButton(view, property, [<ParamArray>] setUp: (Button -> unit)[]) = new Button(Style = this.Styles.ButtonStyle) |> initialise property view |> apply setUp
@@ -351,6 +365,7 @@ module Themes =
         member this.GenerateListView(cachingStrategy: ListViewCachingStrategy, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(cachingStrategy, Style = this.Styles.ListViewStyle) |> apply setUp
         member this.GenerateListView(view, property, cachingStrategy: ListViewCachingStrategy, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(cachingStrategy, Style = this.Styles.ListViewStyle) |> initialise property view |> apply setUp
         member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
+        member this.GenerateBoxView(view, property, [<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> initialise property view |> apply setUp
         member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp
         member this.GenerateTimePicker([<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> apply setUp
@@ -387,16 +402,14 @@ module Themes =
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
     let applyTextCellTextColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellTextColor = color } }
     let applyTextCellDetailColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellDetailColor = color } }
-    let private withForegroundColor color (label: Label) = label.Style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = color)); label
-    let private withBackgroundColor color (label: Label) = label.Style.Setters.Add(new Setter(Property = VisualElement.BackgroundColorProperty, Value = color)); label
-    let withSuccessLabelStyle (label: Label) = label |> withForegroundColor successForeground |> withBackgroundColor successBackground
-    let withInfoLabelStyle (label: Label) = label |> withForegroundColor infoForeground |> withBackgroundColor infoBackground
-    let withWarningLabelStyle (label: Label) = label |> withForegroundColor warningForeground |> withBackgroundColor warningBackground
-    let withErrorLabelStyle (label: Label) = label |> withForegroundColor errorForeground |> withBackgroundColor errorBackground
-    let withInverseSuccessLabelStyle (label: Label) = label |> withBackgroundColor successForeground |> withForegroundColor successBackground
-    let withInverseInfoLabelStyle (label: Label) = label |> withBackgroundColor infoForeground |> withForegroundColor infoBackground
-    let withInverseWarningLabelStyle (label: Label) = label |> withBackgroundColor warningForeground |> withForegroundColor warningBackground
-    let withInverseErrorLabelStyle (label: Label) = label |> withBackgroundColor errorForeground |> withForegroundColor errorBackground
+    let withSuccessLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor successForeground |> withBackgroundColor successBackground; element
+    let withInfoLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor infoForeground |> withBackgroundColor infoBackground; element
+    let withWarningLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor warningForeground |> withBackgroundColor warningBackground; element
+    let withErrorLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor errorForeground |> withBackgroundColor errorBackground; element
+    let withInverseSuccessLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor successBackground |> withBackgroundColor successForeground; element
+    let withInverseInfoLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor infoBackground |> withBackgroundColor infoForeground; element
+    let withInverseWarningLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor warningBackground |> withBackgroundColor warningForeground; element
+    let withInverseErrorLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor errorBackground |> withBackgroundColor errorForeground; element
 
     let DefaultTheme =
         let titleStyle = new Style(typeof<Label>)
