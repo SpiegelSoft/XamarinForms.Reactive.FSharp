@@ -372,6 +372,7 @@ module Themes =
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
         member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
+        member this.GenerateActivityIndicator(view, property, [<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> initialise property view |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
         member this.GenerateTextCell([<ParamArray>] setUp: (TextCell -> unit)[]) = new TextCell() |> apply setUp |> applyCellColors this.Styles
         member this.GenerateImageCell([<ParamArray>] setUp: (ImageCell -> unit)[]) = new ImageCell() |> apply setUp |> applyCellColors this.Styles
