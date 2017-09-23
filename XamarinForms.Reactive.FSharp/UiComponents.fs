@@ -150,6 +150,12 @@ module ViewHelpers =
             member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
         view.SetBinding(viewProperty, propertyName viewModelProperty, BindingMode.OneWay, converter)
         element
+    let withTextCellCommandParameterBinding(view: 'v :> #TextCell, viewModelProperty: Expr<'vm -> 'a>, selector: 'a -> 'b) element = 
+        let converter = { new IValueConverter with 
+            member __.Convert(value, _, _, _) = selector(value :?> 'a) :> obj
+            member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
+        view.SetBinding(TextCell.CommandParameterProperty, propertyName viewModelProperty, BindingMode.OneWay, converter)
+        element
     let withCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty) element = 
         view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
@@ -371,6 +377,7 @@ module Themes =
         member this.GenerateTimePicker([<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
         member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> apply setUp
+        member this.GenerateImageGallery(view, property, [<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> initialise property view |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateActivityIndicator(view, property, [<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> initialise property view |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
@@ -382,6 +389,7 @@ module Themes =
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
         member __.AbsoluteLayout([<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> apply setUp
+        member __.AbsoluteLayout(view, property, [<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> initialise property view |> apply setUp
         member __.RelativeLayout([<ParamArray>] setUp: (RelativeLayout -> unit)[]) = new RelativeLayout () |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
     let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) =

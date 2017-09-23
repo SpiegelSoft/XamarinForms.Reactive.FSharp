@@ -29,11 +29,12 @@ type PhotoManifestViewModel(roverName: string, headlineImage: string, launchDate
 type PhotoSetViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorage) =
     inherit PageViewModel()
     let host, platform, storage = LocateIfNone host, LocateIfNone platform, LocateIfNone storage
-    let rovers = dict [
-        (Rovers.curiosity, PhotoManifestViewModel.Curiosity)
-        (Rovers.opportunity, PhotoManifestViewModel.Opportunity); 
-        (Rovers.spirit, PhotoManifestViewModel.Spirit)
-    ]
+    let rovers = 
+        dict [
+            (Rovers.curiosity, PhotoManifestViewModel.Curiosity)
+            (Rovers.opportunity, PhotoManifestViewModel.Opportunity); 
+            (Rovers.spirit, PhotoManifestViewModel.Spirit)
+        ]
     let mutable cameraIndex = 0
     let fetchPhotos (vm: PhotoSetViewModel) =
         let result() = async { return { SyncResult = ApiSyncResult.SyncSucceeded; Content = Unchecked.defaultof<PhotoSet> } }
