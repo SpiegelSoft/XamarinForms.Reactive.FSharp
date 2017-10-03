@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "XamarinForms.Reactive.FSharp", "XamarinForms.Reactive.FSharp\XamarinForms.Reactive.FSharp.fsproj", "{DF0B27FA-6E7D-4E1E-8A6B-02719BA4412C}"
 EndProject
@@ -262,5 +262,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {664823D3-B330-4E00-AC3A-9FBB9CEA075A}
 	EndGlobalSection
 EndGlobal

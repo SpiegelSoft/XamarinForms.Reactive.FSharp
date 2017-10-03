@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Framework.fs" />
+    <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="UiComponents.fs" />
+    <Compile Include="Platform.fs" />
+    <Compile Include="ViewModels.fs" />
+    <Compile Include="Views.fs" />
+    <Compile Include="App.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GeographicLib.FSharp" Version="2.0.0" />
+    <PackageReference Include="reactiveui" Version="8.0.0-alpha0089" />
+    <PackageReference Include="reactiveui-xamforms" Version="8.0.0-alpha0089" />
+    <PackageReference Include="Splat" Version="2.0.0" />
+    <PackageReference Include="System.Reactive" Version="3.1.1" />
+    <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
+    <PackageReference Include="Xamarin.Forms" Version="2.4.0.282" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="2.4.0.282" />
+  </ItemGroup>
+
+</Project>
