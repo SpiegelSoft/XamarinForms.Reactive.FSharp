@@ -1,0 +1,9 @@
+﻿{
+  "dependencies": {
+    "System.Runtime.InteropServices": "4.3.0"
+  },
+  "frameworks": {
+    ".NETPortable,Version=v4.5,Profile=Profile111": {}
+  },
+  "supports": {}
+}
