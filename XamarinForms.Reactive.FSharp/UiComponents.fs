@@ -641,10 +641,10 @@ module Themes =
         member __.RelativeLayout([<ParamArray>] setUp: (RelativeLayout -> unit)[]) = new RelativeLayout () |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
     let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) =
-        let controlType = typeof<'TView>
+        //let controlType = typeof<'TView>
         for setter in setters do 
-            let setterType = setter.Property.DeclaringType
-            if (setterType <> controlType) then raise <| ArgumentException(sprintf "A setter for a property of the type %s cannot be used to modify an instance of %s" setterType.Name controlType.Name)
+            //let setterType = setter.Property.DeclaringType
+            //if (setterType <> controlType) then raise <| ArgumentException(sprintf "A setter for a property of the type %s cannot be used to modify an instance of %s" setterType.Name controlType.Name)
             style.Setters.Add setter
     let applyButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
     let applyLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme

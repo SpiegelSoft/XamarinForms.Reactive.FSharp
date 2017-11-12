@@ -70,7 +70,7 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
         } |> Async.StartAsTask)
     member this.Init() =
         let viewModelInstance = bootstrapper.Bootstrap(this)
-        let navigationPage = new HostingPage()
+        let navigationPage = new HostingPage(Tint = Color.LightSteelBlue)
         navigationPage.PushAsync(new FrontPage(router, viewModelInstance, ViewModel = new FrontPageViewModel())).Wait()
         this.MainPage <- navigationPage
         navigationPage.Popped.Subscribe(fun eventArgs ->
