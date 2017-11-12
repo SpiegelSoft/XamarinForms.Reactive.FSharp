@@ -582,6 +582,7 @@ module Themes =
             ActivityIndicatorStyle: Style
             TextCellTextColor: Color
             TextCellDetailColor: Color
+            NavigationPageStyle: Style
         }
 
     let apply setUp view = setUp |> Seq.iter (fun s -> s view); view
@@ -714,6 +715,7 @@ module Themes =
                     ActivityIndicatorStyle = new Style(typeof<ActivityIndicator>)
                     TextCellTextColor = TextCell.TextColorProperty.DefaultValue :?> Color
                     TextCellDetailColor = TextCell.DetailColorProperty.DefaultValue :?> Color
+                    NavigationPageStyle = new Style(typeof<NavigationPage>)
                 }
         }
 
