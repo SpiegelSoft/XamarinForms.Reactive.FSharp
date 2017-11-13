@@ -654,6 +654,7 @@ module Themes =
     let applySwitchSetters switchSetters (theme: Theme) = addSetters<Switch> switchSetters theme.Styles.SwitchStyle; theme
     let applyEntrySetters entrySetters (theme: Theme) = addSetters<Entry> entrySetters theme.Styles.EntryStyle; theme
     let applyImageSetters imageSetters (theme: Theme) = addSetters<Image> imageSetters theme.Styles.ImageStyle; theme
+    let applyNavigationPageSetters navigationPageSetters (theme: Theme) = addSetters<NavigationPage> navigationPageSetters theme.Styles.NavigationPageStyle; theme
     let applyListViewSetters listViewSetters (theme: Theme) = addSetters<ListView> listViewSetters theme.Styles.ListViewStyle; theme
     let applyTabbedPageSetters tabbedPageSetters (theme: Theme) = addSetters<TabbedPage> tabbedPageSetters theme.Styles.TabbedPageStyle; theme
     let applyBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }

@@ -14,6 +14,8 @@ open Splat
 open ReactiveUI
 open ReactiveUI.XamForms
 
+open Themes
+
 module ViewReflection =
     let private reactiveObjectTypeInfo = typeof<ReactiveObject>.GetTypeInfo()
     let private isReactiveObjectType typeInfo = reactiveObjectTypeInfo.IsAssignableFrom(typeInfo)
@@ -68,9 +70,9 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
             navigationErrorObservers.[index] <- obs
             return Disposable.Create(fun () -> navigationErrorObservers.Remove(index) |> ignore)
         } |> Async.StartAsTask)
-    member this.Init() =
+    member this.Init(theme: Theme) =
         let viewModelInstance = bootstrapper.Bootstrap(this)
-        let navigationPage = new HostingPage()
+        let navigationPage = new HostingPage(Style = theme.Styles.NavigationPageStyle)
         navigationPage.PushAsync(new FrontPage(router, viewModelInstance, ViewModel = new FrontPageViewModel())).Wait()
         this.MainPage <- navigationPage
         navigationPage.Popped.Subscribe(fun eventArgs ->
