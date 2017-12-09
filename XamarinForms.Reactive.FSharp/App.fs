@@ -56,7 +56,8 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
     let mutable observerIndex = 0
     let navigationErrorObservers = new Dictionary<int, IObserver<exn>>()
     let router = new RoutingState()
-    let handleException ex = navigationErrorObservers.Values |> Seq.iter (fun obs -> obs.OnNext(ex))
+    let handleException ex = 
+        navigationErrorObservers.Values |> Seq.iter (fun obs -> obs.OnNext(ex))
     let bootstrapper = new AppBootstrapper<'TPlatform>(platform, context, viewModel)
     do 
         router.Navigate.ThrownExceptions.Subscribe(handleException) |> ignore

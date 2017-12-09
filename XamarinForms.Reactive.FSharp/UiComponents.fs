@@ -457,6 +457,7 @@ module ViewHelpers =
     let withEntryPlaceholder placeholder (element: #Entry) = element.Placeholder <- placeholder; element
     let withSearchBarPlaceholder placeholder (element: #SearchBar) = element.Placeholder <- placeholder; element
     let withSpacing spacing (layout: StackLayout) = layout.Spacing <- spacing; layout
+    let withScale scale (element: #VisualElement) = element.Scale <- scale; element
     let withFontAttributes fontAttributes (element: #Label) = element.FontAttributes <- fontAttributes; element
     let withBackgroundColor color (element: #View) = element.BackgroundColor <- color; element
     let withEffect effectId (element: #Element) = element.Effects.Add(Effect.Resolve(effectId)); element     
@@ -611,9 +612,13 @@ module Themes =
         member this.GenerateSubtitle([<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.SubtitleStyle) |> apply setUp
         member this.GenerateSubtitle(view, property, [<ParamArray>] setUp: (Label -> unit)[]) = new Label(Style = this.Styles.SubtitleStyle) |> initialise property view |> apply setUp
         member this.GenerateSwitch([<ParamArray>] setUp: (Switch -> unit)[]) = new Switch(Style = this.Styles.SwitchStyle) |> apply setUp
+        member this.GenerateSwitch(view, property, [<ParamArray>] setUp: (Switch -> unit)[]) = new Switch(Style = this.Styles.SwitchStyle) |> initialise property view |> apply setUp
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
+        member this.GenerateEntry(view, property, [<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> initialise property view |> apply setUp
         member this.GenerateEditor([<ParamArray>] setUp: (Editor -> unit)[]) = new Editor(Style = this.Styles.EditorStyle) |> apply setUp
+        member this.GenerateEditor(view, property, [<ParamArray>] setUp: (Editor -> unit)[]) = new Editor(Style = this.Styles.EditorStyle) |> initialise property view |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
+        member this.GenerateHyperlink(view, property, [<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> initialise property view |> apply setUp
         member this.GenerateListView(cachingStrategy: ListViewCachingStrategy, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(cachingStrategy, Style = this.Styles.ListViewStyle) |> apply setUp
         member this.GenerateListView(view, property, cachingStrategy: ListViewCachingStrategy, [<ParamArray>] setUp: (ListView -> unit)[]) = new ListView(cachingStrategy, Style = this.Styles.ListViewStyle) |> initialise property view |> apply setUp
         member this.GenerateBoxView([<ParamArray>] setUp: (BoxView -> unit)[]) = new BoxView(Style = this.Styles.BoxViewStyle) |> apply setUp
