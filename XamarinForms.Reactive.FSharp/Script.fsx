@@ -29,5 +29,9 @@ propertyName prop1
 
 let instance = { Property1 = "Hello" }
 
+let inline (.*) (x: int) = 2 * x
+
+printf "%i" (.* 2)
+
 setProperty instance "World" prop1
 

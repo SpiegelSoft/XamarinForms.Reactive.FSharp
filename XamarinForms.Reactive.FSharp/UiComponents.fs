@@ -402,6 +402,9 @@ module ViewHelpers =
     let withCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty) element = 
         view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
         element
+    let withEventCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty, event) element = 
+        view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty, event) |> ignore
+        element
     let withTapCommand(view: 'v :> View, command, commandParameter: Expr<'vm -> 'b> option) element =
         view.BindingContextChanged.Subscribe(fun _ -> 
             let viewModel = view.BindingContext :?> 'vm
@@ -423,6 +426,7 @@ module ViewHelpers =
     let withMargin margin (element: #View) = element.Margin <- margin; element
     let withSource source (element: #Image) = element.Source <- source; element
     let withButtonImage image (element: #Button) = element.Image <- image; element
+    let withContentLayout contentLayout (element: #Button) = element.ContentLayout <- contentLayout; element
     let withAspect aspect (element: #Image) = element.Aspect <- aspect; element
     let withPadding padding (element: #Layout) = element.Padding <- padding; element
     let withCaption text (element: #Button) = element.Text <- text; element
@@ -479,7 +483,7 @@ open ViewHelpers
 module Themes =
     open Microsoft.FSharp.Quotations
 
-    let withBlocks (views:View[]) (stackLayout: StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
+    let withBlocks (views:View[]) (stackLayout: #StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
     let withAbsoluteOverlayViews (views:View[]) (absoluteLayout: #AbsoluteLayout) = views |> Seq.iter absoluteLayout.Children.Add; absoluteLayout
     let withRelativeOverlayViews (views:View[]) (relativeLayout: #RelativeLayout) = views |> Seq.iter relativeLayout.Children.Add; relativeLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
@@ -646,12 +650,7 @@ module Themes =
         member __.AbsoluteLayout(view, property, [<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> initialise property view |> apply setUp
         member __.RelativeLayout([<ParamArray>] setUp: (RelativeLayout -> unit)[]) = new RelativeLayout () |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
-    let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) =
-        //let controlType = typeof<'TView>
-        for setter in setters do 
-            //let setterType = setter.Property.DeclaringType
-            //if (setterType <> controlType) then raise <| ArgumentException(sprintf "A setter for a property of the type %s cannot be used to modify an instance of %s" setterType.Name controlType.Name)
-            style.Setters.Add setter
+    let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) = for setter in setters do style.Setters.Add setter
     let applyButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
     let applyLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme
     let applyTitleSetters titleSetters (theme: Theme) = addSetters<Label> titleSetters theme.Styles.TitleStyle; theme
