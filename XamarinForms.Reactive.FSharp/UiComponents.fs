@@ -505,14 +505,15 @@ module Themes =
             ColumnCount: int
         }
 
-    let private successForeground = Color.FromHex("#4F8A10") 
-    let private successBackground = Color.FromHex("#DFF2BF") 
-    let private infoForeground = Color.FromHex("#00529B") 
-    let private infoBackground = Color.FromHex("#BDE5F8") 
-    let private warningForeground = Color.FromHex("#9F6000") 
-    let private warningBackground = Color.FromHex("#FEEFB3") 
-    let private errorForeground = Color.FromHex("#D8000C") 
-    let private errorBackground = Color.FromHex("#FFBABA") 
+    let SuccessDark = Color.FromHex("#4F8A10") 
+    let SuccessLight = Color.FromHex("#DFF2BF") 
+    let InfoDark = Color.FromHex("#00529B") 
+    let InfoLight = Color.FromHex("#BDE5F8") 
+    let WarningDark = Color.FromHex("#9F6000") 
+    let WarningLight = Color.FromHex("#FEEFB3") 
+    let private ErrorDark = Color.FromHex("#D8000C") 
+    let private ErrorLight = Color.FromHex("#FFBABA") 
+    let private FacebookBlue = Color.FromHex("#4167B2")
     let private withForegroundColor color (style: Style) = style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = color)); style
     let private withBackgroundColor color (style: Style) = style.Setters.Add(new Setter(Property = VisualElement.BackgroundColorProperty, Value = color)); style
     let private elementNoun i = if i = 1 then "element" else "elements"
@@ -594,6 +595,7 @@ module Themes =
     let initialise (property: Expr<'a -> 'b>) (view: 'a) (value: 'b) = ExpressionConversion.setProperty view value property; value
     let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
     let private applyCellColors (styles:Styles) (cell:#TextCell) = cell.TextColor <- styles.TextCellTextColor; cell.DetailColor <- styles.TextCellDetailColor; cell
+    let getOrAddStyle (element: VisualElement) = match box element.Style with | null -> new Style(element.GetType()) | _ -> element.Style
     type Theme =
         {
             Styles: Styles
@@ -665,22 +667,23 @@ module Themes =
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
     let applyTextCellTextColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellTextColor = color } }
     let applyTextCellDetailColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellDetailColor = color } }
-    let withSuccessStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor successForeground |> withBackgroundColor successBackground; element
-    let withInfoStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor infoForeground |> withBackgroundColor infoBackground; element
-    let withWarningStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor warningForeground |> withBackgroundColor warningBackground; element
-    let withErrorStyle (element: #VisualElement) = element.Style <- new Style(element.GetType()) |> withBackgroundColor errorBackground; element
-    let withInverseSuccessStyle (element: #VisualElement) = element.Style <- new Style(element.GetType()) |> withBackgroundColor successForeground; element
-    let withInverseInfoStyle (element: #VisualElement) = element.Style <- new Style(element.GetType()) |> withBackgroundColor infoForeground; element
-    let withInverseWarningStyle (element: #VisualElement) = element.Style <- new Style(element.GetType()) |> withBackgroundColor warningForeground; element
-    let withInverseErrorStyle (element: #VisualElement) = element.Style <- new Style(element.GetType()) |> withForegroundColor errorBackground |> withBackgroundColor errorForeground; element
-    let withSuccessLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor successForeground |> withBackgroundColor successBackground; element
-    let withInfoLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor infoForeground |> withBackgroundColor infoBackground; element
-    let withWarningLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor warningForeground |> withBackgroundColor warningBackground; element
-    let withErrorLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor errorForeground |> withBackgroundColor errorBackground; element
-    let withInverseSuccessLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor successBackground |> withBackgroundColor successForeground; element
-    let withInverseInfoLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor infoBackground |> withBackgroundColor infoForeground; element
-    let withInverseWarningLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor warningBackground |> withBackgroundColor warningForeground; element
-    let withInverseErrorLabelStyle (element: #Label) = element.Style <- new Style(element.GetType()) |> withForegroundColor errorBackground |> withBackgroundColor errorForeground; element
+    let withFacebookBackground (element: #VisualElement) = element.Style <- element |> getOrAddStyle |> withBackgroundColor FacebookBlue; element
+    let withSuccessStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor SuccessDark |> withBackgroundColor SuccessLight; element
+    let withInfoStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor InfoDark |> withBackgroundColor InfoLight; element
+    let withWarningStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor WarningDark |> withBackgroundColor WarningLight; element
+    let withErrorStyle (element: #VisualElement) = element.Style <- element |> getOrAddStyle |> withBackgroundColor ErrorLight; element
+    let withInverseSuccessStyle (element: #VisualElement) = element.Style <- element |> getOrAddStyle |> withBackgroundColor SuccessDark; element
+    let withInverseInfoStyle (element: #VisualElement) = element.Style <- element |> getOrAddStyle |> withBackgroundColor InfoDark; element
+    let withInverseWarningStyle (element: #VisualElement) = element.Style <- element |> getOrAddStyle |> withBackgroundColor WarningDark; element
+    let withInverseErrorStyle (element: #VisualElement) = element.Style <- element |> getOrAddStyle |> withForegroundColor ErrorLight |> withBackgroundColor ErrorDark; element
+    let withSuccessLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor SuccessDark |> withBackgroundColor SuccessLight; element
+    let withInfoLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor InfoDark |> withBackgroundColor InfoLight; element
+    let withWarningLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor WarningDark |> withBackgroundColor WarningLight; element
+    let withErrorLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor ErrorDark |> withBackgroundColor ErrorLight; element
+    let withInverseSuccessLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor SuccessLight |> withBackgroundColor SuccessDark; element
+    let withInverseInfoLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor InfoLight |> withBackgroundColor InfoDark; element
+    let withInverseWarningLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor WarningLight |> withBackgroundColor WarningDark; element
+    let withInverseErrorLabelStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor ErrorLight |> withBackgroundColor ErrorDark; element
 
     let DefaultTheme =
         let titleStyle = new Style(typeof<Label>)
