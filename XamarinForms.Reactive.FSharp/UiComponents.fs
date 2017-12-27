@@ -511,9 +511,9 @@ module Themes =
     let InfoLight = Color.FromHex("#BDE5F8") 
     let WarningDark = Color.FromHex("#9F6000") 
     let WarningLight = Color.FromHex("#FEEFB3") 
-    let private ErrorDark = Color.FromHex("#D8000C") 
-    let private ErrorLight = Color.FromHex("#FFBABA") 
-    let private FacebookBlue = Color.FromHex("#4167B2")
+    let FacebookBlue = Color.FromHex("#4167B2")
+    let ErrorDark = Color.FromHex("#D8000C") 
+    let ErrorLight = Color.FromHex("#FFBABA") 
     let private withForegroundColor color (style: Style) = style.Setters.Add(new Setter(Property = Label.TextColorProperty, Value = color)); style
     let private withBackgroundColor color (style: Style) = style.Setters.Add(new Setter(Property = VisualElement.BackgroundColorProperty, Value = color)); style
     let private elementNoun i = if i = 1 then "element" else "elements"
@@ -595,7 +595,9 @@ module Themes =
     let initialise (property: Expr<'a -> 'b>) (view: 'a) (value: 'b) = ExpressionConversion.setProperty view value property; value
     let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
     let private applyCellColors (styles:Styles) (cell:#TextCell) = cell.TextColor <- styles.TextCellTextColor; cell.DetailColor <- styles.TextCellDetailColor; cell
-    let getOrAddStyle (element: VisualElement) = match box element.Style with | null -> new Style(element.GetType()) | _ -> element.Style
+    let getOrAddStyle (element: VisualElement) = 
+        // match box element.Style with | null -> new Style(element.GetType()) | _ -> element.Style
+         new Style(element.GetType())
     type Theme =
         {
             Styles: Styles
@@ -667,7 +669,7 @@ module Themes =
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
     let applyTextCellTextColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellTextColor = color } }
     let applyTextCellDetailColor color (theme: Theme) = { theme with Styles = { theme.Styles with TextCellDetailColor = color } }
-    let withFacebookBackground (element: #VisualElement) = element.Style <- element |> getOrAddStyle |> withBackgroundColor FacebookBlue; element
+    let withFacebookBackground (element: #VisualElement) = element.BackgroundColor <- FacebookBlue; element
     let withSuccessStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor SuccessDark |> withBackgroundColor SuccessLight; element
     let withInfoStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor InfoDark |> withBackgroundColor InfoLight; element
     let withWarningStyle (element: #Label) = element.Style <- element |> getOrAddStyle |> withForegroundColor WarningDark |> withBackgroundColor WarningLight; element
