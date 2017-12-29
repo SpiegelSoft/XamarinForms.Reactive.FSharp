@@ -380,6 +380,8 @@ type HyperlinkLabel() =
 
 module ViewHelpers =
     open Microsoft.FSharp.Quotations
+    open ObservableExtensions
+
     let unitRectangle = Rectangle.FromLTRB(0.0, 0.0, 1.0, 1.0)
     let withTwoWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
         view.Bind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
@@ -477,6 +479,8 @@ module ViewHelpers =
     let withAbsoluteLayoutBounds bounds (element: #View) = AbsoluteLayout.SetLayoutBounds(element, bounds); element
     let withAbsoluteLayoutFlags flags (element: #View) = AbsoluteLayout.SetLayoutFlags(element, flags); element
     let withOpacity opacity (element: #VisualElement) = element.Opacity <- opacity; element
+    let withDebouncedSearchPreview (disposer: CompositeDisposable) (time: TimeSpan) (command: ICommand) (element: #SearchBar) =
+        element.TextChanged.Throttle(time).Subscribe(fun text -> command.Execute(text)) |> disposeWith disposer |> ignore; element
 
 open ViewHelpers
 
@@ -603,7 +607,9 @@ module Themes =
             Styles: Styles
         }
         member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
+        member this.GenerateSearchBar(view, property, [<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> initialise property view |> apply setUp
         member this.GenerateMapSearchBar([<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> apply setUp
+        member this.GenerateMapSearchBar(view, property, [<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> initialise property view |> apply setUp
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
         member this.GenerateImage(view, property, [<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> initialise property view |> apply setUp
         member this.GenerateFrame([<ParamArray>] setUp: (Frame -> unit)[]) = new Frame(Style = this.Styles.FrameStyle) |> apply setUp
