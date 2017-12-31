@@ -459,7 +459,9 @@ module ViewHelpers =
     let withLabelText text (element: #Label) = element.Text <- text; element
     let withStyle style (element: #View) = element.Style <- style; element
     let withKeyboard keyboard (element: #InputView) = element.Keyboard <- keyboard; element
-    let withSearchCommand command (element: SearchBar) = element.SearchCommand <- command; element
+    let withSearchCommand (disposer: CompositeDisposable) command (element: #SearchBar) = 
+        element.TextChanged.Subscribe(fun args -> element.SearchCommandParameter <- args.NewTextValue) |> disposeWith disposer |> ignore
+        element.SearchCommand <- command; element
     let withEntryPlaceholder placeholder (element: #Entry) = element.Placeholder <- placeholder; element
     let withSearchBarPlaceholder placeholder (element: #SearchBar) = element.Placeholder <- placeholder; element
     let withSpacing spacing (layout: StackLayout) = layout.Spacing <- spacing; layout
@@ -480,7 +482,7 @@ module ViewHelpers =
     let withAbsoluteLayoutFlags flags (element: #View) = AbsoluteLayout.SetLayoutFlags(element, flags); element
     let withOpacity opacity (element: #VisualElement) = element.Opacity <- opacity; element
     let withDebouncedSearchPreview (disposer: CompositeDisposable) (time: TimeSpan) (command: ICommand) (element: #SearchBar) =
-        element.TextChanged.Throttle(time).Subscribe(fun text -> command.Execute(text)) |> disposeWith disposer |> ignore; element
+        element.TextChanged.Throttle(time).Subscribe(fun args -> command.Execute(args.NewTextValue)) |> disposeWith disposer |> ignore; element
 
 open ViewHelpers
 
