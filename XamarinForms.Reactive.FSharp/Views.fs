@@ -113,17 +113,28 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
         member __.OnContentCreated() = this.OnContentCreated()
         member __.PagePopped() = this.ViewModel <- Unchecked.defaultof<'TViewModel>
 
-type CarouselContent<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(page, theme, title, createContent) =
-    inherit ReactiveContentPage<'TViewModel>()
+type CarouselContent(title, createContent) =
+    inherit ContentPage()
     do base.Title <- title
-    override this.OnAppearing() = this.Content <- createContent(page)
+    override this.OnAppearing() = this.Content <- createContent()
 
-and [<AbstractClass>] CarouselPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) =
+and [<AbstractClass>] CarouselPage<'TViewModel when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveCarouselPage<'TViewModel>()
-    override this.OnParentSet() =
-        base.OnParentSet()
-        this.CreateContent() |> Seq.iter (fun kvp -> new CarouselContent<'TViewModel>(this, theme, kvp.Key, kvp.Value) |> this.Children.Add)
-    abstract member CreateContent: unit -> IDictionary<string, CarouselPage<'TViewModel> -> View>
+    let disposables = new CompositeDisposable()
+    let viewModelAdded, viewModelRemoved = PageSetup.lifetimeHandlers disposables this
+    let viewModelChangeStream = this.WhenAnyValue(fun v -> v.ViewModel).Buffer(2, 1).Select(fun a -> { Previous = a.[0]; Current = a.[1] })
+    do 
+        viewModelChangeStream.Where(fun p -> isNull(p.Previous) && isNotNull(p.Current)).Subscribe(fun p -> viewModelAdded p.Current) |> disposables.Add
+        viewModelChangeStream.Where(fun p -> isNotNull(p.Previous) && isNull(p.Current)).Subscribe(fun p -> viewModelRemoved p.Previous) |> disposables.Add
+    abstract member CreateContent: unit -> IDictionary<string, unit -> View>
+    abstract member OnContentCreated: unit -> unit
+    default this.OnContentCreated() = this |> ignore
+    interface IContentView with
+        member __.InitialiseContent() = 
+            this.DescendantAdded.Select(fun e -> e.Element :> obj).OfType<IContentView>().Subscribe(fun cv -> cv.InitialiseContent()) |> disposables.Add
+            this.CreateContent() |> Seq.iter (fun kvp -> new CarouselContent(kvp.Key, kvp.Value) |> this.Children.Add)
+        member __.OnContentCreated() = this.OnContentCreated()
+        member __.PagePopped() = this.ViewModel <- Unchecked.defaultof<'TViewModel>
 
 type TabContent(title, createContent: unit -> View) =
     inherit ContentPage()

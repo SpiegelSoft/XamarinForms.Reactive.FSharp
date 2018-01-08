@@ -1,14 +1,18 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
 open System.Collections.Specialized
+open System.Collections.ObjectModel
 open System.Reactive.Disposables
 open System.Collections.Generic
+open System.Windows.Input
 open System.Reactive.Linq
 open System.Collections
 open System.Reflection
 open System.Threading
 open System.Linq
 open System
+
+open Microsoft.FSharp.Quotations
 
 open Xamarin.Forms.Maps
 open Xamarin.Forms
@@ -18,10 +22,8 @@ open ReactiveUI
 open GeographicLib
 
 open ExpressionConversion
+
 open ClrExtensions
-open Xamarin.Forms
-open System.Collections.ObjectModel
-open System.Windows.Input
 
 type ItemsStack() as this =
     inherit StackLayout()
@@ -379,9 +381,11 @@ type HyperlinkLabel() =
     member this.AddCommand command = this.GestureRecognizers.Add(new TapGestureRecognizer(Command = command))
 
 module ViewHelpers =
-    open Microsoft.FSharp.Quotations
     open ObservableExtensions
-
+    let private oneWayConverter (selector: 'a -> 'b) =
+        { new IValueConverter with 
+            member __.Convert(value, _, _, _) = selector(value :?> 'a) :> obj
+            member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
     let unitRectangle = Rectangle.FromLTRB(0.0, 0.0, 1.0, 1.0)
     let withTwoWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
         view.Bind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
@@ -390,16 +394,18 @@ module ViewHelpers =
         view.OneWayBind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
         element
     let withOneWayElementBinding(view: 'v :> Element, viewModelProperty: Expr<'vm -> 'a>, viewProperty: BindableProperty, selector: 'a -> 'b) element = 
-        let converter = { new IValueConverter with 
-            member __.Convert(value, _, _, _) = selector(value :?> 'a) :> obj
-            member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
-        view.SetBinding(viewProperty, propertyName viewModelProperty, BindingMode.OneWay, converter)
+        view.SetBinding(viewProperty, propertyName viewModelProperty, BindingMode.OneWay, oneWayConverter selector)
         element
     let withTextCellCommandParameterBinding(view: 'v :> #TextCell, viewModelProperty: Expr<'vm -> 'a>, selector: 'a -> 'b) element = 
-        let converter = { new IValueConverter with 
-            member __.Convert(value, _, _, _) = selector(value :?> 'a) :> obj
-            member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
-        view.SetBinding(TextCell.CommandParameterProperty, propertyName viewModelProperty, BindingMode.OneWay, converter)
+        view.SetBinding(TextCell.CommandParameterProperty, propertyName viewModelProperty, BindingMode.OneWay, oneWayConverter selector)
+        element
+    let withContextMenuItem(disposables: CompositeDisposable, view: #Cell, caption: string, viewModelProperty: Expr<'vm -> 'a>, command: ReactiveCommand<'b, 'c>, selector: 'a -> 'b) element =
+        let menuItem = new MenuItem(Text = caption)
+        menuItem.SetBinding(MenuItem.CommandParameterProperty, propertyName viewModelProperty, BindingMode.OneWay, oneWayConverter selector)
+        menuItem.Clicked.Subscribe(fun _ ->
+            menuItem.BindingContext <- view.BindingContext
+            command.Execute(menuItem.CommandParameter :?> 'b).Subscribe() |> ignore) |> disposables.Add
+        view.ContextActions.Add menuItem
         element
     let withCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty) element = 
         view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
@@ -471,7 +477,10 @@ module ViewHelpers =
     let withEffect effectId (element: #Element) = element.Effects.Add(Effect.Resolve(effectId)); element     
     let withRoutingEffect (effect: #RoutingEffect) (element: #Element) = element.Effects.Add(effect); element 
     let withDataTemplate (template: unit -> Cell) (element: #ListView) = element.ItemTemplate <- new DataTemplate(fun () -> template() :> obj); element
-    let withTextCellCommand command (element: #TextCell) = element.Command <- command; element
+    let withTextCellCommand command (element: #TextCell) = 
+        element.Command <- command
+        element.SetBinding(TextCell.CommandParameterProperty, ".", BindingMode.OneWay)
+        element
     let withTextCellCommandParameter commandParameter (element: #TextCell) = element.CommandParameter <- commandParameter; element
     let withTextCellText text (element: #TextCell) = element.Text <- text; element
     let withTextCellTextColor textColor (element: #TextCell) = element.TextColor <- textColor; element
@@ -584,6 +593,7 @@ module Themes =
             SwitchStyle: Style
             ListViewStyle: Style
             BoxViewStyle: Style
+            MenuItemStyle: Style
             ScrollViewStyle: Style
             DatePickerStyle: Style
             TimePickerStyle: Style
@@ -672,6 +682,7 @@ module Themes =
     let applyImageSetters imageSetters (theme: Theme) = addSetters<Image> imageSetters theme.Styles.ImageStyle; theme
     let applyNavigationPageSetters navigationPageSetters (theme: Theme) = addSetters<NavigationPage> navigationPageSetters theme.Styles.NavigationPageStyle; theme
     let applyListViewSetters listViewSetters (theme: Theme) = addSetters<ListView> listViewSetters theme.Styles.ListViewStyle; theme
+    let applyMenuItemSetters menuItemSetters (theme: Theme) = addSetters<MenuItem> menuItemSetters theme.Styles.MenuItemStyle; theme
     let applyTabbedPageSetters tabbedPageSetters (theme: Theme) = addSetters<TabbedPage> tabbedPageSetters theme.Styles.TabbedPageStyle; theme
     let applyBackgroundColor color (theme: Theme) = { theme with Styles = { theme.Styles with BackgroundColor = color } }
     let applySeparatorColor color (theme: Theme) = { theme with Styles = { theme.Styles with SeparatorColor = color } }
@@ -723,6 +734,7 @@ module Themes =
                     SwitchStyle = new Style(typeof<Switch>)
                     ListViewStyle = new Style(typeof<ListView>)
                     BoxViewStyle = boxViewStyle
+                    MenuItemStyle = new Style(typeof<MenuItem>)
                     ScrollViewStyle = new Style(typeof<ScrollView>)
                     DatePickerStyle = new Style(typeof<DatePicker>)
                     TimePickerStyle = new Style(typeof<TimePicker>)
