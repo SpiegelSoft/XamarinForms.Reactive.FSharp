@@ -25,6 +25,44 @@ open ExpressionConversion
 
 open ClrExtensions
 
+type BadgeIcon() =
+    inherit AbsoluteLayout()
+    static let badgeTextProperty = BindableProperty.Create("BadgeText", typeof<string>, typeof<BadgeIcon>, String.Empty, BindingMode.OneWay)
+    static let imageSourceProperty = BindableProperty.Create("ImageSource", typeof<ImageSource>, typeof<BadgeIcon>, Unchecked.defaultof<ImageSource>, BindingMode.OneWay)
+    static let zeroThickness = new Thickness(0.0)
+    let icon = new Image(HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center)
+    let badgeLabel = new Label(
+                        TextColor = Color.White, 
+                        BackgroundColor = Color.Red, 
+                        Margin = zeroThickness, 
+                        HorizontalOptions = LayoutOptions.Center, 
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        VerticalTextAlignment = TextAlignment.Center)
+    let badge = new Frame(
+                        IsVisible = false,
+                        CornerRadius = 12.0f, 
+                        BackgroundColor = Color.Red, 
+                        OutlineColor = Color.Red,
+                        Margin = new Thickness(2.0, 2.0),
+                        Padding = new Thickness(4.0, 0.0),
+                        Content = badgeLabel)
+    member this.Initialise() =
+        this.HorizontalOptions <- LayoutOptions.CenterAndExpand
+        this.VerticalOptions <- LayoutOptions.CenterAndExpand
+        AbsoluteLayout.SetLayoutBounds(icon, new Rectangle(0.0, 0.0, 1.0, 1.0))
+        AbsoluteLayout.SetLayoutFlags(icon, AbsoluteLayoutFlags.All)
+        AbsoluteLayout.SetLayoutBounds(badge, new Rectangle(0.6, 0.1, 0.3, 0.5))
+        AbsoluteLayout.SetLayoutFlags(badge, AbsoluteLayoutFlags.All)
+        this.Children.Add(icon)
+        this.Children.Add(badge)
+    member this.BadgeText 
+        with get() = match this.GetValue(badgeTextProperty) with | :? string as s -> s | _ -> String.Empty
+        and set(value: string) = badgeLabel.Text <- value; badge.IsVisible <- String.IsNullOrEmpty value |> not; this.SetValue(badgeTextProperty, value)
+    member this.ImageSource 
+        with get() = match this.GetValue(imageSourceProperty) with | :? ImageSource as is -> is | _ -> Unchecked.defaultof<ImageSource>
+        and set(value: ImageSource) = icon.Source <- value; this.SetValue(imageSourceProperty, value)
+
 type ItemsStack() as this =
     inherit StackLayout()
     static let itemsSourceChanged (bindable:BindableObject) (oldValue:obj) (newValue:obj) =
@@ -433,6 +471,7 @@ module ViewHelpers =
     let withColumnSpan columnSpan (element: #View) = Grid.SetColumnSpan(element, columnSpan); element
     let withMargin margin (element: #View) = element.Margin <- margin; element
     let withSource source (element: #Image) = element.Source <- source; element
+    let withBadgeSource source (element: #BadgeIcon) = element.ImageSource <- source; element
     let withButtonImage image (element: #Button) = element.Image <- image; element
     let withContentLayout contentLayout (element: #Button) = element.ContentLayout <- contentLayout; element
     let withAspect aspect (element: #Image) = element.Aspect <- aspect; element
@@ -609,6 +648,7 @@ module Themes =
 
     let apply setUp view = setUp |> Seq.iter (fun s -> s view); view
     let initialise (property: Expr<'a -> 'b>) (view: 'a) (value: 'b) = ExpressionConversion.setProperty view value property; value
+    let private initialiseBadgeIcon (badgeIcon: BadgeIcon) = badgeIcon.Initialise(); badgeIcon
     let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
     let private applyCellColors (styles:Styles) (cell:#TextCell) = cell.TextColor <- styles.TextCellTextColor; cell.DetailColor <- styles.TextCellDetailColor; cell
     let getOrAddStyle (element: VisualElement) = 
@@ -663,6 +703,8 @@ module Themes =
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
         member this.GenerateTextCell([<ParamArray>] setUp: (TextCell -> unit)[]) = new TextCell() |> apply setUp |> applyCellColors this.Styles
         member this.GenerateImageCell([<ParamArray>] setUp: (ImageCell -> unit)[]) = new ImageCell() |> apply setUp |> applyCellColors this.Styles
+        member __.GenerateBadgeIcon([<ParamArray>] setUp: (BadgeIcon -> unit)[]) = new BadgeIcon() |> apply setUp |> initialiseBadgeIcon
+        member __.GenerateBadgeIcon(view, property, [<ParamArray>] setUp: (BadgeIcon -> unit)[]) = new BadgeIcon() |> initialise property view |> apply setUp |> initialiseBadgeIcon
         member __.GenerateViewCell([<ParamArray>] setUp: (ViewCell -> unit)[]) = new ViewCell() |> apply setUp
         member __.GenerateCustomCell<'TCell when 'TCell :> ViewCell and 'TCell : (new : unit -> 'TCell)> ([<ParamArray>] setUp: ('TCell -> unit)[]) = new 'TCell() |> apply setUp
         member __.GenerateToolbarItem(name, icon, activated, toolbarItemOrder, priority) = new ToolbarItem(name, icon, activated, toolbarItemOrder, priority)
