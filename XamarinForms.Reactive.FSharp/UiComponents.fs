@@ -536,12 +536,22 @@ open ViewHelpers
 
 module Themes =
     open Microsoft.FSharp.Quotations
+    open Xamarin.Forms
 
+    type GridSize =
+        | Star of int
+        | Size of float
+        | Auto
     let withBlocks (views:View[]) (stackLayout: #StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
     let withAbsoluteOverlayViews (views:View[]) (absoluteLayout: #AbsoluteLayout) = views |> Seq.iter absoluteLayout.Children.Add; absoluteLayout
     let withRelativeOverlayViews (views:View[]) (relativeLayout: #RelativeLayout) = views |> Seq.iter relativeLayout.Children.Add; relativeLayout
     let private gridLengthTypeConverter = new GridLengthTypeConverter()
-    let private toGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
+    let private textToGridLength text = gridLengthTypeConverter.ConvertFromInvariantString(text) :?> GridLength
+    let private sizeToGridLength size = 
+        match size with
+        | Star n -> new GridLength(float n, GridUnitType.Star)
+        | Size size -> new GridLength(size, GridUnitType.Absolute)
+        | Auto -> GridLength.Auto
     type RowCreation =
         {
             RowCount: int
@@ -594,9 +604,13 @@ module Themes =
             grid.Children.Add column.[index]
         let newColumnCount = columnCount + 1
         { ColumnCreation.ColumnCount = newColumnCount; Grid = grid }
-    let private setUpGrid (grid: Grid) (rowDefinitions, columnDefinitions) =
-        for rowDefinition in rowDefinitions do grid.RowDefinitions.Add(new RowDefinition(Height = toGridLength rowDefinition))
-        for columnDefinition in columnDefinitions do grid.ColumnDefinitions.Add(new ColumnDefinition(Width = toGridLength columnDefinition))
+    let private setUpGridFromText (grid: Grid) (rowDefinitions, columnDefinitions) =
+        for rowDefinition in rowDefinitions do grid.RowDefinitions.Add(new RowDefinition(Height = textToGridLength rowDefinition))
+        for columnDefinition in columnDefinitions do grid.ColumnDefinitions.Add(new ColumnDefinition(Width = textToGridLength columnDefinition))
+        { Grid = grid; RowCount = grid.RowDefinitions.Count; ColumnCount = grid.ColumnDefinitions.Count }
+    let private setUpGridFromSizes (grid: Grid) (rowSizes, columnSizes) =
+        for rowDefinition in rowSizes do grid.RowDefinitions.Add(new RowDefinition(Height = sizeToGridLength rowDefinition))
+        for columnDefinition in columnSizes do grid.ColumnDefinitions.Add(new ColumnDefinition(Width = sizeToGridLength columnDefinition))
         { Grid = grid; RowCount = grid.RowDefinitions.Count; ColumnCount = grid.ColumnDefinitions.Count }
     let withRow (views: View[]) (gridCreation: GridCreation) = addRow 0 gridCreation.Grid views
     let withColumn (views: View[]) (gridCreation: GridCreation) = addColumn 0 gridCreation.Grid views
@@ -713,7 +727,8 @@ module Themes =
         member __.AbsoluteLayout([<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> apply setUp
         member __.AbsoluteLayout(view, property, [<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> initialise property view |> apply setUp
         member __.RelativeLayout([<ParamArray>] setUp: (RelativeLayout -> unit)[]) = new RelativeLayout () |> apply setUp
-        member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGrid (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
+        member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGridFromText (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
+        member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGridFromSizes (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
     let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) = for setter in setters do style.Setters.Add setter
     let applyButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
     let applyLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme
