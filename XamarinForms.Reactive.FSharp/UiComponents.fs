@@ -420,6 +420,8 @@ type HyperlinkLabel() =
 
 module ViewHelpers =
     open ObservableExtensions
+    open ImageCircle.Forms.Plugin.Abstractions
+
     let private oneWayConverter (selector: 'a -> 'b) =
         { new IValueConverter with 
             member __.Convert(value, _, _, _) = selector(value :?> 'a) :> obj
@@ -469,6 +471,8 @@ module ViewHelpers =
     let withAlignment horizontalOptions verticalOptions element = element |> withHorizontalOptions horizontalOptions |> withVerticalOptions verticalOptions
     let withRowSpan rowSpan (element: #View) = Grid.SetRowSpan(element, rowSpan); element
     let withColumnSpan columnSpan (element: #View) = Grid.SetColumnSpan(element, columnSpan); element
+    let withRowSpacing spacing (element: #Grid) = element.RowSpacing <- spacing; element
+    let withColumnSpacing spacing (element: #Grid) = element.ColumnSpacing <- spacing; element
     let withMargin margin (element: #View) = element.Margin <- margin; element
     let withSource source (element: #Image) = element.Source <- source; element
     let withBadgeSource source (element: #BadgeIcon) = element.ImageSource <- source; element
@@ -503,6 +507,8 @@ module ViewHelpers =
     let withEditorFontFamily fontFamily (element: #Editor) = element.FontFamily <- fontFamily; element
     let withLabelText text (element: #Label) = element.Text <- text; element
     let withStyle style (element: #View) = element.Style <- style; element
+    let withBorderThickness thickness (element: CircleImage) = element.BorderThickness <- thickness; element
+    let withBorderColor color (element: CircleImage) = element.BorderColor <- color; element
     let withKeyboard keyboard (element: #InputView) = element.Keyboard <- keyboard; element
     let withSearchCommand (disposer: CompositeDisposable) command (element: #SearchBar) = 
         element.TextChanged.Subscribe(fun args -> element.SearchCommandParameter <- args.NewTextValue) |> disposeWith disposer |> ignore
@@ -537,10 +543,11 @@ open ViewHelpers
 module Themes =
     open Microsoft.FSharp.Quotations
     open Xamarin.Forms
+    open ImageCircle.Forms.Plugin.Abstractions
 
     type GridSize =
         | Star of int
-        | Size of float
+        | Absolute of float
         | Auto
     let withBlocks (views:View[]) (stackLayout: #StackLayout) = views |> Seq.iter stackLayout.Children.Add; stackLayout
     let withAbsoluteOverlayViews (views:View[]) (absoluteLayout: #AbsoluteLayout) = views |> Seq.iter absoluteLayout.Children.Add; absoluteLayout
@@ -550,7 +557,7 @@ module Themes =
     let private sizeToGridLength size = 
         match size with
         | Star n -> new GridLength(float n, GridUnitType.Star)
-        | Size size -> new GridLength(size, GridUnitType.Absolute)
+        | Absolute size -> new GridLength(size, GridUnitType.Absolute)
         | Auto -> GridLength.Auto
     type RowCreation =
         {
@@ -608,9 +615,13 @@ module Themes =
         for rowDefinition in rowDefinitions do grid.RowDefinitions.Add(new RowDefinition(Height = textToGridLength rowDefinition))
         for columnDefinition in columnDefinitions do grid.ColumnDefinitions.Add(new ColumnDefinition(Width = textToGridLength columnDefinition))
         { Grid = grid; RowCount = grid.RowDefinitions.Count; ColumnCount = grid.ColumnDefinitions.Count }
+    let applyRowSizes rowSizes (rowDefinitions: RowDefinitionCollection) =
+        for rowDefinition in rowSizes do rowDefinitions.Add(new RowDefinition(Height = sizeToGridLength rowDefinition))
+    let applyColumnSizes columnSizes (columnDefinitions: ColumnDefinitionCollection) =
+        for columnDefinition in columnSizes do columnDefinitions.Add(new ColumnDefinition(Width = sizeToGridLength columnDefinition))
     let private setUpGridFromSizes (grid: Grid) (rowSizes, columnSizes) =
-        for rowDefinition in rowSizes do grid.RowDefinitions.Add(new RowDefinition(Height = sizeToGridLength rowDefinition))
-        for columnDefinition in columnSizes do grid.ColumnDefinitions.Add(new ColumnDefinition(Width = sizeToGridLength columnDefinition))
+        grid.RowDefinitions |> applyRowSizes rowSizes
+        grid.ColumnDefinitions |> applyColumnSizes columnSizes
         { Grid = grid; RowCount = grid.RowDefinitions.Count; ColumnCount = grid.ColumnDefinitions.Count }
     let withRow (views: View[]) (gridCreation: GridCreation) = addRow 0 gridCreation.Grid views
     let withColumn (views: View[]) (gridCreation: GridCreation) = addColumn 0 gridCreation.Grid views
@@ -678,6 +689,8 @@ module Themes =
         member this.GenerateMapSearchBar(view, property, [<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> initialise property view |> apply setUp
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
         member this.GenerateImage(view, property, [<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> initialise property view |> apply setUp
+        member this.GenerateCircularImage([<ParamArray>] setUp: (CircleImage -> unit)[]) = new CircleImage(Style = this.Styles.ImageStyle) |> apply setUp
+        member this.GenerateCircularImage(view, property, [<ParamArray>] setUp: (CircleImage -> unit)[]) = new CircleImage(Style = this.Styles.ImageStyle) |> initialise property view |> apply setUp
         member this.GenerateFrame([<ParamArray>] setUp: (Frame -> unit)[]) = new Frame(Style = this.Styles.FrameStyle) |> apply setUp
         member this.GenerateFrame(view, property, [<ParamArray>] setUp: (Frame -> unit)[]) = new Frame(Style = this.Styles.FrameStyle) |> initialise property view |> apply setUp
         member this.GenerateFrameOverlay([<ParamArray>] setUp: (FrameOverlay -> unit)[]) = new FrameOverlay(Style = this.Styles.FrameStyle) |> apply setUp
