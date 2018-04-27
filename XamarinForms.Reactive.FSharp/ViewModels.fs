@@ -63,5 +63,5 @@ type PageViewModel() =
     member internal this.PageDisappearing() = this.TearDownCommands()
     abstract member SetUpCommands: unit -> unit
     abstract member TearDownCommands: unit -> unit
-    default this.SetUpCommands() = this |> ignore
-    default this.TearDownCommands() = this |> ignore
+    default __.SetUpCommands() = ()
+    default __.TearDownCommands() = pageDisposables.Clear()

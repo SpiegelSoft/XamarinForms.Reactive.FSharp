@@ -473,6 +473,7 @@ module ViewHelpers =
     let withColumnSpan columnSpan (element: #View) = Grid.SetColumnSpan(element, columnSpan); element
     let withRowSpacing spacing (element: #Grid) = element.RowSpacing <- spacing; element
     let withColumnSpacing spacing (element: #Grid) = element.ColumnSpacing <- spacing; element
+    let withRaisedChild child (element: #Grid) = element.RaiseChild child; element
     let withMargin margin (element: #View) = element.Margin <- margin; element
     let withSource source (element: #Image) = element.Source <- source; element
     let withBadgeSource source (element: #BadgeIcon) = element.ImageSource <- source; element
@@ -493,6 +494,8 @@ module ViewHelpers =
     let withItemsSource source (element: #ItemsView<'v>) = element.ItemsSource <- source; element
     let withGalleryItemsSource source (element: ImageGallery) = element.ItemsSource <- source; element
     let viewCell view = new ViewCell(View = view)
+    let withFontSize size (element: #Label) = element.FontSize <- size; element
+    let withFontFamily family (element: #Label) = element.FontFamily <- family; element
     let withCellTemplate (createTemplate: unit -> #Cell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withGalleryItemTemplate (createTemplate: unit -> View) (element: ImageGallery) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withEditorText text (element: #Editor) = element.Text <- text; element
@@ -736,6 +739,8 @@ module Themes =
         member __.GenerateToolbarItem(name, icon, activated, toolbarItemOrder, priority) = new ToolbarItem(name, icon, activated, toolbarItemOrder, priority)
         member __.VerticalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> apply setUp
         member __.HorizontalLayout([<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> apply setUp
+        member __.VerticalLayout(view, property, [<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Vertical) |> initialise property view |> apply setUp
+        member __.HorizontalLayout(view, property, [<ParamArray>] setUp: (StackLayout -> unit)[]) = new StackLayout (Orientation = StackOrientation.Horizontal) |> initialise property view |> apply setUp
         member __.AbsoluteLayout([<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> apply setUp
         member __.AbsoluteLayout(view, property, [<ParamArray>] setUp: (AbsoluteLayout -> unit)[]) = new AbsoluteLayout () |> initialise property view |> apply setUp
         member __.RelativeLayout([<ParamArray>] setUp: (RelativeLayout -> unit)[]) = new RelativeLayout () |> apply setUp
