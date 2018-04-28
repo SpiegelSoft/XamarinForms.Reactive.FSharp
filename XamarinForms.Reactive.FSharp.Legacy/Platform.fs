@@ -1,5 +1,7 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
+open Xamarin.Forms
+
 open Splat
 
 type IPlatform = 

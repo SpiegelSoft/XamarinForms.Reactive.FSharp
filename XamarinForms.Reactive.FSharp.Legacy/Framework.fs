@@ -1,4 +1,4 @@
-namespace XamarinForms.Reactive.FSharp
+﻿namespace XamarinForms.Reactive.FSharp
 
 open Microsoft.FSharp.Linq.RuntimeHelpers
 open Microsoft.FSharp.Quotations
@@ -15,12 +15,11 @@ open Splat
 module ObservableExtensions =
     open System.Reactive.Disposables
     open System.Reactive.Linq
+
     let private readObservable (read: unit -> Async<'a>) (obs: IObserver<'a>) =
         async {
-            try
-                let! result = read()
-                obs.OnNext result
-            with | ex -> obs.OnError ex
+            let! result = read()
+            obs.OnNext(result)
             obs.OnCompleted()
             return Disposable.Empty
         }

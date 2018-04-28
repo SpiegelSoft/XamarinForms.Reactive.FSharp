@@ -11,8 +11,8 @@ open Xamarin.Forms
 
 open Splat
 
-open ReactiveUI.XamForms
 open ReactiveUI
+open ReactiveUI.XamForms
 
 open Themes
 
