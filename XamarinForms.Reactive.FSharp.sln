@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "XamarinForms.Reactive.FSharp", "XamarinForms.Reactive.FSharp\XamarinForms.Reactive.FSharp.fsproj", "{8D655AA7-5F2A-4992-B4E8-D9751FA987B8}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "XamarinForms.Reactive.FSharp", "XamarinForms.Reactive.FSharp\XamarinForms.Reactive.FSharp.fsproj", "{8D655AA7-5F2A-4992-B4E8-D9751FA987B8}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "XamarinForms.Reactive.Sample.Mars.Common", "XamarinForms.Reactive.Sample.Mars.Common\XamarinForms.Reactive.Sample.Mars.Common.fsproj", "{6262CFD7-80F8-4CD1-BF9E-47CD2C29B325}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8D655AA7-5F2A-4992-B4E8-D9751FA987B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D655AA7-5F2A-4992-B4E8-D9751FA987B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D655AA7-5F2A-4992-B4E8-D9751FA987B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6262CFD7-80F8-4CD1-BF9E-47CD2C29B325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6262CFD7-80F8-4CD1-BF9E-47CD2C29B325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6262CFD7-80F8-4CD1-BF9E-47CD2C29B325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6262CFD7-80F8-4CD1-BF9E-47CD2C29B325}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

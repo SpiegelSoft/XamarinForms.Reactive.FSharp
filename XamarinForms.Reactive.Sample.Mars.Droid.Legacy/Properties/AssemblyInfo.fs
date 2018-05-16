@@ -13,7 +13,7 @@ module AssemblyInfo =
   [<assembly: AssemblyConfiguration("")>]
   [<assembly: AssemblyCompany("")>]
   [<assembly: AssemblyProduct("XamarinForms.Reactive.Sample.Mars.Droid")>]
-  [<assembly: AssemblyCopyright("Copyright ©  2018")>]
+  [<assembly: AssemblyCopyright("Copyright ©  2017")>]
   [<assembly: AssemblyTrademark("")>]
   [<assembly: AssemblyCulture("")>]
 

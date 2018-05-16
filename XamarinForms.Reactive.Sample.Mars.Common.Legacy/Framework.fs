@@ -1,4 +1,4 @@
-namespace XamarinForms.Reactive.Sample.Mars.Common
+﻿namespace XamarinForms.Reactive.Sample.Mars.Common
 
 open System
 
