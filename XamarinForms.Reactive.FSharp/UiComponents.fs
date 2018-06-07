@@ -494,7 +494,8 @@ module ViewHelpers =
     let withItemsSource source (element: #ItemsView<'v>) = element.ItemsSource <- source; element
     let withGalleryItemsSource source (element: ImageGallery) = element.ItemsSource <- source; element
     let viewCell view = new ViewCell(View = view)
-    let withFontSize size (element: #Label) = element.FontSize <- size; element
+    let withLabelFontSize size (element: #Label) = element.FontSize <- size; element
+    let withButtonFontSize size (element: #Button) = element.FontSize <- size; element
     let withFontFamily family (element: #Label) = element.FontFamily <- family; element
     let withCellTemplate (createTemplate: unit -> #Cell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withGalleryItemTemplate (createTemplate: unit -> View) (element: ImageGallery) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
@@ -502,13 +503,22 @@ module ViewHelpers =
     let withContent content (element: #ScrollView) = element.Content <- content; element
     let withViewContent content (element: #ContentView) = element.Content <- content; element
     let withBoxColor color (element: #BoxView) = element.Color <- color; element
-    let withOutlineColor color (element: #Frame) = element.OutlineColor <- color; element
+    let withFrameBorderColor color (element: #Frame) = element.BorderColor <- color; element
+    let withLabelTextColor color (element: #Label) = element.TextColor <- color; element
     let withEditorTextColor color (element: #Editor) = element.TextColor <- color; element
+    let withEntryTextColor color (element: #Entry) = element.TextColor <- color; element
     let withEditorFontSize fontSize (element: #Editor) = element.FontSize <- fontSize; element
     let withEditorFontAttributes fontAttributes (element: #Editor) = element.FontAttributes <- fontAttributes; element
     let withEditorFontFamily fontFamily (element: #Editor) = element.FontFamily <- fontFamily; element
     let withLabelText text (element: #Label) = element.Text <- text; element
+    let withFormattedText spans (element: #Label) = 
+        element.FormattedText <- new FormattedString(); spans |> Seq.iter element.FormattedText.Spans.Add; element
     let withStyle style (element: #View) = element.Style <- style; element
+    let withSpanBackgroundColor color (element: Span) = element.BackgroundColor <- color; element
+    let withSpanTextColor color (element: Span) = element.ForegroundColor <- color; element
+    let withSpanText text (element: Span) = element.Text <- text; element
+    let withSpanFontSize fontSize (element: Span) = element.FontSize <- fontSize; element
+    let withSpanFontFamily fontFamily (element: Span) = element.FontFamily <- fontFamily; element
     let withBorderThickness thickness (element: CircleImage) = element.BorderThickness <- thickness; element
     let withBorderColor color (element: CircleImage) = element.BorderColor <- color; element
     let withKeyboard keyboard (element: #InputView) = element.Keyboard <- keyboard; element
@@ -685,6 +695,8 @@ module Themes =
         {
             Styles: Styles
         }
+        member this.GenerateSpan([<ParamArray>] setUp: (Span -> unit)[]) = new Span() |> apply setUp
+        member this.GenerateSpan(view, property, [<ParamArray>] setUp: (Span -> unit)[]) = new Span() |> initialise property view |> apply setUp
         member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
         member this.GenerateSearchBar(view, property, [<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> initialise property view |> apply setUp
         member this.GenerateMapSearchBar([<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> apply setUp
@@ -710,6 +722,8 @@ module Themes =
         member this.GenerateSwitch(view, property, [<ParamArray>] setUp: (Switch -> unit)[]) = new Switch(Style = this.Styles.SwitchStyle) |> initialise property view |> apply setUp
         member this.GenerateEntry([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> apply setUp
         member this.GenerateEntry(view, property, [<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle) |> initialise property view |> apply setUp
+        member this.GeneratePassword([<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle, IsPassword = true) |> apply setUp
+        member this.GeneratePassword(view, property, [<ParamArray>] setUp: (Entry -> unit)[]) = new Entry(Style = this.Styles.EntryStyle, IsPassword = true) |> initialise property view |> apply setUp
         member this.GenerateEditor([<ParamArray>] setUp: (Editor -> unit)[]) = new Editor(Style = this.Styles.EditorStyle) |> apply setUp
         member this.GenerateEditor(view, property, [<ParamArray>] setUp: (Editor -> unit)[]) = new Editor(Style = this.Styles.EditorStyle) |> initialise property view |> apply setUp
         member this.GenerateHyperlink([<ParamArray>] setUp: (HyperlinkLabel -> unit)[]) = new HyperlinkLabel(Style = this.Styles.HyperlinkStyle) |> apply setUp
