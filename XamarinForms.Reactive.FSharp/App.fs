@@ -80,5 +80,5 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
             match eventArgs.Page :> obj with
             | :? IContentView as view -> view.PagePopped()
             | _ -> 0 |> ignore) |> navigationPage.PageDisposables.Add
-    override __.OnAppLinkRequestReceived(uri) = ()
+    override __.OnAppLinkRequestReceived uri = base.OnAppLinkRequestReceived uri; platform.HandleAppLinkRequest uri
     interface IScreen with member __.Router = router
