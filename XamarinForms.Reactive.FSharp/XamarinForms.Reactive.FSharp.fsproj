@@ -6,7 +6,7 @@
     <PackageProjectUrl>https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp</PackageProjectUrl>
     <Description>A fluent interface for building Xamarin Forms apps using ReactiveUI and F#</Description>
     <RepositoryUrl>https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp</RepositoryUrl>
-    <Version>1.0.0.11</Version>
+    <Version>1.0.0.14</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,16 +21,16 @@
   <ItemGroup>
     <PackageReference Include="GeographicLib.FSharp" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="ReactiveUI" Version="8.2.1" />
-    <PackageReference Include="ReactiveUI.XamForms" Version="8.2.1" />
+    <PackageReference Include="ReactiveUI" Version="8.3.1" />
+    <PackageReference Include="ReactiveUI.XamForms" Version="8.3.1" />
     <PackageReference Include="FSharp.Core" Version="4.3.0" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
-    <PackageReference Include="Xamarin.Forms.Maps" Version="3.0.0.482510" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="3.1.0.583944" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="4.3.4" />
+    <PackageReference Update="FSharp.Core" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

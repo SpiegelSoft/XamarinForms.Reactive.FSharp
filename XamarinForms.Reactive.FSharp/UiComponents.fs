@@ -478,6 +478,7 @@ module ViewHelpers =
     let withSource source (element: #Image) = element.Source <- source; element
     let withBadgeSource source (element: #BadgeIcon) = element.ImageSource <- source; element
     let withButtonImage image (element: #Button) = element.Image <- image; element
+    let withButtonTextColor color (element: #Button) = element.TextColor <- color; element
     let withButtonCommand command (element: #Button) = element.Command <- command; element
     let withButtonCommandParameter parameter (element: #Button) = element.CommandParameter <- parameter; element
     let withContentLayout contentLayout (element: #Button) = element.ContentLayout <- contentLayout; element
@@ -737,7 +738,9 @@ module Themes =
         member this.GenerateScrollView([<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> apply setUp
         member this.GenerateScrollView(view, property, [<ParamArray>] setUp: (ScrollView -> unit)[]) = new ScrollView(Style = this.Styles.ScrollViewStyle) |> initialise property view |> apply setUp
         member this.GenerateDatePicker([<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> apply setUp
+        member this.GenerateDatePicker(view, property, [<ParamArray>] setUp: (DatePicker -> unit)[]) = new DatePicker(Style = this.Styles.DatePickerStyle) |> initialise property view |> apply setUp
         member this.GenerateTimePicker([<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> apply setUp
+        member this.GenerateTimePicker(view, property, [<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> initialise property view  |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
         member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> apply setUp
         member this.GenerateImageGallery(view, property, [<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> initialise property view |> apply setUp
