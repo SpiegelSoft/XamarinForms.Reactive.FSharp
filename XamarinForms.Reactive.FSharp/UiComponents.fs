@@ -742,7 +742,8 @@ module Themes =
         member this.GenerateTimePicker([<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> apply setUp
         member this.GenerateTimePicker(view, property, [<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> initialise property view  |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
-        member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> apply setUp
+        member this.GeneratePicker(view, property, [<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
+        member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> initialise property view  |> apply setUp
         member this.GenerateImageGallery(view, property, [<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> initialise property view |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateActivityIndicator(view, property, [<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> initialise property view |> apply setUp
