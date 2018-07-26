@@ -421,6 +421,7 @@ type HyperlinkLabel() =
 module ViewHelpers =
     open ObservableExtensions
     open ImageCircle.Forms.Plugin.Abstractions
+    open CarouselView.FormsPlugin.Abstractions
 
     let private oneWayConverter (selector: 'a -> 'b) =
         { new IValueConverter with 
@@ -493,13 +494,19 @@ module ViewHelpers =
     let withListViewFooter footer (element: #ListView) = element.Footer <- footer; element
     let withUnevenRows (element: #ListView) = element.HasUnevenRows <- true; element
     let withItemsSource source (element: #ItemsView<'v>) = element.ItemsSource <- source; element
+    let withCarouselItemsSource source (element: #CarouselViewControl) = element.ItemsSource <- source; element
     let withGalleryItemsSource source (element: ImageGallery) = element.ItemsSource <- source; element
+    let withPosition position (element: #CarouselViewControl) = element.Position <- position; element
+    let withInterPageSpacing spacing (element: #CarouselViewControl) = element.InterPageSpacing <- spacing; element
+    let withFlowDirection flowDirection (element: #CarouselViewControl) = element.FlowDirection <- flowDirection; element
+    let withCarouselOrientation orientation (element: #CarouselViewControl) = element.Orientation <- orientation; element
     let viewCell view = new ViewCell(View = view)
     let withLabelFontSize size (element: #Label) = element.FontSize <- size; element
     let withButtonFontSize size (element: #Button) = element.FontSize <- size; element
     let withFontFamily family (element: #Label) = element.FontFamily <- family; element
     let withCellTemplate (createTemplate: unit -> #Cell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withGalleryItemTemplate (createTemplate: unit -> View) (element: ImageGallery) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
+    let withCarouselViewItemTemplate (createTemplate: unit -> View) (element: CarouselViewControl) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withEditorText text (element: #Editor) = element.Text <- text; element
     let withContent content (element: #ScrollView) = element.Content <- content; element
     let withViewContent content (element: #ContentView) = element.Content <- content; element
@@ -557,6 +564,7 @@ module Themes =
     open Microsoft.FSharp.Quotations
     open Xamarin.Forms
     open ImageCircle.Forms.Plugin.Abstractions
+    open CarouselView.FormsPlugin.Abstractions
 
     type GridSize =
         | Star of int
@@ -696,6 +704,8 @@ module Themes =
         {
             Styles: Styles
         }
+        member this.GenerateCarouselView([<ParamArray>] setUp: (CarouselViewControl -> unit)[]) = new CarouselViewControl() |> apply setUp
+        member this.GenerateCarouselView(view, property, [<ParamArray>] setUp: (CarouselViewControl -> unit)[]) = new CarouselViewControl() |> initialise property view |> apply setUp
         member this.GenerateSpan([<ParamArray>] setUp: (Span -> unit)[]) = new Span() |> apply setUp
         member this.GenerateSpan(view, property, [<ParamArray>] setUp: (Span -> unit)[]) = new Span() |> initialise property view |> apply setUp
         member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
@@ -773,6 +783,7 @@ module Themes =
     let applySwitchSetters switchSetters (theme: Theme) = addSetters<Switch> switchSetters theme.Styles.SwitchStyle; theme
     let applyEntrySetters entrySetters (theme: Theme) = addSetters<Entry> entrySetters theme.Styles.EntryStyle; theme
     let applyImageSetters imageSetters (theme: Theme) = addSetters<Image> imageSetters theme.Styles.ImageStyle; theme
+    let applyPickerSetters pickerSetters (theme: Theme) = addSetters<Picker> pickerSetters theme.Styles.PickerStyle; theme
     let applyNavigationPageSetters navigationPageSetters (theme: Theme) = addSetters<NavigationPage> navigationPageSetters theme.Styles.NavigationPageStyle; theme
     let applyListViewSetters listViewSetters (theme: Theme) = addSetters<ListView> listViewSetters theme.Styles.ListViewStyle; theme
     let applyMenuItemSetters menuItemSetters (theme: Theme) = addSetters<MenuItem> menuItemSetters theme.Styles.MenuItemStyle; theme
