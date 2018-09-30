@@ -493,6 +493,8 @@ module ViewHelpers =
     let withListViewFooter footer (element: #ListView) = element.Footer <- footer; element
     let withUnevenRows (element: #ListView) = element.HasUnevenRows <- true; element
     let withItemsSource source (element: #ItemsView<'v>) = element.ItemsSource <- source; element
+    let withItemTapped (itemTapped: ItemTappedEventArgs -> unit, disposables) (element: #ListView) = element.ItemTapped.Subscribe(itemTapped) |> disposeWith disposables |> ignore; element
+    let withItemSelected (itemSelected: SelectedItemChangedEventArgs -> unit, disposables) (element: #ListView) = element.ItemSelected.Subscribe(itemSelected) |> disposeWith disposables |> ignore; element
     let withSelectionMode selectionMode (element: #ListView) = element.SelectionMode <- selectionMode; element
     let withGalleryItemsSource source (element: ImageGallery) = element.ItemsSource <- source; element
     let viewCell view = new ViewCell(View = view)
@@ -513,6 +515,7 @@ module ViewHelpers =
     let withEditorFontAttributes fontAttributes (element: #Editor) = element.FontAttributes <- fontAttributes; element
     let withEditorFontFamily fontFamily (element: #Editor) = element.FontFamily <- fontFamily; element
     let withLabelText text (element: #Label) = element.Text <- text; element
+    let withBindingContext bindingContext (element: #View) = element.BindingContext <- bindingContext; element
     let withFormattedText spans (element: #Label) = 
         element.FormattedText <- new FormattedString(); spans |> Seq.iter element.FormattedText.Spans.Add; element
     let withStyle style (element: #View) = element.Style <- style; element
