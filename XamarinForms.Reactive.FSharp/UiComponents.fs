@@ -12,6 +12,8 @@ open System.Threading
 open System.Linq
 open System
 
+open DynamicData
+
 open Microsoft.FSharp.Quotations
 
 open Xamarin.Forms.Maps
@@ -376,7 +378,7 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
     let locationSubscription = new CompositeDisposable()
     static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap<'TMarker>>, new GeodesicLocation(), BindingMode.TwoWay)
     static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap<'TMarker>>, 1.0, BindingMode.TwoWay)
-    let pinnedLocations = new ReactiveList<'TMarker>()
+    let pinnedLocations = new SourceList<'TMarker>()
     let mutable boundingMarkers: 'TMarker[] = [||]
     let mutable updatingVisibleRegion = false
     member this.Radius
@@ -386,16 +388,15 @@ type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
         with get() = this.GetValue(centerProperty) :?> GeodesicLocation
         and set(value: GeodesicLocation) = if not <| value.Equals(this.Center) then this.SetValue(centerProperty, value)
     member val PinnedLocations = pinnedLocations
-    member internal this.BindPinsToCollection (collection: ReactiveList<'a>, markerToPin) =
+    member internal this.BindPinsToCollection (collection: ISourceList<'a>, markerToPin) =
         pinsSubscriptions.Clear(); this.PinnedLocations.Clear()
         let addPin pin = this.PinnedLocations.Add pin; pin
         let removePin pin = this.PinnedLocations.Remove pin
         let markerAndPin marker = (marker, marker |> markerToPin |> addPin)
-        let pinDictionary = collection |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, 'TMarker>(c)
+        let pinDictionary = collection.Items |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, 'TMarker>(c)
         let addMarkerAndPin marker = marker |> markerAndPin |> pinDictionary.Add
         let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
-        collection.ItemsAdded.Subscribe(addMarkerAndPin) |> pinsSubscriptions.Add
-        collection.ItemsRemoved.Subscribe(removeMarkerAndPin) |> pinsSubscriptions.Add
+        collection.Connect().OnItemAdded(addMarkerAndPin).OnItemRemoved(removeMarkerAndPin).Subscribe() |> pinsSubscriptions.Add
     member internal this.SetUpRegionMovement() =
         this.WhenAnyValue((fun (m: GeographicMap<'TMarker>) -> m.Center), (fun (m: GeographicMap<'TMarker>) -> m.Radius))
             .Where(fun (_, _) -> not updatingVisibleRegion)
