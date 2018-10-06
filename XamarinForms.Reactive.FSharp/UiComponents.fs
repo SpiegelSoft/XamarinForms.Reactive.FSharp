@@ -318,7 +318,7 @@ type ImageGallery() =
     let mutable itemTemplate = Unchecked.defaultof<DataTemplate>
     do base.Orientation <- ScrollOrientation.Horizontal; base.Content <- imageStack
     static let itemsSourceProperty = 
-        BindableProperty.Create("ItemsSource", typeof<IList>, typeof<ImageGallery>, Unchecked.defaultof<IList>, BindingMode.TwoWay,
+        BindableProperty.Create("ItemsSource", typeof<IEnumerable>, typeof<ImageGallery>, Unchecked.defaultof<IList>, BindingMode.TwoWay,
             propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject oldValue newValue -> (bindableObject :?> ImageGallery).ItemsSourceChanged(bindableObject, oldValue :?> IList, newValue :?> IList)))
     static let selectedItemProperty =
         BindableProperty.Create("SelectedItem", typeof<obj>, typeof<ImageGallery>, Unchecked.defaultof<obj>, BindingMode.TwoWay,
@@ -329,8 +329,8 @@ type ImageGallery() =
     member __.Children = imageStack.Children
     member __.ItemTemplate with get() = itemTemplate and set(value) = itemTemplate <- value
     member this.ItemsSource 
-        with get() = this.GetValue(itemsSourceProperty) :?> IList
-        and set(value: IList) = this.SetValue(itemsSourceProperty, value)
+        with get() = this.GetValue(itemsSourceProperty) :?> IEnumerable
+        and set(value: IEnumerable) = this.SetValue(itemsSourceProperty, value)
     member this.SelectedItem 
         with get() = this.GetValue(selectedItemProperty)
         and set(value) = this.SetValue(selectedItemProperty, value)
