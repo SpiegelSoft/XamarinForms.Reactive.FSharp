@@ -311,59 +311,6 @@ type FrameOverlay() =
         with get() = this.GetValue(boundaryProperty) :?> Rectangle
         and set(value: Rectangle) = this.SetValue(boundaryProperty, value)
 
-type ImageGallery() =
-    inherit ScrollView()
-    let collectionChangedSubscription = new CompositeDisposable()
-    let imageStack = new StackLayout(Orientation = StackOrientation.Horizontal)
-    let mutable itemTemplate = Unchecked.defaultof<DataTemplate>
-    do base.Orientation <- ScrollOrientation.Horizontal; base.Content <- imageStack
-    static let itemsSourceProperty = 
-        BindableProperty.Create("ItemsSource", typeof<IEnumerable>, typeof<ImageGallery>, Unchecked.defaultof<IList>, BindingMode.TwoWay,
-            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject oldValue newValue -> (bindableObject :?> ImageGallery).ItemsSourceChanged(bindableObject, oldValue :?> IList, newValue :?> IList)))
-    static let selectedItemProperty =
-        BindableProperty.Create("SelectedItem", typeof<obj>, typeof<ImageGallery>, Unchecked.defaultof<obj>, BindingMode.TwoWay,
-            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject _ _ -> (bindableObject :?> ImageGallery).UpdateSelectedIndex())) 
-    static let selectedIndexProperty =
-        BindableProperty.Create("SelectedIndex", typeof<int>, typeof<ImageGallery>, 0, BindingMode.TwoWay,
-            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject _ _ -> (bindableObject :?> ImageGallery).UpdateSelectedItem()))
-    member __.Children = imageStack.Children
-    member __.ItemTemplate with get() = itemTemplate and set(value) = itemTemplate <- value
-    member this.ItemsSource 
-        with get() = this.GetValue(itemsSourceProperty) :?> IEnumerable
-        and set(value: IEnumerable) = this.SetValue(itemsSourceProperty, value)
-    member this.SelectedItem 
-        with get() = this.GetValue(selectedItemProperty)
-        and set(value) = this.SetValue(selectedItemProperty, value)
-    member this.SelectedIndex
-        with get() = this.GetValue(selectedIndexProperty) :?> int
-        and set(value: int) = this.SetValue(selectedIndexProperty, value)
-    member this.UpdateSelectedIndex () =
-        match this.SelectedItem = this.BindingContext with
-        | true -> 0 |> ignore
-        | false -> 
-            this.SelectedIndex <- 
-                this.Children |> Seq.map (fun c -> c.BindingContext) |> Array.ofSeq |> Array.tryFindIndex (fun item -> item = this.SelectedItem)
-                |> fun i -> match i with | Some index -> index | None -> -1
-    member this.UpdateSelectedItem() =
-        this.SelectedItem <- match this.SelectedIndex > -1  with | true -> this.Children.[this.SelectedIndex].BindingContext | false -> Unchecked.defaultof<obj>
-    member this.ItemsSourceChanged(_: BindableObject, _: IList, newValue: IList) =
-        let itemAdded newItem =
-            let view = this.ItemTemplate.CreateContent() :?> View
-            match view :> obj with
-            | :? BindableObject as bindable -> bindable.BindingContext <- newItem
-            | _ -> 0 |> ignore
-            imageStack.Children.Add(view)
-        let collectionChanged (eventArgs: NotifyCollectionChangedEventArgs) =
-            match box eventArgs.NewItems with
-            | null -> 0 |> ignore
-            | _ -> for newItem in eventArgs.NewItems do itemAdded newItem
-        match newValue with
-        | :? INotifyCollectionChanged as notify ->
-            collectionChangedSubscription.Clear()
-            notify.CollectionChanged.Subscribe(collectionChanged) |> collectionChangedSubscription.Add
-        | _ -> 0 |> ignore
-            
-
 type GeographicPin(location: GeodesicLocation) =
     member val Location = location
 
@@ -497,13 +444,11 @@ module ViewHelpers =
     let withItemTapped (itemTapped: ItemTappedEventArgs -> unit, disposables) (element: #ListView) = element.ItemTapped.Subscribe(itemTapped) |> disposeWith disposables |> ignore; element
     let withItemSelected (itemSelected: SelectedItemChangedEventArgs -> unit, disposables) (element: #ListView) = element.ItemSelected.Subscribe(itemSelected) |> disposeWith disposables |> ignore; element
     let withSelectionMode selectionMode (element: #ListView) = element.SelectionMode <- selectionMode; element
-    let withGalleryItemsSource source (element: ImageGallery) = element.ItemsSource <- source; element
     let viewCell view = new ViewCell(View = view)
     let withLabelFontSize size (element: #Label) = element.FontSize <- size; element
     let withButtonFontSize size (element: #Button) = element.FontSize <- size; element
     let withFontFamily family (element: #Label) = element.FontFamily <- family; element
     let withCellTemplate (createTemplate: unit -> #Cell) (element: #ItemsView<'v>) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
-    let withGalleryItemTemplate (createTemplate: unit -> View) (element: ImageGallery) = element.ItemTemplate <- new DataTemplate(fun() -> createTemplate() :> obj); element
     let withEditorText text (element: #Editor) = element.Text <- text; element
     let withContent content (element: #ScrollView) = element.Content <- content; element
     let withViewContent content (element: #ContentView) = element.Content <- content; element
@@ -680,7 +625,6 @@ module Themes =
             DatePickerStyle: Style
             TimePickerStyle: Style
             PickerStyle: Style
-            GalleryStyle: Style
             MapStyle: Style
             TabbedPageStyle: Style
             ActivityIndicatorStyle: Style
@@ -748,8 +692,6 @@ module Themes =
         member this.GenerateTimePicker(view, property, [<ParamArray>] setUp: (TimePicker -> unit)[]) = new TimePicker(Style = this.Styles.TimePickerStyle) |> initialise property view  |> apply setUp
         member this.GeneratePicker([<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> apply setUp
         member this.GeneratePicker(view, property, [<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> initialise property view |> apply setUp
-        member this.GenerateImageGallery([<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> apply setUp
-        member this.GenerateImageGallery(view, property, [<ParamArray>] setUp: (ImageGallery -> unit)[]) = new ImageGallery(Style = this.Styles.GalleryStyle) |> initialise property view |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateActivityIndicator(view, property, [<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> initialise property view |> apply setUp
         member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
@@ -769,7 +711,7 @@ module Themes =
         member __.RelativeLayout([<ParamArray>] setUp: (RelativeLayout -> unit)[]) = new RelativeLayout () |> apply setUp
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGridFromText (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
         member __.GenerateGrid(rowDefinitions, columnDefinitions, [<ParamArray>] setUp: (Grid -> unit)[]) = setUpGridFromSizes (new Grid() |> apply setUp) (rowDefinitions, columnDefinitions)
-    let private addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) = for setter in setters do style.Setters.Add setter
+    let addSetters<'TView when 'TView :> Element> (setters: Setter seq) (style: Style) = setters |> Seq.iter style.Setters.Add
     let applyButtonSetters buttonSetters (theme: Theme) = addSetters<Button> buttonSetters theme.Styles.ButtonStyle; theme
     let applyLabelSetters labelSetters (theme: Theme) = addSetters<Label> labelSetters theme.Styles.LabelStyle; theme
     let applyTitleSetters titleSetters (theme: Theme) = addSetters<Label> titleSetters theme.Styles.TitleStyle; theme
@@ -838,7 +780,6 @@ module Themes =
                     DatePickerStyle = new Style(typeof<DatePicker>)
                     TimePickerStyle = new Style(typeof<TimePicker>)
                     PickerStyle = new Style(typeof<Picker>)
-                    GalleryStyle = new Style(typeof<ImageGallery>)
                     MapStyle = new Style(typeof<Map>)
                     TabbedPageStyle = new Style(typeof<TabbedPage>)
                     ActivityIndicatorStyle = new Style(typeof<ActivityIndicator>)
