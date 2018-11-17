@@ -76,9 +76,5 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
         let navigationPage = new HostingPage(Style = theme.Styles.NavigationPageStyle)
         navigationPage.PushAsync(new FrontPage(router, viewModelInstance, ViewModel = new FrontPageViewModel())).Wait()
         this.MainPage <- navigationPage
-        navigationPage.Popped.Subscribe(fun eventArgs ->
-            match eventArgs.Page :> obj with
-            | :? IContentView as view -> view.PagePopped()
-            | _ -> 0 |> ignore) |> navigationPage.PageDisposables.Add
     override __.OnAppLinkRequestReceived uri = base.OnAppLinkRequestReceived uri; platform.HandleAppLinkRequest uri
     interface IScreen with member __.Router = router

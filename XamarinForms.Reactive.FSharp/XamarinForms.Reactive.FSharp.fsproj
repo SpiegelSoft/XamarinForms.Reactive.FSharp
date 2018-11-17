@@ -6,7 +6,7 @@
     <PackageProjectUrl>https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp</PackageProjectUrl>
     <Description>A fluent interface for building Xamarin Forms apps using ReactiveUI and F#</Description>
     <RepositoryUrl>https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp</RepositoryUrl>
-    <Version>1.0.0.44</Version>
+    <Version>1.0.1.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,19 +19,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DynamicData" Version="6.6.1.2507" />
+    <PackageReference Include="DynamicData" Version="6.7.0.2529" />
     <PackageReference Include="GeographicLib.FSharp" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="ReactiveUI" Version="9.1.4" />
-    <PackageReference Include="ReactiveUI.XamForms" Version="9.1.4" />
+    <PackageReference Include="ReactiveUI" Version="9.2.2" />
+    <PackageReference Include="ReactiveUI.XamForms" Version="9.2.2" />
     <PackageReference Include="FSharp.Core" Version="4.3.0" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
-    <PackageReference Include="Xamarin.Forms" Version="3.3.0.967583" />
-    <PackageReference Include="Xamarin.Forms.Maps" Version="3.3.0.967583" />
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="3.4.0.1008975" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="4.5.2" />
+    <PackageReference Update="FSharp.Core" Version="4.5.3" />
   </ItemGroup>
 
 </Project>

@@ -54,13 +54,11 @@ type PageViewModel() =
     let mutable displayAlertCommand: ReactiveCommand<AlertMessage, Reactive.Unit> option = None
     let mutable confirmCommand: ReactiveCommand<Confirmation, bool> option = None
     let pageDisposables = new CompositeDisposable()
-    member __.PageDisposables with get() = pageDisposables
+    member val PageDisposables = pageDisposables
     member __.DisplayAlertMessage(alertMessage) = match displayAlertCommand with | Some command -> command.Execute(alertMessage) | None -> Observable.Never<Reactive.Unit>()
     member __.DisplayConfirmation(confirmation) = match confirmCommand with | Some command -> command.Execute(confirmation) | None -> Observable.Never<bool>()
     member internal __.DisplayAlertCommand with get() = displayAlertCommand and set(value) = displayAlertCommand <- value
     member internal __.ConfirmCommand with get() = confirmCommand and set(value) = confirmCommand <- value
-    member internal this.PageAppearing() = this.SetUpCommands()
-    member internal this.PageDisappearing() = this.TearDownCommands()
     abstract member SetUpCommands: unit -> unit
     abstract member TearDownCommands: unit -> unit
     default __.SetUpCommands() = ()
