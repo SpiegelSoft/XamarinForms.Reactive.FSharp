@@ -80,14 +80,19 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     inherit ReactiveContentPage<'TViewModel>()
     let disposables = new CompositeDisposable()
     let viewModelAdded, viewModelRemoved = PageSetup.lifetimeHandlers disposables this
+    let mutable previousParent: Element option = None
     do base.BackgroundColor <- theme.Styles.BackgroundColor
     abstract member CreateContent: unit -> View
     abstract member OnContentCreated: unit -> unit
     override __.OnParentSet() =
         base.OnParentSet()
-        match box this.Parent with
-        | null -> viewModelRemoved this.ViewModel
-        | _ -> viewModelAdded this.ViewModel
+        let newParent = this.Parent
+        match previousParent, box newParent with
+        | _, null -> viewModelRemoved this.ViewModel
+        | None, _ -> 
+            previousParent <- Some newParent
+            viewModelAdded this.ViewModel
+        | _ -> ()
     default __.OnContentCreated() = ()
     interface IContentView with
         member __.InitialiseContent() = this.Content <- this.CreateContent()
