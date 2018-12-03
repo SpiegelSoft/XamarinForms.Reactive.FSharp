@@ -84,6 +84,7 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     abstract member CreateContent: unit -> View
     abstract member OnContentCreated: unit -> unit
     override __.OnParentSet() =
+        base.OnParentSet()
         match box this.Parent with
         | null -> viewModelRemoved this.ViewModel
         | _ -> viewModelAdded this.ViewModel
