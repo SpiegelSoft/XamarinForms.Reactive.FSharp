@@ -36,8 +36,15 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
         for interfaceType in ViewReflection.viewForInterfaceTypes viewModelInstance do
             match ViewReflection.findViewType interfaceType viewModelInstance with
             | Some viewType -> dependencyResolver.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
-            | None -> interfaceType |> ignore
+            | None -> ()
         viewModelInstance
+
+type HostingPage() =
+    inherit RoutedViewHost()
+    member val PageDisposables = new CompositeDisposable()
+    override this.OnDisappearing() =
+        base.OnDisappearing()
+        this.PageDisposables.Clear()
 
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
