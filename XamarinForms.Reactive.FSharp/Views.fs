@@ -1,8 +1,6 @@
 ﻿namespace XamarinForms.Reactive.FSharp
 
-open System.Reactive.Threading.Tasks
 open System.Reactive.Disposables
-open System.Collections.Generic
 open System.Reactive.Linq
 open System
 
@@ -15,85 +13,41 @@ open Modal
 
 open Themes
 
-open ExpressionConversion
-
 open ClrExtensions
+open ObservableExtensions
 
 type IContentView = 
     abstract member InitialiseContent: unit -> unit
     abstract member OnContentCreated: unit -> unit
 
-module internal MessageHandling =
-    let alertMessageReceived (page: Page) (alertMessage: AlertMessage) = page.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Acknowledge).ToObservable()
-    let confirmationReceived (page: Page) (confirmation: Confirmation) = page.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline).ToObservable()
-    let addMessageSubscription (page: 'TPage when 'TPage :> Page and 'TPage :> IContentView and 'TPage :> IViewFor<'TViewModel> and 'TViewModel :> PageViewModel) =
-        let commands = new CompositeDisposable()
-        let subscribeToMessages (viewModel: 'TViewModel) =
-            commands.Clear()
-            match box viewModel with
-            | null -> viewModel |> ignore
-            | _ -> 
-                let displayAlertCommand = ReactiveCommand.CreateFromObservable(alertMessageReceived page)
-                let confirmCommand = ReactiveCommand.CreateFromObservable(confirmationReceived page)
-                viewModel.DisplayAlertCommand <- displayAlertCommand |> Some
-                viewModel.ConfirmCommand <- confirmCommand |> Some
-                commands.Add(displayAlertCommand); commands.Add(confirmCommand)
-        let viewModelSubscription = page.WhenAnyValue(toLinq <@ fun v -> v.ViewModel @>).Subscribe(subscribeToMessages)
-        (viewModelSubscription, commands)
-
-module internal PageSetup =
-    let lifetimeHandlers (disposables: CompositeDisposable) page =
-        let descendantEvents = new CompositeDisposable()
-        let viewModelSubscription, messageSubscriptions = MessageHandling.addMessageSubscription page
-        let appearingHandler (viewModel: PageViewModel) =
-            match box viewModel with
-            | null -> page |> ignore
-            | _ -> viewModel.SetUpCommands()
-            page.InitialiseContent()
-            page.OnContentCreated()
-        let disappearingHandler (viewModel: PageViewModel) =
-            viewModelSubscription.Dispose()
-            messageSubscriptions.Clear()
-            match box viewModel with
-            | null -> page |> ignore
-            | _ -> viewModel.TearDownCommands()
-            descendantEvents.Clear()
-        let viewModelAdded viewModel = appearingHandler viewModel    
-        let viewModelRemoved viewModel = disposables.Clear(); disappearingHandler viewModel
-        (viewModelAdded, viewModelRemoved)
-
 type PropertyChange<'a> = { Previous: 'a; Current: 'a }
-
-[<AbstractClass>]
-type ContentView<'TViewModel when 'TViewModel :> ReactiveObject and 'TViewModel : not struct>(theme: Theme) =
-    inherit ReactiveContentView<'TViewModel>()
-    do base.BackgroundColor <- theme.Styles.BackgroundColor
-    abstract member CreateContent: unit -> View
-    abstract member OnContentCreated: unit -> unit
-    default this.OnContentCreated() = this |> ignore
-    interface IContentView with 
-        member this.InitialiseContent() = this.Content <- this.CreateContent()
-        member this.OnContentCreated() = this.OnContentCreated()
 
 [<AbstractClass>]
 type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveContentPage<'TViewModel>()
     let disposables = new CompositeDisposable()
-    let viewModelAdded, viewModelRemoved = PageSetup.lifetimeHandlers disposables this
-    let mutable previousParent: Element option = None
+    let alertMessageReceived (alertMessage: AlertMessage) = this.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Acknowledge)
+    let confirmationReceived (confirmation: Confirmation) = this.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline)
+    let subscribeToMessages (viewModel: 'TViewModel) =
+        let displayAlertCommand = ReactiveCommand.CreateFromTask(alertMessageReceived) |> disposeWith disposables
+        let confirmCommand = ReactiveCommand.CreateFromTask(confirmationReceived) |> disposeWith disposables
+        viewModel.DisplayAlertCommand <- displayAlertCommand |> Some
+        viewModel.ConfirmCommand <- confirmCommand |> Some
+    let viewModelAdded (viewModel: 'TViewModel) =
+        subscribeToMessages viewModel
+        viewModel.SetUpCommands()
+        this.Content <- this.CreateContent()
+        this.OnContentCreated()
+    let viewModelRemoved (viewModel: 'TViewModel) =
+        viewModel.TearDownCommands()
+        disposables.Clear()
+    do
+        let viewModelObservable = this.WhenAnyValue(fun v -> v.ViewModel)
+        viewModelObservable.Where(isNotNull).Subscribe(viewModelAdded) |> disposables.Add
+        viewModelObservable.Buffer(2, 1).Select(fun b -> (b.[0], b.[1]))
+            .Where(fun (previous, current) -> previous |> isNotNull && current |> isNull)
+            .Select(fun (p, _) -> p).Subscribe(viewModelRemoved) |> disposables.Add
     do base.BackgroundColor <- theme.Styles.BackgroundColor
     abstract member CreateContent: unit -> View
     abstract member OnContentCreated: unit -> unit
-    override __.OnParentSet() =
-        base.OnParentSet()
-        let newParent = this.Parent
-        match previousParent, box newParent with
-        | _, null -> viewModelRemoved this.ViewModel
-        | None, _ -> 
-            previousParent <- Some newParent
-            viewModelAdded this.ViewModel
-        | _ -> ()
     default __.OnContentCreated() = ()
-    interface IContentView with
-        member __.InitialiseContent() = this.Content <- this.CreateContent()
-        member __.OnContentCreated() = this.OnContentCreated()

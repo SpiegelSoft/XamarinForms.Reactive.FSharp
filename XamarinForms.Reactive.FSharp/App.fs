@@ -26,7 +26,7 @@ module ViewReflection =
 
 type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel: unit -> IRoutableViewModel) =
     inherit ReactiveObject()
-    member internal __.Bootstrap(screen: IScreen) =
+    member __.Bootstrap(screen: IScreen) =
         let dependencyResolver = Locator.CurrentMutable
         dependencyResolver.RegisterConstant(context, typeof<IUiContext>)
         dependencyResolver.RegisterConstant(platform, typeof<'TPlatform>)
@@ -38,18 +38,6 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
             | Some viewType -> dependencyResolver.Register((fun () -> Activator.CreateInstance(viewType.AsType())), interfaceType.AsType())
             | None -> interfaceType |> ignore
         viewModelInstance
-
-type FrontPageViewModel() = inherit ReactiveObject()
-type FrontPage(router: RoutingState, viewModelInstance) =
-    inherit ReactiveContentPage<FrontPageViewModel>()
-    override __.OnAppearing() = router.NavigateAndReset.Execute(viewModelInstance).Subscribe() |> ignore
-
-type HostingPage() =
-    inherit RoutedViewHost()
-    member val PageDisposables = new CompositeDisposable()
-    override this.OnDisappearing() =
-        base.OnDisappearing()
-        this.PageDisposables.Clear()
 
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
@@ -73,8 +61,7 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
         } |> Async.StartAsTask)
     member this.Init(theme: Theme) =
         let viewModelInstance = bootstrapper.Bootstrap(this)
-        let navigationPage = new HostingPage(Style = theme.Styles.NavigationPageStyle)
-        navigationPage.PushAsync(new FrontPage(router, viewModelInstance, ViewModel = new FrontPageViewModel())).Wait()
-        this.MainPage <- navigationPage
+        router.NavigateAndReset.Execute(viewModelInstance).Subscribe() |> ignore
+        this.MainPage <- new RoutedViewHost(Style = theme.Styles.NavigationPageStyle)
     override __.OnAppLinkRequestReceived uri = base.OnAppLinkRequestReceived uri; platform.HandleAppLinkRequest uri
     interface IScreen with member __.Router = router
