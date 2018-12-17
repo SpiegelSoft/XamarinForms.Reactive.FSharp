@@ -364,7 +364,21 @@ type MapSearchBar() = inherit SearchBar()
 
 type HyperlinkLabel() =
     inherit Label()
-    member this.AddCommand command = this.GestureRecognizers.Add(new TapGestureRecognizer(Command = command))
+    static let commandProperty = BindableProperty.Create("Command", typeof<ICommand>, typeof<HyperlinkLabel>)
+    static let commandParameterProperty = BindableProperty.Create("CommandParameter", typeof<obj>, typeof<HyperlinkLabel>)
+    let updateGestureRecognisers (label: HyperlinkLabel) =
+        label.GestureRecognizers.Clear()
+        match label.Command with
+        | null -> ()
+        | _ -> label.GestureRecognizers.Add(new TapGestureRecognizer(Command = label.Command, CommandParameter = label.CommandParameter))
+    member this.Command 
+        with get() = this.GetValue(commandProperty) :?> ICommand
+        and set(value: ICommand) = this.SetValue(commandProperty, value); updateGestureRecognisers this
+    member this.CommandParameter 
+        with get() = this.GetValue(commandParameterProperty)
+        and set(value: obj) = this.SetValue(commandParameterProperty, value); updateGestureRecognisers this
+
+type IDisposableView = abstract Disposables: CompositeDisposable 
 
 module ViewHelpers =
     open ObservableExtensions
@@ -375,11 +389,15 @@ module ViewHelpers =
             member __.Convert(value, _, _, _) = selector(value :?> 'a) :> obj
             member __.ConvertBack(_, _, _, _) = failwith "This is a one-way converter. You should never hit this error." }
     let unitRectangle = Rectangle.FromLTRB(0.0, 0.0, 1.0, 1.0)
-    let withTwoWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
-        view.Bind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> ignore
+    let withTwoWayBinding(view: 'v when 'v :> IViewFor<'vm> and 'v :> IDisposableView, viewModelProperty: Expr<'vm -> 'vmp>, viewProperty, vmToViewConverter, viewToVmConverter) element = 
+        view.WhenAnyValue(fun v -> v.ViewModel).Where(isNotNull).Subscribe(fun viewModel ->
+            view.Bind(viewModel, toLinq viewModelProperty, toLinq viewProperty, null, fun x -> vmToViewConverter(x), fun x -> viewToVmConverter(x)) |> disposeWith view.Disposables |> ignore
+        ) |> disposeWith view.Disposables |> ignore
         element
-    let withOneWayBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelProperty, viewProperty, selector) element = 
-        view.OneWayBind(view.ViewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> ignore
+    let withOneWayBinding(view: 'v when 'v :> IViewFor<'vm> and 'v :> IDisposableView, viewModelProperty, viewProperty, selector) element = 
+        view.WhenAnyValue(fun v -> v.ViewModel).Where(isNotNull).Subscribe(fun viewModel ->
+            view.OneWayBind(viewModel, toLinq viewModelProperty, toLinq viewProperty, fun x -> selector(x)) |> disposeWith view.Disposables |> ignore
+        ) |> disposeWith view.Disposables |> ignore
         element
     let withOneWayElementBinding(view: 'v :> Element, viewModelProperty: Expr<'vm -> 'a>, viewProperty: BindableProperty, selector: 'a -> 'b) element = 
         view.SetBinding(viewProperty, propertyName viewModelProperty, BindingMode.OneWay, oneWayConverter selector)
@@ -395,8 +413,10 @@ module ViewHelpers =
             command.Execute(menuItem.CommandParameter :?> 'b).Subscribe() |> ignore) |> disposables.Add
         view.ContextActions.Add menuItem
         element
-    let withCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty) element = 
-        view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty) |> ignore
+    let withCommandBinding(view: 'v when 'v :> IViewFor<'vm> and 'v :> IDisposableView, viewModelCommand, controlProperty) element = 
+        view.WhenAnyValue(fun v -> v.ViewModel).Where(isNotNull).Subscribe(fun viewModel ->
+            view.BindCommand(viewModel, toLinq viewModelCommand, toLinq controlProperty) |> disposeWith view.Disposables |> ignore
+        ) |> disposeWith view.Disposables |> ignore
         element
     let withEventCommandBinding(view: 'v when 'v :> IViewFor<'vm>, viewModelCommand, controlProperty, event) element = 
         view.BindCommand(view.ViewModel, toLinq viewModelCommand, toLinq controlProperty, event) |> ignore
@@ -407,7 +427,7 @@ module ViewHelpers =
             view.GestureRecognizers.Add(new TapGestureRecognizer(Command = command, CommandParameter = match commandParameter with | Some p -> p |> toLinq |> (fun e -> e.Compile()) |> (fun e -> e.Invoke(viewModel)) :> obj | None -> Unchecked.defaultof<obj>))) |> ignore
         element
     let withPinBinding(markers, markerToPin) (element: GeographicMap<'TMarker>) = element.BindPinsToCollection(markers, markerToPin); element
-    let withHyperlinkCommand command (element: #HyperlinkLabel) = element.AddCommand command; element
+    let withHyperlinkCommand command (element: #HyperlinkLabel) = element.Command <- command; element
     let withHorizontalTextAlignment alignment (element: #Label) = element.HorizontalTextAlignment <- alignment; element
     let withVerticalTextAlignment alignment (element: #Label) = element.VerticalTextAlignment <- alignment; element
     let withHorizontalOptions options (element: #View) = element.HorizontalOptions <- options; element

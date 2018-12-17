@@ -45,7 +45,6 @@ module Modal =
     type AlertMessage = { Title: string; Message: string; Acknowledge: string }
     type Confirmation = { Title: string; Message: string; Accept: string; Decline: string }
 
-open ExpressionConversion
 open Modal
 
 [<AbstractClass>]
@@ -53,13 +52,12 @@ type PageViewModel() =
     inherit ReactiveObject()
     let mutable displayAlertCommand: ReactiveCommand<AlertMessage, Reactive.Unit> option = None
     let mutable confirmCommand: ReactiveCommand<Confirmation, bool> option = None
-    let pageDisposables = new CompositeDisposable()
-    member val PageDisposables = pageDisposables
+    let disposables = new CompositeDisposable()
+    member val Disposables = disposables
     member __.DisplayAlertMessage(alertMessage) = match displayAlertCommand with | Some command -> command.Execute(alertMessage) | None -> Observable.Never<Reactive.Unit>()
     member __.DisplayConfirmation(confirmation) = match confirmCommand with | Some command -> command.Execute(confirmation) | None -> Observable.Never<bool>()
     member internal __.DisplayAlertCommand with get() = displayAlertCommand and set(value) = displayAlertCommand <- value
     member internal __.ConfirmCommand with get() = confirmCommand and set(value) = confirmCommand <- value
-    abstract member SetUpCommands: unit -> unit
-    abstract member TearDownCommands: unit -> unit
-    default __.SetUpCommands() = ()
-    default __.TearDownCommands() = pageDisposables.Clear()
+    abstract member Initialise: unit -> unit
+    default __.Initialise() = ()
+    interface IDisposable with member __.Dispose() = disposables.Clear()
