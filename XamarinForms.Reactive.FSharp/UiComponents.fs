@@ -16,12 +16,9 @@ open DynamicData
 
 open Microsoft.FSharp.Quotations
 
-open Xamarin.Forms.Maps
 open Xamarin.Forms
 
 open ReactiveUI
-
-open GeographicLib
 
 open ExpressionConversion
 
@@ -311,57 +308,6 @@ type FrameOverlay() =
         with get() = this.GetValue(boundaryProperty) :?> Rectangle
         and set(value: Rectangle) = this.SetValue(boundaryProperty, value)
 
-type GeographicPin(location: GeodesicLocation) =
-    member val Location = location
-
-[<AbstractClass>]
-type GeographicMap() = 
-    inherit Map()
-    abstract member Close: unit -> unit
-
-type GeographicMap<'TMarker when 'TMarker :> GeographicPin>() =
-    inherit GeographicMap()
-    let pinsSubscriptions = new CompositeDisposable()
-    let locationSubscription = new CompositeDisposable()
-    static let centerProperty = BindableProperty.Create("Center", typeof<GeodesicLocation>, typeof<GeographicMap<'TMarker>>, new GeodesicLocation(), BindingMode.TwoWay)
-    static let radiusProperty = BindableProperty.Create("Radius", typeof<float>, typeof<GeographicMap<'TMarker>>, 1.0, BindingMode.TwoWay)
-    let pinnedLocations = new SourceList<'TMarker>()
-    let mutable boundingMarkers: 'TMarker[] = [||]
-    let mutable updatingVisibleRegion = false
-    member this.Radius
-        with get() = 1.0<km> * (this.GetValue(radiusProperty) :?> float)
-        and set(value: float<km>) = if not <| value.Equals(this.Radius) then this.SetValue(radiusProperty, value / 1.0<km>)
-    member this.Center 
-        with get() = this.GetValue(centerProperty) :?> GeodesicLocation
-        and set(value: GeodesicLocation) = if not <| value.Equals(this.Center) then this.SetValue(centerProperty, value)
-    member val PinnedLocations = pinnedLocations
-    member internal this.BindPinsToCollection (collection: ISourceList<'a>, markerToPin) =
-        pinsSubscriptions.Clear(); this.PinnedLocations.Clear()
-        let addPin pin = this.PinnedLocations.Add pin; pin
-        let removePin pin = this.PinnedLocations.Remove pin
-        let markerAndPin marker = (marker, marker |> markerToPin |> addPin)
-        let pinDictionary = collection.Items |> Seq.map markerAndPin |> dict |> fun c -> new Dictionary<'a, 'TMarker>(c)
-        let addMarkerAndPin marker = marker |> markerAndPin |> pinDictionary.Add
-        let removeMarkerAndPin marker = if removePin pinDictionary.[marker] then pinDictionary.Remove marker |> ignore
-        collection.Connect().OnItemAdded(addMarkerAndPin).OnItemRemoved(removeMarkerAndPin).Subscribe() |> pinsSubscriptions.Add
-    member internal this.SetUpRegionMovement() =
-        this.WhenAnyValue((fun (m: GeographicMap<'TMarker>) -> m.Center), (fun (m: GeographicMap<'TMarker>) -> m.Radius))
-            .Where(fun (_, _) -> not updatingVisibleRegion)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(fun (c, r) ->
-                let region = MapSpan.FromCenterAndRadius(c |> XamarinGeographic.position, r |> XamarinGeographic.distance)
-                this.MoveToRegion(region)) |> locationSubscription.Add
-        this.WhenAnyValue(fun (m: GeographicMap<'TMarker>) -> m.VisibleRegion)
-            .Where(isNotNull)
-            .Subscribe(fun vr ->
-                updatingVisibleRegion <- true
-                this.Center <- vr.Center |> XamarinGeographic.geodesicLocation
-                this.Radius <- vr.Radius |> XamarinGeographic.geographicDistance
-                updatingVisibleRegion <- false) |> locationSubscription.Add
-    override __.Close() = pinsSubscriptions.Clear(); locationSubscription.Clear()
-
-type MapSearchBar() = inherit SearchBar()
-
 type HyperlinkLabel() =
     inherit Label()
     static let commandProperty = BindableProperty.Create("Command", typeof<ICommand>, typeof<HyperlinkLabel>)
@@ -426,7 +372,6 @@ module ViewHelpers =
             let viewModel = view.BindingContext :?> 'vm
             view.GestureRecognizers.Add(new TapGestureRecognizer(Command = command, CommandParameter = match commandParameter with | Some p -> p |> toLinq |> (fun e -> e.Compile()) |> (fun e -> e.Invoke(viewModel)) :> obj | None -> Unchecked.defaultof<obj>))) |> ignore
         element
-    let withPinBinding(markers, markerToPin) (element: GeographicMap<'TMarker>) = element.BindPinsToCollection(markers, markerToPin); element
     let withHyperlinkCommand command (element: #HyperlinkLabel) = element.Command <- command; element
     let withHorizontalTextAlignment alignment (element: #Label) = element.HorizontalTextAlignment <- alignment; element
     let withVerticalTextAlignment alignment (element: #Label) = element.VerticalTextAlignment <- alignment; element
@@ -633,7 +578,6 @@ module Themes =
             EntryStyle: Style
             EditorStyle: Style
             SearchBarStyle: Style
-            MapSearchBarStyle: Style
             ImageStyle: Style
             FrameStyle: Style
             ContentViewStyle: Style
@@ -645,7 +589,6 @@ module Themes =
             DatePickerStyle: Style
             TimePickerStyle: Style
             PickerStyle: Style
-            MapStyle: Style
             TabbedPageStyle: Style
             ActivityIndicatorStyle: Style
             TextCellTextColor: Color
@@ -656,7 +599,6 @@ module Themes =
     let apply setUp view = setUp |> Seq.iter (fun s -> s view); view
     let initialise (property: Expr<'a -> 'b>) (view: 'a) (value: 'b) = ExpressionConversion.setProperty view value property; value
     let private initialiseBadgeIcon (badgeIcon: BadgeIcon) = badgeIcon.Initialise(); badgeIcon
-    let private initialiseMap (map:GeographicMap<#GeographicPin>) = map.SetUpRegionMovement(); map
     let private applyCellColors (styles:Styles) (cell:#TextCell) = cell.TextColor <- styles.TextCellTextColor; cell.DetailColor <- styles.TextCellDetailColor; cell
     let getOrAddStyle (element: VisualElement) = 
         // match box element.Style with | null -> new Style(element.GetType()) | _ -> element.Style
@@ -669,8 +611,6 @@ module Themes =
         member this.GenerateSpan(view, property, [<ParamArray>] setUp: (Span -> unit)[]) = new Span() |> initialise property view |> apply setUp
         member this.GenerateSearchBar([<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> apply setUp
         member this.GenerateSearchBar(view, property, [<ParamArray>] setUp: (SearchBar -> unit)[]) = new SearchBar(Style = this.Styles.SearchBarStyle) |> initialise property view |> apply setUp
-        member this.GenerateMapSearchBar([<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> apply setUp
-        member this.GenerateMapSearchBar(view, property, [<ParamArray>] setUp: (MapSearchBar -> unit)[]) = new MapSearchBar(Style = this.Styles.MapSearchBarStyle) |> initialise property view |> apply setUp
         member this.GenerateImage([<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> apply setUp
         member this.GenerateImage(view, property, [<ParamArray>] setUp: (Image -> unit)[]) = new Image(Style = this.Styles.ImageStyle) |> initialise property view |> apply setUp
         member this.GenerateCircularImage([<ParamArray>] setUp: (CircleImage -> unit)[]) = new CircleImage(Style = this.Styles.ImageStyle) |> apply setUp
@@ -714,7 +654,6 @@ module Themes =
         member this.GeneratePicker(view, property, [<ParamArray>] setUp: (Picker -> unit)[]) = new Picker(Style = this.Styles.PickerStyle) |> initialise property view |> apply setUp
         member this.GenerateActivityIndicator([<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> apply setUp
         member this.GenerateActivityIndicator(view, property, [<ParamArray>] setUp: (ActivityIndicator -> unit)[]) = new ActivityIndicator(Style = this.Styles.ActivityIndicatorStyle) |> initialise property view |> apply setUp
-        member this.GenerateMap([<ParamArray>] setUp: (GeographicMap<'TMarker> -> unit)[]) = new GeographicMap<'TMarker>(Style = this.Styles.MapStyle) |> initialiseMap |> apply setUp
         member this.GenerateTextCell([<ParamArray>] setUp: (TextCell -> unit)[]) = new TextCell() |> apply setUp |> applyCellColors this.Styles
         member this.GenerateImageCell([<ParamArray>] setUp: (ImageCell -> unit)[]) = new ImageCell() |> apply setUp |> applyCellColors this.Styles
         member __.GenerateBadgeIcon([<ParamArray>] setUp: (BadgeIcon -> unit)[]) = new BadgeIcon() |> apply setUp |> initialiseBadgeIcon
@@ -788,7 +727,6 @@ module Themes =
                     EntryStyle = new Style(typeof<Entry>)
                     EditorStyle = new Style(typeof<Editor>)
                     SearchBarStyle = new Style(typeof<SearchBar>)
-                    MapSearchBarStyle = new Style(typeof<MapSearchBar>)
                     ImageStyle = new Style(typeof<Image>)
                     FrameStyle = new Style(typeof<Frame>)
                     ContentViewStyle = new Style(typeof<ContentView>)
@@ -800,7 +738,6 @@ module Themes =
                     DatePickerStyle = new Style(typeof<DatePicker>)
                     TimePickerStyle = new Style(typeof<TimePicker>)
                     PickerStyle = new Style(typeof<Picker>)
-                    MapStyle = new Style(typeof<Map>)
                     TabbedPageStyle = new Style(typeof<TabbedPage>)
                     ActivityIndicatorStyle = new Style(typeof<ActivityIndicator>)
                     TextCellTextColor = TextCell.TextColorProperty.DefaultValue :?> Color

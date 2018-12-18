@@ -26,7 +26,7 @@ open System.Reactive
 [<AbstractClass>]
 type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveContentPage<'TViewModel>()
-    let mutable pageDisposables = new CompositeDisposable()
+    let pageDisposables = new CompositeDisposable()
     let alertMessageReceived (alertMessage: AlertMessage) = this.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Acknowledge)
     let confirmationReceived (confirmation: Confirmation) = this.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline)
     let viewModelObservable = base.WhenAnyValue(fun v -> v.ViewModel)
@@ -40,12 +40,13 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
         match box this.Content with
         | null ->
             this.Content <- this.CreateContent(viewModelObservable.Where(isNotNull))
-            let viewModelRemoved (_: 'TViewModel) = pageDisposables.Clear()
+            let viewModelRemoved (viewModel: 'TViewModel) =
+                viewModel.TearDown()
+                pageDisposables.Clear()
             viewModelObservable.Buffer(2, 1).Select(fun b -> (b.[0], b.[1]))
                 .Where(fun (previous, current) -> previous |> isNotNull && current |> isNull)
                 .Select(fun (p, _) -> p).Subscribe(viewModelRemoved) |> disposables.Add
             subscribeToMessages this.ViewModel disposables
-            disposables.Add this.ViewModel
             this.ViewModel.Initialise()
         | _ -> ()
     do 

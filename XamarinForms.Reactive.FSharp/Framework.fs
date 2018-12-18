@@ -3,10 +3,6 @@ namespace XamarinForms.Reactive.FSharp
 open Microsoft.FSharp.Linq.RuntimeHelpers
 open Microsoft.FSharp.Quotations
 
-open GeographicLib
-
-open Xamarin.Forms.Maps
-
 open System.Linq.Expressions
 open System
 
@@ -55,9 +51,3 @@ module ExpressionConversion =
     | Patterns.Lambda(_, expr) -> setProperty instance value expr
     | Patterns.PropertyGet(_, propertyInfo, _) -> propertyInfo.SetValue(instance, value)
     | _ -> failwith "You have tried to set a property value using an expression that does not describe a property."
-
-module XamarinGeographic =
-    let geodesicLocation (position: Position) = new GeodesicLocation(position.Latitude * 1.0<deg>, position.Longitude * 1.0<deg>)
-    let position (location: GeodesicLocation) = new Position(location.Latitude / 1.0<deg>, location.Longitude / 1.0<deg>)
-    let distance (geographicDistance: float<km>) = new Distance(1000.0 * geographicDistance / 1.0<km>)
-    let geographicDistance (distance: Distance) = 1.0<km> * distance.Kilometers
