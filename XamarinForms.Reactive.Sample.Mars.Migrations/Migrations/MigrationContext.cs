@@ -12,10 +12,10 @@ namespace XamarinForms.Reactive.Sample.Mars.Migrations.Migrations
     {
         private static readonly string AppFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         public void RegisterDependencies(IMutableDependencyResolver dependencyResolver) { }
+        public string GetMetadataEntry(string key) => null;
         public string GetLocalFilePath(string fileName) => Path.Combine(AppFolderPath, fileName);
         public void HandleAppLinkRequest(Uri appLinkRequestUri) { }
         public ImageSource GetHeadlineImage(string name) => null;
-
         public FSharpAsync<PhotoSet> GetCameraDataAsync(RoverSolPhotoSet photoSet, string camera) => throw new NotImplementedException();
         public FSharpAsync<Rover[]> PullRoversAsync() => throw new NotImplementedException();
     }
