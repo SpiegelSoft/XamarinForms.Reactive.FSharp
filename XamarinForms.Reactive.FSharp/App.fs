@@ -7,6 +7,8 @@ open System.Reflection
 open System.Threading
 open System
 
+open Xamarin.Forms.PlatformConfiguration.AndroidSpecific.AppCompat
+open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms
 
 open Splat
@@ -39,13 +41,6 @@ type AppBootstrapper<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatfo
             | None -> ()
         viewModelInstance
 
-type HostingPage() =
-    inherit RoutedViewHost()
-    member val PageDisposables = new CompositeDisposable()
-    override this.OnDisappearing() =
-        base.OnDisappearing()
-        this.PageDisposables.Clear()
-
 type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context, viewModel) =
     inherit Application()
     let mutable observerIndex = 0
@@ -69,6 +64,8 @@ type App<'TPlatform when 'TPlatform :> IPlatform>(platform: 'TPlatform, context,
     member this.Init(theme: Theme) =
         let viewModelInstance = bootstrapper.Bootstrap(this)
         router.NavigateAndReset.Execute(viewModelInstance).Subscribe() |> ignore
-        this.MainPage <- new RoutedViewHost(Style = theme.Styles.NavigationPageStyle)
+        let navigationPage = new RoutedViewHost(Style = theme.Styles.NavigationPageStyle)
+        navigationPage.On<Android>().SetBarHeight(200) |> ignore
+        this.MainPage <- navigationPage
     override __.OnAppLinkRequestReceived uri = base.OnAppLinkRequestReceived uri; platform.HandleAppLinkRequest uri
     interface IScreen with member __.Router = router

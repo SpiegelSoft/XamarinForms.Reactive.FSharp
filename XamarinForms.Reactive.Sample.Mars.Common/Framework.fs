@@ -30,16 +30,20 @@ type Logger(logAppenders: IAppendLog seq) =
 module SafeReactiveCommands =
     open System.Threading.Tasks
     open System.Reactive.Linq
-    open ReactiveUI
-    open Splat
 
-    let [<Literal>] private Tag = "SafeReactiveCommands"
+    open Splat
+    
+    open ReactiveUI
+
+    let [<Literal>] private Tag = "ReactiveCommands"
     let create (factory:IObservable<bool> -> ReactiveCommand<'src, 'dest>) (canExecute) =
         let logger = Locator.Current.GetService<ILog>()
         let ce = match canExecute with | Some c -> c | None -> Observable.Return<bool>(true)
         let command = factory(ce)
-        let logException ex =  Some ex |> logger.Critical Tag "Command Error" 
+        let logException ex =  
+            Some ex |> logger.Critical Tag "Command Error" 
         command.ThrownExceptions.Subscribe logException |> ignore
+        command.Catch(logException >> (fun () -> Observable.Return Unchecked.defaultof<'dest>)) |> ignore
         command
     let createFromTask(task: 'src -> Task<'dest>, canExecute) = 
         let factory ce = ReactiveCommand.CreateFromTask<'src, 'dest>(task, ce)
@@ -47,5 +51,10 @@ module SafeReactiveCommands =
     let createFromObservable(observable: 'src -> IObservable<'dest>, canExecute: IObservable<bool> option) =
         let factory ce = ReactiveCommand.CreateFromObservable<'src, 'dest>((fun s -> observable s), ce)
         create factory canExecute
+    let createFromAsync(operation: 'src -> Async<'dest>, canExecute: IObservable<bool> option) =
+        let factory ce = ReactiveCommand.CreateFromTask<'src, 'dest>(operation >> Async.StartAsTask, ce)
+        create factory canExecute
 
-
+module Observables =
+    open DynamicData.Binding
+    let createObservableCollection<'a>() = new ObservableCollectionExtended<'a>() :> IObservableCollection<'a>

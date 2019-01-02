@@ -1,8 +1,10 @@
-﻿namespace XamarinForms.Reactive.Sample.Mars.Droid
+﻿namespace XamarinForms.Reactive.Sample.Mars.Android
 
 open System.Net.Http
 open System.IO
 open System
+
+open FFImageLoading.Forms.Platform
 
 open Newtonsoft.Json
 
@@ -22,6 +24,8 @@ open Splat
 
 open ReactiveUI
 
+type MarsResources = XamarinForms.Reactive.Sample.Mars.Android.Resource
+
 type AndroidLogger = Android.Util.Log
 type Throwable = Java.Lang.Throwable
 
@@ -40,19 +44,23 @@ type MarsPlatform(nasaApiKey) =
         member __.HandleAppLinkRequest _ = ()
         member this.RegisterDependencies dependencyResolver = 
             let modelContextFactory = new ModelContextFactory(this)
-            dependencyResolver.RegisterConstant(modelContextFactory, typeof<ICreateModelContext<IModelContext>>)
+            dependencyResolver.RegisterConstant(modelContextFactory, typeof<ICreateModelContext<IMarsContext>>)
             dependencyResolver.RegisterConstant(new Storage(this, modelContextFactory), typeof<IStorage>)
             dependencyResolver.RegisterConstant(new Logger([new AndroidLogAppender()]), typeof<ILog>)
+            dependencyResolver.RegisterConstant(this, typeof<IMarsPlatform>)
         member __.GetLocalFilePath fileName = localFilePath fileName
         member __.GetCameraDataAsync roverSolPhotoSet camera =
             async {
-                let url = sprintf "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=%i&camera=%s&api_key=%s" roverSolPhotoSet.Sol camera nasaApiKey
+                let url = sprintf "https://api.nasa.gov/mars-photos/api/v1/rovers/%s/photos?sol=%i&camera=%s&api_key=%s" roverSolPhotoSet.RoverName roverSolPhotoSet.Sol camera nasaApiKey
                 use httpClient = new HttpClient(new NativeMessageHandler())
                 use! response = httpClient.GetAsync(url) |> Async.AwaitTask
                 let! serialisedData = response.Content.ReadAsStringAsync() |> Async.AwaitTask
                 let data = JsonConvert.DeserializeObject<PhotoSet>(serialisedData)
+                data.Camera <- camera
+                data.Sol <- roverSolPhotoSet.Sol
                 return data
             }
+        member __.GetHeadlineImage name = ImageSource.FromResource name
         member __.PullRoversAsync() =
             let pullRoverAsync roverName =
                 async {
@@ -68,14 +76,21 @@ type MarsPlatform(nasaApiKey) =
                 return! Rovers.names |> Array.map pullRoverAsync |> Async.Parallel
             }
 
-[<Activity (Label = "XRF Mars", MainLauncher = true, Icon = "@mipmap/icon")>]
+[<Activity(Label = "XRF Mars", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true)>]
 type MainActivity() =
     inherit FormsAppCompatActivity()
     static let [<Literal>] NasaApiKey = "nasa-api-key"
-    let createPhotoSetViewModel() = new PhotoSetViewModel() :> IRoutableViewModel
+    let createRoversViewModel() = new RoversViewModel() :> IRoutableViewModel
     override this.OnCreate (bundle) =
+        FormsAppCompatActivity.ToolbarResource <- MarsResources.Layout.Toolbar
+        FormsAppCompatActivity.TabLayoutResource <- MarsResources.Layout.Tabbar
         base.OnCreate(bundle)
+        AppDomain.CurrentDomain.UnhandledException.Subscribe(fun ex ->
+            ()
+        ) |> ignore
         Forms.Init(this, bundle)
         let metaData = this.PackageManager.GetApplicationInfo(this.PackageName, PackageInfoFlags.MetaData).MetaData
-        let app = new App<IMarsPlatform>(new MarsPlatform(metaData.GetString(NasaApiKey)), new UiContext(this), createPhotoSetViewModel)
+        let app = new App<IMarsPlatform>(new MarsPlatform(metaData.GetString(NasaApiKey)), new UiContext(this), createRoversViewModel)
+        app.Init Themes.XrfMars
         base.LoadApplication app
+        CachedImageRenderer.Init(Nullable<bool>(true))

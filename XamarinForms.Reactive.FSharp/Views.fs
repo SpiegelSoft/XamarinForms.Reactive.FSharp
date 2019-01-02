@@ -15,16 +15,18 @@ open Themes
 
 open ClrExtensions
 open ObservableExtensions
-open System
+open Splat
 
 type IContentView = 
     abstract member InitialiseContent: unit -> unit
     abstract member OnContentCreated: unit -> unit
 
 open System.Reactive
+open DynamicData
 
 [<AbstractClass>]
-type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel : not struct>(theme: Theme) as this =
+[<DisableAnimation>]
+type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TViewModel :> IRoutableViewModel and 'TViewModel : not struct>(theme: Theme) as this =
     inherit ReactiveContentPage<'TViewModel>()
     let pageDisposables = new CompositeDisposable()
     let alertMessageReceived (alertMessage: AlertMessage) = this.DisplayAlert(alertMessage.Title, alertMessage.Message, alertMessage.Acknowledge)
@@ -40,17 +42,20 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
         match box this.Content with
         | null ->
             this.Content <- this.CreateContent(viewModelObservable.Where(isNotNull))
-            let viewModelRemoved (viewModel: 'TViewModel) =
+            let host  = Locator.Current.GetService<IScreen>()
+            let viewModel = this.ViewModel
+            // Workaround for https://github.com/reactiveui/ReactiveUI/issues/1874
+            host.Router.NavigationChanged.CountChanged().Where(fun x -> x |> Seq.exists (fun change -> change.Reason = ListChangeReason.Clear)).Subscribe(fun _ ->
                 viewModel.TearDown()
-                pageDisposables.Clear()
-            viewModelObservable.Buffer(2, 1).Select(fun b -> (b.[0], b.[1]))
-                .Where(fun (previous, current) -> previous |> isNotNull && current |> isNull)
-                .Select(fun (p, _) -> p).Subscribe(viewModelRemoved) |> disposables.Add
-            subscribeToMessages this.ViewModel disposables
-            this.ViewModel.Initialise()
+                pageDisposables.Clear()) |> pageDisposables.Add
+            viewModel.WhenNavigatingFromObservable().Subscribe((fun (_:Unit) -> ()), fun () -> 
+                viewModel.TearDown()
+                pageDisposables.Clear()) |> pageDisposables.Add
+            subscribeToMessages viewModel pageDisposables
+            viewModel.Initialise()
         | _ -> ()
     do 
         this.WhenActivated(viewModelActivated) |> pageDisposables.Add
-    do base.BackgroundColor <- theme.Styles.BackgroundColor
+        base.BackgroundColor <- theme.Styles.BackgroundColor
     abstract member CreateContent: IObservable<'TViewModel> -> View
     interface IDisposableView with member __.Disposables = pageDisposables
