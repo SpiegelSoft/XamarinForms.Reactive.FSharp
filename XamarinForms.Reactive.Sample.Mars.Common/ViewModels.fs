@@ -130,6 +130,7 @@ type RoversViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorag
     let rovers = new SourceList<Rover>()
     let state = new RoversViewModelState()
     let commands = new RoversViewModelCommands(state, storage)
+    let tempCommand = createFromObservable(Observable.Return, None)
     let cannotRetrieveFirstRovers (result: StorageResult<Rover[]>) = match (result.SyncResult, result.Content.Length) with | (SyncFailed _, 0) -> true | _ -> false
     let showConnectionError (vm: RoversViewModel) (_:StorageResult<Rover[]>) =
         vm.DisplayAlertMessage({ Title = "Connection Required"; Message = "A workimg connection is required to retrieve the image set for the first time. Please check your connection and try again."; Acknowledge = "OK" }).Subscribe() |> ignore
@@ -140,9 +141,12 @@ type RoversViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorag
         let disposables = this.Disposables
         rovers.Connect().ObserveOn(RxApp.MainThreadScheduler).Bind(this.Rovers).Subscribe() |> disposeWith disposables |> ignore
         commands.RefreshRovers.Where(cannotRetrieveFirstRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(showConnectionError this) |> disposeWith disposables |> ignore
-        this.DisplayAlertMessage({ Title = "API Key"; Message = platform.GetMetadataEntry "NASA_API_KEY"; Acknowledge = "OK" }).Subscribe(fun _ ->
-            commands.RefreshRovers.Execute().Subscribe(fun r -> rovers.AddRange(r.Content)) |> disposeWith disposables |> ignore
+        tempCommand.ObserveOn(RxApp.MainThreadScheduler).Subscribe(fun _ ->
+            this.DisplayAlertMessage({ Title = "API Key"; Message = platform.GetMetadataEntry "NASA_API_KEY"; Acknowledge = "OK" }).Subscribe(fun _ ->
+                commands.RefreshRovers.Execute().Subscribe(fun r -> rovers.AddRange(r.Content)) |> disposeWith disposables |> ignore
+            ) |> disposeWith disposables |> ignore
         ) |> disposeWith disposables |> ignore
+        tempCommand.Execute().Subscribe() |> ignore
         state.WhenAnyValue(fun vm -> vm.SelectedRover).Where(isNotNull).Subscribe(fun r ->
             let viewModel = new PhotoManifestViewModel(r)
             host.Router.Navigate.Execute(viewModel).Subscribe(fun _ -> state.SelectedRover <- Unchecked.defaultof<Rover>) |> disposeWith disposables |> ignore) |> disposeWith disposables |> ignore
