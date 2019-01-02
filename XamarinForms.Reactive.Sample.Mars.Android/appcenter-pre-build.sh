@@ -9,7 +9,7 @@ then
     exit
 fi
 
-ANDROID_MANIFEST_FILE=$APPCENTER_SOURCE_DIRECTORY/Droid/Properties/AndroidManifest.xml
+ANDROID_MANIFEST_FILE=$APPCENTER_SOURCE_DIRECTORY/XamarinForms.Reactive.Sample.Mars.Android/Properties/AndroidManifest.xml
 
 if [ -e "$ANDROID_MANIFEST_FILE" ]
 then
