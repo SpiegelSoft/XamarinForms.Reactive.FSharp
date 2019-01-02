@@ -22,7 +22,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>
-    <SelectedDevice>10.1" Marshmallow (6.0.0) XHDPI Tablet</SelectedDevice>
+    <SelectedDevice>Samsung SM-G925F</SelectedDevice>
     <DefaultDevice>10.1" Marshmallow (6.0.0) XHDPI Tablet</DefaultDevice>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
