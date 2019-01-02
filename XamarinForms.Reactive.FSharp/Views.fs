@@ -42,12 +42,7 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
         match box this.Content with
         | null ->
             this.Content <- this.CreateContent(viewModelObservable.Where(isNotNull))
-            let host  = Locator.Current.GetService<IScreen>()
             let viewModel = this.ViewModel
-            // Workaround for https://github.com/reactiveui/ReactiveUI/issues/1874
-            host.Router.NavigationChanged.CountChanged().Where(fun x -> x |> Seq.exists (fun change -> change.Reason = ListChangeReason.Clear)).Subscribe(fun _ ->
-                viewModel.TearDown()
-                pageDisposables.Clear()) |> pageDisposables.Add
             viewModel.WhenNavigatingFromObservable().Subscribe((fun (_:Unit) -> ()), fun () -> 
                 viewModel.TearDown()
                 pageDisposables.Clear()) |> pageDisposables.Add

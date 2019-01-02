@@ -171,16 +171,16 @@
       <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\MonoAndroid10\Plugin.Connectivity.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI">
-      <HintPath>..\packages\ReactiveUI.9.5.1\lib\monoandroid81\ReactiveUI.dll</HintPath>
+      <HintPath>..\packages\ReactiveUI.9.6.3\lib\monoandroid81\ReactiveUI.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.XamForms">
-      <HintPath>..\packages\ReactiveUI.XamForms.9.5.1\lib\netstandard2.0\ReactiveUI.XamForms.dll</HintPath>
+      <HintPath>..\packages\ReactiveUI.XamForms.9.6.3\lib\netstandard2.0\ReactiveUI.XamForms.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Splat">
-      <HintPath>..\packages\Splat.5.1.4\lib\monoandroid81\Splat.dll</HintPath>
+      <HintPath>..\packages\Splat.5.2.1\lib\monoandroid81\Splat.dll</HintPath>
     </Reference>
     <Reference Include="SQLitePCLRaw.batteries_green">
       <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.12\lib\MonoAndroid\SQLitePCLRaw.batteries_green.dll</HintPath>
