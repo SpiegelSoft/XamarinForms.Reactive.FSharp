@@ -37,11 +37,13 @@ type AndroidLogAppender() =
         member __.Error tag message ex = (match ex with | Some x -> AndroidLogger.Error(tag, message, Throwable.FromException x) | None -> AndroidLogger.Error(tag, message)) |> ignore
         member __.Critical tag message ex = (match ex with | Some x -> AndroidLogger.Wtf(tag, message, Throwable.FromException x) | None -> AndroidLogger.Wtf(tag, message)) |> ignore
 
-type MarsPlatform(nasaApiKey) =
+type MarsPlatform(nasaApiKey, mainActivity: Activity) =
     static let appFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
     let localFilePath fileName = Path.Combine(appFolderPath, fileName)
+    let metadata = mainActivity.PackageManager.GetApplicationInfo(mainActivity.PackageName, PackageInfoFlags.MetaData).MetaData
     interface IMarsPlatform with
         member __.HandleAppLinkRequest _ = ()
+        member __.GetMetadataEntry key = metadata.GetString key
         member this.RegisterDependencies dependencyResolver = 
             let modelContextFactory = new ModelContextFactory(this)
             dependencyResolver.RegisterConstant(modelContextFactory, typeof<ICreateModelContext<IMarsContext>>)
@@ -89,8 +91,8 @@ type MainActivity() =
             ()
         ) |> ignore
         Forms.Init(this, bundle)
-        let metaData = this.PackageManager.GetApplicationInfo(this.PackageName, PackageInfoFlags.MetaData).MetaData
-        let app = new App<IMarsPlatform>(new MarsPlatform(metaData.GetString(NasaApiKey)), new UiContext(this), createRoversViewModel)
+        let metadata = this.PackageManager.GetApplicationInfo(this.PackageName, PackageInfoFlags.MetaData).MetaData
+        let app = new App<IMarsPlatform>(new MarsPlatform(metadata.GetString(NasaApiKey), this), new UiContext(this), createRoversViewModel)
         app.Init Themes.XrfMars
         base.LoadApplication app
         CachedImageRenderer.Init(Nullable<bool>(true))

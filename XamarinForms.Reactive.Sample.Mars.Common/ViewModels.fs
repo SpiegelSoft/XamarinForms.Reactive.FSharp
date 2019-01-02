@@ -140,7 +140,9 @@ type RoversViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorag
         let disposables = this.Disposables
         rovers.Connect().ObserveOn(RxApp.MainThreadScheduler).Bind(this.Rovers).Subscribe() |> disposeWith disposables |> ignore
         commands.RefreshRovers.Where(cannotRetrieveFirstRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(showConnectionError this) |> disposeWith disposables |> ignore
-        commands.RefreshRovers.Execute().Subscribe(fun r -> rovers.AddRange(r.Content)) |> disposeWith disposables |> ignore
+        this.DisplayAlertMessage({ Title = "API Key"; Message = platform.GetMetadataEntry "NASA_API_KEY"; Acknowledge = "OK" }).Subscribe(fun _ ->
+            commands.RefreshRovers.Execute().Subscribe(fun r -> rovers.AddRange(r.Content)) |> disposeWith disposables |> ignore
+        ) |> disposeWith disposables |> ignore
         state.WhenAnyValue(fun vm -> vm.SelectedRover).Where(isNotNull).Subscribe(fun r ->
             let viewModel = new PhotoManifestViewModel(r)
             host.Router.Navigate.Execute(viewModel).Subscribe(fun _ -> state.SelectedRover <- Unchecked.defaultof<Rover>) |> disposeWith disposables |> ignore) |> disposeWith disposables |> ignore

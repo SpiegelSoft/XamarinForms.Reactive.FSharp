@@ -138,5 +138,6 @@ module Rovers =
 type IMarsPlatform =
     inherit IPlatform
     abstract member GetHeadlineImage: string -> ImageSource
+    abstract member GetMetadataEntry: key:string -> string
     abstract member GetCameraDataAsync : photoSet:RoverSolPhotoSet -> camera:string -> Async<PhotoSet>
     abstract member PullRoversAsync: unit -> Async<Rover[]>
