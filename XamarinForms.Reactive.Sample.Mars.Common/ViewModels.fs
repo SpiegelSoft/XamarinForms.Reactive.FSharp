@@ -146,4 +146,4 @@ type RoversViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorag
             host.Router.Navigate.Execute(viewModel).Subscribe(fun _ -> state.SelectedRover <- Unchecked.defaultof<Rover>) |> disposeWith disposables |> ignore) |> disposeWith disposables |> ignore
     interface IRoutableViewModel with
         member __.HostScreen = host
-        member __.UrlPathSegment = "Rovers"
+        member __.UrlPathSegment = "Rovers" + " " + platform.GetMetadataEntry "NASA_API_KEY"
