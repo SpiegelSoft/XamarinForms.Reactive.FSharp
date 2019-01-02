@@ -19,17 +19,17 @@ type PhotoSetView(theme) =
     member val Photos = Unchecked.defaultof<ListView> with get, set    
     new() = new PhotoSetView(Themes.XrfMars)
     override this.CreateContent(viewModelAdded) =
-        let title = 
-            theme.GenerateTitle<PhotoSetView>(this, <@ fun v -> v.Title @>)
-            |> withOneWayBinding(this, <@ fun vm -> vm.Title @>, <@ fun v -> v.Title.Text @>, id)
-            |> withMargin(new Thickness(12.0))
-            |> withHorizontalOptions LayoutOptions.Center
-        theme.GenerateListView<PhotoSetView>(this, <@ fun v -> v.Photos @>, ListViewCachingStrategy.RecycleElement)
-        |> withUnevenRows
-        |> withListViewHeader title
-        |> withOneWayBinding (this, <@ fun vm -> vm.Photos @>, <@ fun v -> v.Photos.ItemsSource @>, fun c -> c :> IEnumerable)
-        |> withCellTemplate(fun () -> new PhotoCell(theme))
-        :> View
+        theme.VerticalLayout() |> withBlocks (
+            [|
+                theme.GenerateTitle<PhotoSetView>(this, <@ fun v -> v.Title @>)
+                |> withOneWayBinding(this, <@ fun vm -> vm.Title @>, <@ fun v -> v.Title.Text @>, id)
+                |> withMargin(new Thickness(12.0))
+                |> withHorizontalOptions LayoutOptions.Center
+                theme.GenerateListView<PhotoSetView>(this, <@ fun v -> v.Photos @>, ListViewCachingStrategy.RecycleElement)
+                |> withUnevenRows
+                |> withOneWayBinding (this, <@ fun vm -> vm.Photos @>, <@ fun v -> v.Photos.ItemsSource @>, fun c -> c :> IEnumerable)
+                |> withCellTemplate(fun () -> new PhotoCell(theme))
+            |]) :> View
 
 type PhotoManifestView(theme) =
     inherit ContentPage<PhotoManifestViewModel, PhotoManifestView>(theme)
