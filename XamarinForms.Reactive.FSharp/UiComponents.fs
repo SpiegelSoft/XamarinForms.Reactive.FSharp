@@ -450,6 +450,7 @@ module ViewHelpers =
     let withEffect effectId (element: #Element) = element.Effects.Add(Effect.Resolve(effectId)); element     
     let withRoutingEffect (effect: #RoutingEffect) (element: #Element) = element.Effects.Add(effect); element 
     let withDataTemplate (template: unit -> Cell) (element: #ListView) = element.ItemTemplate <- new DataTemplate(fun () -> template() :> obj); element
+    let withGroupHeaderTemplate (template: unit -> Cell) (element: #ListView) = element.GroupHeaderTemplate <- new DataTemplate(fun () -> template() :> obj); element
     let withTextCellCommand command (element: #TextCell) = 
         element.Command <- command
         element.SetBinding(TextCell.CommandParameterProperty, ".", BindingMode.OneWay)
