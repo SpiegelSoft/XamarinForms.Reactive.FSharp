@@ -104,7 +104,7 @@
       <HintPath>..\packages\Xamarin.Forms.3.4.0.1029999\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\packages\FSharp.Core.4.6.0\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\packages\FSharp.Core.4.6.1\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="ImageCircle.Forms.Plugin">
       <HintPath>..\packages\Xam.Plugins.Forms.ImageCircle.3.0.0.5\lib\monoandroid71\ImageCircle.Forms.Plugin.dll</HintPath>
@@ -183,10 +183,10 @@
       <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\MonoAndroid10\Plugin.Connectivity.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI">
-      <HintPath>..\packages\ReactiveUI.9.8.19\lib\monoandroid81\ReactiveUI.dll</HintPath>
+      <HintPath>..\packages\ReactiveUI.9.9.1\lib\monoandroid81\ReactiveUI.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.XamForms">
-      <HintPath>..\packages\ReactiveUI.XamForms.9.8.19\lib\netstandard2.0\ReactiveUI.XamForms.dll</HintPath>
+      <HintPath>..\packages\ReactiveUI.XamForms.9.9.1\lib\netstandard2.0\ReactiveUI.XamForms.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
