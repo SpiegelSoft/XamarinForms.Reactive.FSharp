@@ -12,8 +12,6 @@ open System.Threading
 open System.Linq
 open System
 
-open DynamicData
-
 open Microsoft.FSharp.Quotations
 
 open Xamarin.Forms
@@ -28,6 +26,8 @@ type BadgeIcon() =
     inherit AbsoluteLayout()
     static let badgeTextProperty = BindableProperty.Create("BadgeText", typeof<string>, typeof<BadgeIcon>, String.Empty, BindingMode.OneWay)
     static let imageSourceProperty = BindableProperty.Create("ImageSource", typeof<ImageSource>, typeof<BadgeIcon>, Unchecked.defaultof<ImageSource>, BindingMode.OneWay)
+    static let imageScaleProperty = BindableProperty.Create("ImageScale", typeof<float>, typeof<BadgeIcon>, 1.0, BindingMode.OneWay)
+    static let badgeFontSizeProperty = BindableProperty.Create("BadgeFontSize", typeof<float>, typeof<BadgeIcon>, 1.0, BindingMode.OneWay)
     static let zeroThickness = new Thickness(0.0)
     let icon = new Image(HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center)
     let badgeLabel = new Label(
@@ -43,15 +43,15 @@ type BadgeIcon() =
                         CornerRadius = 12.0f, 
                         BackgroundColor = Color.Red, 
                         OutlineColor = Color.Red,
-                        Margin = new Thickness(2.0, 2.0),
-                        Padding = new Thickness(4.0, 0.0),
+                        Margin = new Thickness(0.0),
+                        Padding = new Thickness(0.0),
                         Content = badgeLabel)
     member this.Initialise() =
         this.HorizontalOptions <- LayoutOptions.CenterAndExpand
         this.VerticalOptions <- LayoutOptions.CenterAndExpand
         AbsoluteLayout.SetLayoutBounds(icon, new Rectangle(0.0, 0.0, 1.0, 1.0))
         AbsoluteLayout.SetLayoutFlags(icon, AbsoluteLayoutFlags.All)
-        AbsoluteLayout.SetLayoutBounds(badge, new Rectangle(0.6, 0.1, 0.3, 0.5))
+        AbsoluteLayout.SetLayoutBounds(badge, new Rectangle(0.6, 0.1, 0.4, 0.4))
         AbsoluteLayout.SetLayoutFlags(badge, AbsoluteLayoutFlags.All)
         this.Children.Add(icon)
         this.Children.Add(badge)
@@ -61,6 +61,12 @@ type BadgeIcon() =
     member this.ImageSource 
         with get() = match this.GetValue(imageSourceProperty) with | :? ImageSource as is -> is | _ -> Unchecked.defaultof<ImageSource>
         and set(value: ImageSource) = icon.Source <- value; this.SetValue(imageSourceProperty, value)
+    member this.ImageScale 
+        with get() = match this.GetValue(imageScaleProperty) with | :? float as scale -> scale | _ -> 1.0
+        and set(value: float) = icon.Scale <- value; this.SetValue(imageScaleProperty, value)
+    member this.BadgeFontSize 
+        with get() = match this.GetValue(badgeFontSizeProperty) with | :? float as scale -> scale | _ -> 1.0
+        and set(value: float) = badgeLabel.FontSize <- value; this.SetValue(badgeFontSizeProperty, value)
 
 type ItemsStack() as this =
     inherit StackLayout()
@@ -390,6 +396,8 @@ module ViewHelpers =
     let withMargin margin (element: #View) = element.Margin <- margin; element
     let withSource source (element: #Image) = element.Source <- source; element
     let withBadgeSource source (element: #BadgeIcon) = element.ImageSource <- source; element
+    let withBadgeScale scale (element: #BadgeIcon) = element.ImageScale <- scale; element
+    let withBadgeFontSize fontSize (element: #BadgeIcon) = element.BadgeFontSize <- fontSize; element
     let withButtonImage image (element: #Button) = element.Image <- image; element
     let withButtonTextColor color (element: #Button) = element.TextColor <- color; element
     let withButtonCommand command (element: #Button) = element.Command <- command; element
