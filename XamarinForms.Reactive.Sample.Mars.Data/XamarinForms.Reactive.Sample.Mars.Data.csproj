@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.6.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>
