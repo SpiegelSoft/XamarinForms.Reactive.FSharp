@@ -72,12 +72,12 @@ type NestedScrollView() = inherit ScrollView()
     
 type FrameOverlay() =
     inherit Frame()
-    static let boundaryProperty =
-        BindableProperty.Create("Boundary", typeof<Rectangle>, typeof<Frame>, Rectangle.Zero, BindingMode.OneWay,
-            propertyChanged = new BindableProperty.BindingPropertyChangedDelegate(fun bindableObject _ newValue -> AbsoluteLayout.SetLayoutBounds(bindableObject, newValue :?> Rectangle)))
+    static let boundaryProperty = BindableProperty.Create("Boundary", typeof<Rectangle>, typeof<Frame>, Rectangle.Zero)
     member this.Boundary
         with get() = this.GetValue(boundaryProperty) :?> Rectangle
-        and set(value: Rectangle) = this.SetValue(boundaryProperty, value)
+        and set(value: Rectangle) = 
+            this.SetValue(boundaryProperty, value)
+            AbsoluteLayout.SetLayoutBounds(this, value)
 
 type HyperlinkLabel() =
     inherit Label()

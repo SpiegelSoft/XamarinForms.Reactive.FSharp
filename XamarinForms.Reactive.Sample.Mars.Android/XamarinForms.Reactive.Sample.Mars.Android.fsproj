@@ -86,19 +86,19 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DynamicData">
-      <HintPath>..\packages\DynamicData.6.9.0.2586\lib\netstandard2.0\DynamicData.dll</HintPath>
+      <HintPath>..\packages\DynamicData.6.9.1.2588\lib\netstandard2.0\DynamicData.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.4.4.859\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.4.6.929\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Forms">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.4.4.859\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.4.6.929\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Forms.Platform">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.4.4.859\lib\MonoAndroid10\FFImageLoading.Forms.Platform.dll</HintPath>
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.4.6.929\lib\MonoAndroid10\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Platform">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.4.4.859\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.4.6.929\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
     </Reference>
     <Reference Include="FormsViewGroup">
       <HintPath>..\packages\Xamarin.Forms.3.6.0.344457\lib\MonoAndroid90\FormsViewGroup.dll</HintPath>
@@ -171,7 +171,7 @@
       <HintPath>..\packages\modernhttpclient.2.4.2\lib\MonoAndroid\ModernHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OkHttp">
       <HintPath>..\packages\modernhttpclient.2.4.2\lib\MonoAndroid\OkHttp.dll</HintPath>
@@ -192,7 +192,7 @@
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Splat">
-      <HintPath>..\packages\Splat.7.0.8\lib\monoandroid81\Splat.dll</HintPath>
+      <HintPath>..\packages\Splat.7.1.1\lib\monoandroid81\Splat.dll</HintPath>
     </Reference>
     <Reference Include="SQLitePCLRaw.batteries_green">
       <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.13\lib\MonoAndroid\SQLitePCLRaw.batteries_green.dll</HintPath>

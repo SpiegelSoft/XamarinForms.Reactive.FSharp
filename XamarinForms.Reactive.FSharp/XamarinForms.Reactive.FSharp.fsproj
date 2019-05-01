@@ -6,7 +6,7 @@
     <PackageProjectUrl>https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp</PackageProjectUrl>
     <Description>A fluent interface for building Xamarin Forms apps using ReactiveUI and F#</Description>
     <RepositoryUrl>https://github.com/SpiegelSoft/XamarinForms.Reactive.FSharp</RepositoryUrl>
-    <Version>1.0.1.65</Version>
+    <Version>1.0.1.67</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DynamicData" Version="6.9.0.2586" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="DynamicData" Version="6.9.1.2588" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="ReactiveUI" Version="9.13.1" />
     <PackageReference Include="ReactiveUI.XamForms" Version="9.13.1" />
     <PackageReference Include="FSharp.Core" Version="4.3.0" />
