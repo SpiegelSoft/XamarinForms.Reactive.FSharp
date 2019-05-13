@@ -78,7 +78,7 @@ type MarsPlatform(nasaApiKey, mainActivity: Activity) =
                 return! Rovers.names |> Array.map pullRoverAsync |> Async.Parallel
             }
 
-[<Activity(Label = "XRF Mars", Theme = "@style/Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true)>]
+[<Activity(Label = "XRF Mars", Theme = "Theme.AppCompat.NoActionBar", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true)>]
 type MainActivity() =
     inherit FormsAppCompatActivity()
     static let [<Literal>] NasaApiKey = "nasa-api-key"

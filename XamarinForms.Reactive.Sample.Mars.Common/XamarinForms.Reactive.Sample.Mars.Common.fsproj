@@ -17,11 +17,11 @@
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="1.1.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
-    <PackageReference Include="ReactiveUI" Version="9.13.1" />
-    <PackageReference Include="ReactiveUI.XamForms" Version="9.13.1" />
+    <PackageReference Include="ReactiveUI" Version="9.15.1" />
+    <PackageReference Include="ReactiveUI.XamForms" Version="9.15.1" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="3.2.0" />
-    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.6.929" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.9.961" />
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
   </ItemGroup>
 
