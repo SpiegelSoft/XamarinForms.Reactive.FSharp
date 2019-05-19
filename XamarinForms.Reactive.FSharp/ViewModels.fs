@@ -29,6 +29,6 @@ type PageViewModel() =
     member __.DisplayConfirmation(confirmation) = match confirmCommand with | Some command -> command.Execute(confirmation) | None -> Observable.Never<bool>()
     member internal __.DisplayAlertCommand with get() = displayAlertCommand and set(value) = displayAlertCommand <- value
     member internal __.ConfirmCommand with get() = confirmCommand and set(value) = confirmCommand <- value
-    abstract member Initialise: unit -> unit
-    default __.Initialise() = ()
+    abstract member InitialiseAsync: unit -> Async<unit>
+    default __.InitialiseAsync() = async { () }
     member __.TearDown() = disposables.Clear()

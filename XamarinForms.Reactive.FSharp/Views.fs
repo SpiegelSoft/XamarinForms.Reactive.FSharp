@@ -33,8 +33,8 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
     let confirmationReceived (confirmation: Confirmation) = this.DisplayAlert(confirmation.Title, confirmation.Message, confirmation.Accept, confirmation.Decline)
     let viewModelObservable = base.WhenAnyValue(fun v -> v.ViewModel)
     let subscribeToMessages (viewModel: 'TViewModel) disposables =
-        let displayAlertCommand = ReactiveCommand.CreateFromTask(alertMessageReceived) |> disposeWith disposables
-        let confirmCommand = ReactiveCommand.CreateFromTask(confirmationReceived) |> disposeWith disposables
+        let displayAlertCommand = ReactiveCommand.CreateFromTask(alertMessageReceived)
+        let confirmCommand = ReactiveCommand.CreateFromTask(confirmationReceived)
         viewModel.DisplayAlertCommand <- displayAlertCommand |> Some
         viewModel.ConfirmCommand <- confirmCommand |> Some
     let viewModelActivated (disposables: CompositeDisposable) =
@@ -47,7 +47,8 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
                 viewModel.TearDown()
                 pageDisposables.Clear()) |> pageDisposables.Add
             subscribeToMessages viewModel pageDisposables
-            viewModel.Initialise()
+            let initialiseCommand = ReactiveCommand.CreateFromTask(fun (_: Unit) -> viewModel.InitialiseAsync() |> Async.StartAsTask)
+            initialiseCommand.Execute().Subscribe() |> disposeWith disposables |> ignore
         | _ -> ()
     do 
         this.WhenActivated(viewModelActivated) |> pageDisposables.Add

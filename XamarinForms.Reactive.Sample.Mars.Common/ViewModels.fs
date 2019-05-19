@@ -20,11 +20,12 @@ type PhotoSetViewModel(rover: Rover, photoSet: PhotoSet, ?host: IScreen) =
     let photos = new SourceList<Photo>()
     member val Photos = Observables.createObservableCollection<Photo>()
     member val Title = sprintf "Camera: %s" RoverCameras.all.[photoSet.Camera].FullName
-    override this.Initialise() =
+    override this.InitialiseAsync() = async {
         photos.Connect()
             .ObserveOn(RxApp.MainThreadScheduler)
             .Bind(this.Photos).Subscribe() |> disposeWith this.Disposables |> ignore
         photos.AddRange photoSet.Photos
+    }
     interface IRoutableViewModel with
         member __.HostScreen = host
         member __.UrlPathSegment = sprintf "%s: Sol %s" rover.PhotoManifest.Name (photoSet.Sol.ToString("N0"))
@@ -57,7 +58,7 @@ type PhotoManifestViewModel(rover: Rover, ?host: IScreen, ?platform: IMarsPlatfo
     member val LandingDate = rover.PhotoManifest.LandingDate
     member val MaxSol = rover.PhotoManifest.MaxSol
     member val TotalPhotos = rover.PhotoManifest.TotalPhotos
-    override this.Initialise() =
+    override this.InitialiseAsync() = async {
         let matchesFilter solFilter cameraIndex startEarthDate endEarthDate =
             let betweenDates (photoSet: RoverSolPhotoSet) = photoSet.EarthDate >= startEarthDate && photoSet.EarthDate <= endEarthDate
             match String.IsNullOrWhiteSpace solFilter, cameraIndex with
@@ -100,6 +101,7 @@ type PhotoManifestViewModel(rover: Rover, ?host: IScreen, ?platform: IMarsPlatfo
         let photoManifest = rover.PhotoManifest
         for photo in photoManifest.Photos do photo.DefaultImage <- Rovers.imagePath photoManifest.Name
         photoManifest.Photos |> photoSets.AddRange
+    }
     interface IRoutableViewModel with
         member __.HostScreen = host
         member __.UrlPathSegment = rover.PhotoManifest.Name
@@ -136,7 +138,7 @@ type RoversViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorag
     member val State = state
     member val Commands = commands
     member val Rovers = Observables.createObservableCollection<Rover>()
-    override this.Initialise() =
+    override this.InitialiseAsync() = async {
         let disposables = this.Disposables
         rovers.Connect().ObserveOn(RxApp.MainThreadScheduler).Bind(this.Rovers).Subscribe() |> disposeWith disposables |> ignore
         commands.RefreshRovers.Where(cannotRetrieveFirstRovers).ObserveOn(RxApp.MainThreadScheduler).Subscribe(showConnectionError this) |> disposeWith disposables |> ignore
@@ -144,6 +146,7 @@ type RoversViewModel(?host: IScreen, ?platform: IMarsPlatform, ?storage: IStorag
         state.WhenAnyValue(fun vm -> vm.SelectedRover).Where(isNotNull).Subscribe(fun r ->
             let viewModel = new PhotoManifestViewModel(r)
             host.Router.Navigate.Execute(viewModel).Subscribe(fun _ -> state.SelectedRover <- Unchecked.defaultof<Rover>) |> disposeWith disposables |> ignore) |> disposeWith disposables |> ignore
+    }
     interface IRoutableViewModel with
         member __.HostScreen = host
         member __.UrlPathSegment = "Rovers" + " " + platform.GetMetadataEntry "NASA_API_KEY"
