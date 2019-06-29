@@ -14,6 +14,8 @@ open Android.App
 open Xamarin.Forms.Platform.Android
 open Xamarin.Forms
 
+open Xamarin.Forms.PlatformConfiguration.AndroidSpecific
+
 open XamarinForms.Reactive.Sample.Mars.Common
 open XamarinForms.Reactive.Sample.Mars.Data
 open XamarinForms.Reactive.FSharp
