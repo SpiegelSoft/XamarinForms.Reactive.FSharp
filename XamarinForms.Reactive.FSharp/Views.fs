@@ -23,6 +23,7 @@ type IContentView =
 
 open System.Reactive
 open DynamicData
+open System.Threading
 
 [<AbstractClass>]
 [<DisableAnimation>]
@@ -47,7 +48,14 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
                 viewModel.TearDown()
                 pageDisposables.Clear()) |> pageDisposables.Add
             subscribeToMessages viewModel pageDisposables
-            let initialiseCommand = ReactiveCommand.CreateFromTask(fun (_: Unit) -> viewModel.InitialiseAsync() |> Async.StartAsTask)
+            let initialiseCommand = ReactiveCommand.CreateFromTask(fun (_: Unit) -> 
+                async {
+                    let context = SynchronizationContext.Current
+                    do! Async.SwitchToThreadPool()
+                    do! viewModel.InitialiseAsync()
+                    do! Async.SwitchToContext context
+                }
+                 |> Async.StartAsTask)
             initialiseCommand.Execute().ObserveOn(RxApp.TaskpoolScheduler).Subscribe() |> disposeWith disposables |> ignore
         | _ -> ()
     do 
