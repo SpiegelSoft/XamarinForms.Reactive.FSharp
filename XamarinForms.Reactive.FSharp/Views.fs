@@ -48,15 +48,9 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
                 viewModel.TearDown()
                 pageDisposables.Clear()) |> pageDisposables.Add
             subscribeToMessages viewModel pageDisposables
-            let initialiseCommand = ReactiveCommand.CreateFromTask(fun (_: Unit) -> 
-                async {
-                    let context = SynchronizationContext.Current
-                    do! Async.SwitchToThreadPool()
-                    do! viewModel.InitialiseAsync()
-                    do! Async.SwitchToContext context
-                }
-                 |> Async.StartAsTask)
-            initialiseCommand.Execute().ObserveOn(RxApp.TaskpoolScheduler).Subscribe() |> disposeWith disposables |> ignore
+            async {
+                do! viewModel.InitialiseAsync()
+            } |> Async.Start
         | _ -> ()
     do 
         this.WhenActivated(viewModelActivated) |> pageDisposables.Add
