@@ -42,18 +42,20 @@ type ContentPage<'TViewModel, 'TView when 'TViewModel :> PageViewModel and 'TVie
         pageDisposables.Add disposables
         match box this.Content with
         | null ->
-            this.Content <- this.CreateContent(viewModelObservable.Where(isNotNull))
             let viewModel = this.ViewModel
             viewModel.WhenNavigatingFromObservable().Subscribe((fun (_:Unit) -> ()), fun () -> 
                 viewModel.TearDown()
                 pageDisposables.Clear()) |> pageDisposables.Add
             subscribeToMessages viewModel pageDisposables
-            async {
-                do! viewModel.InitialiseAsync()
-            } |> Async.Start
+            this.Content <- this.CreateContent(viewModelObservable.Where(isNotNull))
         | _ -> ()
     do 
         this.WhenActivated(viewModelActivated) |> pageDisposables.Add
+        this.WhenAnyValue(fun v -> v.Content).Where(isNotNull).ObserveOn(RxApp.TaskpoolScheduler).Subscribe(fun _ ->
+            async {
+                do! this.ViewModel.InitialiseAsync()
+            } |> Async.Start
+        ) |> disposeWith pageDisposables |> ignore
         base.BackgroundColor <- theme.Styles.BackgroundColor
     abstract member CreateContent: IObservable<'TViewModel> -> View
     interface IDisposableView with member __.Disposables = pageDisposables
